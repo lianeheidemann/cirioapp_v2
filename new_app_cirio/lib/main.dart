@@ -1,0 +1,60 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'app.dart';
+import 'data/repositories/event_repository.dart';
+import 'data/repositories/place_repository.dart';
+import 'data/repositories/news_repository.dart';
+import 'data/local/favorites_local_storage.dart';
+import 'features/events/events_provider.dart';
+import 'features/places/places_provider.dart';
+import 'features/map/map_provider.dart';
+import 'features/news/news_provider.dart';
+import 'features/favorites/favorites_provider.dart';
+
+/// Ponto de entrada do app.
+///
+/// Inicializa o armazenamento local de favoritos e configura a árvore de
+/// [MultiProvider] com todos os providers da aplicação. Os providers de
+/// eventos, locais e notícias usam [ChangeNotifierProxyProvider] para
+/// reagir automaticamente a mudanças nos favoritos.
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final favoritesStorage = FavoritesLocalStorage();
+  await favoritesStorage.init();
+
+  runApp(
+    MultiProvider(
+      providers: [
+        // Provider raiz de favoritos — carregado do SharedPreferences
+        ChangeNotifierProvider(
+          create: (_) => FavoritesProvider(favoritesStorage)..load(),
+        ),
+        // Providers filhos que escutam o FavoritesProvider
+        ChangeNotifierProxyProvider<FavoritesProvider, EventsProvider>(
+          create: (ctx) => EventsProvider(
+            EventRepository(),
+            ctx.read<FavoritesProvider>(),
+          ),
+          update: (_, favs, prev) => prev!..updateFavorites(favs),
+        ),
+        ChangeNotifierProxyProvider<FavoritesProvider, PlacesProvider>(
+          create: (ctx) => PlacesProvider(
+            PlaceRepository(),
+            ctx.read<FavoritesProvider>(),
+          ),
+          update: (_, favs, prev) => prev!..updateFavorites(favs),
+        ),
+        ChangeNotifierProxyProvider<FavoritesProvider, NewsProvider>(
+          create: (ctx) => NewsProvider(
+            NewsRepository(),
+            ctx.read<FavoritesProvider>(),
+          ),
+          update: (_, favs, prev) => prev!..updateFavorites(favs),
+        ),
+        ChangeNotifierProvider(create: (_) => MapProvider(PlaceRepository())),
+      ],
+      child: const CirioApp(),
+    ),
+  );
+}
