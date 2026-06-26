@@ -12,7 +12,7 @@ class FavoritesProvider extends ChangeNotifier {
 
   FavoritesProvider(this._storage);
 
-  Set<String> get favorites => _favorites;
+  Set<String> get favorites => Set.unmodifiable(_favorites);
 
   /// Carrega favoritos salvos do disco.
   Future<void> load() async {
@@ -40,9 +40,10 @@ class FavoritesProvider extends ChangeNotifier {
 
   /// Retorna os IDs favoritados de um determinado tipo.
   List<String> getIdsByType(String type) {
+    final prefix = '$type:';
     return _favorites
-        .where((k) => k.startsWith('$type:'))
-        .map((k) => k.split(':')[1])
+        .where((k) => k.startsWith(prefix))
+        .map((k) => k.substring(prefix.length))
         .toList();
   }
 }

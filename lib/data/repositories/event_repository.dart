@@ -5,7 +5,10 @@ import '../services/event_service.dart';
 ///
 /// Abstrai a fonte de dados (mock vs. API futura) para o [EventsProvider].
 class EventRepository {
-  final EventService _service = EventService();
+  final EventService _service;
+
+  EventRepository({EventService? service})
+      : _service = service ?? EventService();
 
   Future<List<EventModel>> getEvents() => _service.fetchEvents();
 }

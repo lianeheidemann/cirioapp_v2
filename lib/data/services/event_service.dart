@@ -12,7 +12,7 @@ class EventService {
       EventModel(
         id: 'e1',
         title: 'Trasladação da Imagem',
-        date: '11 de outubro de 2025',
+        date: '10 de outubro de 2026',
         time: '17:00',
         location: 'Basílica Santuário de Nazaré',
         category: 'Procissão',
@@ -22,7 +22,7 @@ class EventService {
       EventModel(
         id: 'e2',
         title: 'Círio de Nazaré',
-        date: '12 de outubro de 2025',
+        date: '11 de outubro de 2026',
         time: '07:00',
         location: 'Saída: Colégio Gentil Bittencourt',
         category: 'Procissão',
@@ -32,7 +32,7 @@ class EventService {
       EventModel(
         id: 'e3',
         title: 'Missa de Abertura da Quadra Nazarena',
-        date: '01 de outubro de 2025',
+        date: '01 de outubro de 2026',
         time: '19:00',
         location: 'Basílica Santuário de Nazaré',
         category: 'Missa',
@@ -42,7 +42,7 @@ class EventService {
       EventModel(
         id: 'e4',
         title: 'Festa da Chiquita',
-        date: '11 de outubro de 2025',
+        date: '10 de outubro de 2026',
         time: '18:00',
         location: 'Largo de Nazaré',
         category: 'Cultural',
@@ -52,17 +52,17 @@ class EventService {
       EventModel(
         id: 'e5',
         title: 'Recírio',
-        date: '19 de outubro de 2025',
+        date: '18 de outubro de 2026',
         time: '07:00',
         location: 'Basílica Santuário de Nazaré',
         category: 'Procissão',
         description:
-            'Procissão de retorno da imagem, encerrando o ciclo do Círio de 2025. Percurso da Basílica até o Ver-o-Peso, passando pelo centro histórico de Belém.',
+            'Procissão de retorno da imagem, encerrando o ciclo do Círio de 2026. Percurso da Basílica até o Ver-o-Peso, passando pelo centro histórico de Belém.',
       ),
       EventModel(
         id: 'e6',
         title: 'Missa das Crianças',
-        date: '05 de outubro de 2025',
+        date: '05 de outubro de 2026',
         time: '09:00',
         location: 'Basílica Santuário de Nazaré',
         category: 'Missa',

@@ -5,7 +5,10 @@ import '../services/place_service.dart';
 ///
 /// Abstrai a fonte de dados para o [PlacesProvider] e [MapProvider].
 class PlaceRepository {
-  final PlaceService _service = PlaceService();
+  final PlaceService _service;
+
+  PlaceRepository({PlaceService? service})
+      : _service = service ?? PlaceService();
 
   Future<List<PlaceModel>> getPlaces() => _service.fetchPlaces();
 }

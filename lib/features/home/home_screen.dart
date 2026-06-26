@@ -70,7 +70,7 @@ class HomeScreen extends StatelessWidget {
               const Icon(Icons.church, color: AppTheme.accentGold, size: 52),
               const SizedBox(height: 8),
               Text(
-                'Círio de Nazaré 2025',
+                'Círio de Nazaré 2026',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: AppTheme.accentGold,
                       letterSpacing: 1.2,
@@ -173,7 +173,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  '12 de outubro de 2025 — 07:00h',
+                  '11 de outubro de 2026 — 07:00h',
                   style: Theme.of(context)
                       .textTheme
                       .bodySmall

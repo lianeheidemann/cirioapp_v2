@@ -47,6 +47,8 @@ class PlacesProvider extends ChangeNotifier {
 
   /// Carrega locais do repositório.
   Future<void> loadPlaces() async {
+    if (isLoading || _places.isNotEmpty) return;
+
     isLoading = true;
     notifyListeners();
 

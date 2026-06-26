@@ -30,6 +30,8 @@ class EventsProvider extends ChangeNotifier {
 
   /// Busca eventos do repositório e atualiza favoritos.
   Future<void> loadEvents() async {
+    if (isLoading || _events.isNotEmpty) return;
+
     isLoading = true;
     errorMessage = null;
     notifyListeners();

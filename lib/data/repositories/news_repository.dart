@@ -5,7 +5,10 @@ import '../services/news_service.dart';
 ///
 /// Abstrai a fonte de dados para o [NewsProvider].
 class NewsRepository {
-  final NewsService _service = NewsService();
+  final NewsService _service;
+
+  NewsRepository({NewsService? service})
+      : _service = service ?? NewsService();
 
   Future<List<NewsModel>> getNews() => _service.fetchNews();
 }

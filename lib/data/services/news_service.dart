@@ -10,14 +10,14 @@ class NewsService {
     return [
       NewsModel(
         id: 'n1',
-        title: 'Círio 2025 espera receber 2,5 milhões de fiéis',
-        date: '28 de setembro de 2025',
+        title: 'Círio 2026 espera receber 2,5 milhões de fiéis',
+        date: '28 de setembro de 2026',
         summary:
             'Organização prevê recorde de público para a maior procissão católica do Brasil.',
         imageUrl: 'https://picsum.photos/seed/cirio1/800/400',
         content:
             'A Arquidiocese de Belém divulgou estimativa de 2,5 milhões de '
-            'participantes para o Círio de Nazaré 2025. O planejamento inclui '
+            'participantes para o Círio de Nazaré 2026. O planejamento inclui '
             'reforço no sistema de saúde, com 120 postos de atendimento médico '
             'ao longo do percurso de 3,6 km. A Guarda Municipal e Polícia '
             'Militar mobilizarão cerca de 3.000 agentes para garantir a '
@@ -28,7 +28,7 @@ class NewsService {
       NewsModel(
         id: 'n2',
         title: 'Corda do Círio: tradição que une peregrinos há séculos',
-        date: '05 de outubro de 2025',
+        date: '05 de outubro de 2026',
         summary:
             'Entenda o significado e a história da famosa corda que guia a '
             'procissão do Círio.',
@@ -47,7 +47,7 @@ class NewsService {
       NewsModel(
         id: 'n3',
         title: 'Gastronomia paraense invade o Círio: o que comer em Belém',
-        date: '08 de outubro de 2025',
+        date: '08 de outubro de 2026',
         summary:
             'Do maniçoba ao pato no tucupi, a culinária local é parte '
             'fundamental da festa.',
@@ -66,14 +66,14 @@ class NewsService {
       NewsModel(
         id: 'n4',
         title: 'Programa cultural do Círio tem mais de 50 eventos gratuitos',
-        date: '01 de outubro de 2025',
+        date: '01 de outubro de 2026',
         summary:
             'Shows, exposições e atividades culturais movimentam Belém durante '
             'todo o mês de outubro.',
         imageUrl: 'https://picsum.photos/seed/cirio4/800/400',
         content:
             'A Prefeitura de Belém divulgou a programação cultural do Círio '
-            '2025, com mais de 50 eventos gratuitos espalhados pela cidade. '
+            '2026, com mais de 50 eventos gratuitos espalhados pela cidade. '
             'Destaques incluem a Expo Círio no Hangar Centro de Convenções, '
             'com artesanato e gastronomia regional; o Festival de Música Sacra '
             'na Basílica Santuário; e shows nacionais no Largo de Nazaré na '
@@ -83,7 +83,7 @@ class NewsService {
       NewsModel(
         id: 'n5',
         title: 'Como se preparar para participar do Círio com segurança',
-        date: '10 de outubro de 2025',
+        date: '10 de outubro de 2026',
         summary:
             'Dicas essenciais para quem vai participar da procissão pela '
             'primeira vez.',

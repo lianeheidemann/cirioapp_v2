@@ -27,6 +27,8 @@ class NewsProvider extends ChangeNotifier {
 
   /// Busca notícias do repositório.
   Future<void> loadNews() async {
+    if (isLoading || _news.isNotEmpty) return;
+
     isLoading = true;
     notifyListeners();
 

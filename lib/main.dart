@@ -23,13 +23,14 @@ void main() async {
   final favoritesStorage = FavoritesLocalStorage();
   await favoritesStorage.init();
 
+  final favoritesProvider = FavoritesProvider(favoritesStorage);
+  await favoritesProvider.load();
+
   runApp(
     MultiProvider(
       providers: [
         // Provider raiz de favoritos — carregado do SharedPreferences
-        ChangeNotifierProvider(
-          create: (_) => FavoritesProvider(favoritesStorage)..load(),
-        ),
+        ChangeNotifierProvider.value(value: favoritesProvider),
         // Providers filhos que escutam o FavoritesProvider
         ChangeNotifierProxyProvider<FavoritesProvider, EventsProvider>(
           create: (ctx) => EventsProvider(

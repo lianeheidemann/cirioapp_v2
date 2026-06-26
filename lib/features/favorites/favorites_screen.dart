@@ -12,17 +12,39 @@ import '../news/news_detail_screen.dart';
 
 /// Tela de favoritos com abas (Eventos / Locais / Notícias).
 ///
-/// Consome os três providers ([EventsProvider], [PlacesProvider],
-/// [NewsProvider]) para exibir itens favoritados em cada categoria.
-/// Usa [TabBar] + [TabBarView] com [DefaultTabController].
-class FavoritesScreen extends StatelessWidget {
+/// Carrega os dados de todas as seções ao abrir, garantindo que favoritos
+/// salvos apareçam mesmo sem visitar as outras telas antes.
+class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({super.key});
+
+  @override
+  State<FavoritesScreen> createState() => _FavoritesScreenState();
+}
+
+class _FavoritesScreenState extends State<FavoritesScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadData());
+  }
+
+  Future<void> _loadData() async {
+    await Future.wait([
+      context.read<EventsProvider>().loadEvents(),
+      context.read<PlacesProvider>().loadPlaces(),
+      context.read<NewsProvider>().loadNews(),
+    ]);
+  }
 
   @override
   Widget build(BuildContext context) {
     final eventsProvider = context.watch<EventsProvider>();
     final placesProvider = context.watch<PlacesProvider>();
     final newsProvider = context.watch<NewsProvider>();
+
+    final isLoading = eventsProvider.isLoading ||
+        placesProvider.isLoading ||
+        newsProvider.isLoading;
 
     final favEvents = eventsProvider.getFavoriteEvents();
     final favPlaces = placesProvider.getFavoritePlaces();
@@ -47,109 +69,111 @@ class FavoritesScreen extends StatelessWidget {
               indicatorColor: AppTheme.accentGold,
             ),
             Expanded(
-              child: !hasAny
-                  ? const EmptyStateWidget(
-                      icon: Icons.favorite_border,
-                      message:
-                          'Você ainda não tem favoritos.\nToque no ♡ em qualquer item para salvar.',
-                    )
-                  : TabBarView(
-                      children: [
-                        favEvents.isEmpty
-                            ? const EmptyStateWidget(
-                                icon: Icons.event,
-                                message: 'Nenhum evento favorito.')
-                            : ListView.builder(
-                                itemCount: favEvents.length,
-                                itemBuilder: (_, i) {
-                                  final e = favEvents[i];
-                                  return Card(
-                                    child: ListTile(
-                                      leading: const Icon(Icons.event,
-                                          color: AppTheme.primaryBlue),
-                                      title: Text(e.title),
-                                      subtitle: Text('${e.date} — ${e.time}'),
-                                      trailing: IconButton(
-                                        icon: const Icon(Icons.favorite,
-                                            color: AppTheme.accentGold),
-                                        onPressed: () => eventsProvider
-                                            .toggleFavorite(e),
-                                      ),
-                                      onTap: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (_) =>
-                                              EventDetailScreen(event: e),
+              child: isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : !hasAny
+                      ? const EmptyStateWidget(
+                          icon: Icons.favorite_border,
+                          message:
+                              'Você ainda não tem favoritos.\nToque no ♡ em qualquer item para salvar.',
+                        )
+                      : TabBarView(
+                          children: [
+                            favEvents.isEmpty
+                                ? const EmptyStateWidget(
+                                    icon: Icons.event,
+                                    message: 'Nenhum evento favorito.')
+                                : ListView.builder(
+                                    itemCount: favEvents.length,
+                                    itemBuilder: (_, i) {
+                                      final e = favEvents[i];
+                                      return Card(
+                                        child: ListTile(
+                                          leading: const Icon(Icons.event,
+                                              color: AppTheme.primaryBlue),
+                                          title: Text(e.title),
+                                          subtitle: Text('${e.date} — ${e.time}'),
+                                          trailing: IconButton(
+                                            icon: const Icon(Icons.favorite,
+                                                color: AppTheme.accentGold),
+                                            onPressed: () => eventsProvider
+                                                .toggleFavorite(e),
+                                          ),
+                                          onTap: () => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (_) =>
+                                                  EventDetailScreen(event: e),
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                        favPlaces.isEmpty
-                            ? const EmptyStateWidget(
-                                icon: Icons.place,
-                                message: 'Nenhum local favorito.')
-                            : ListView.builder(
-                                itemCount: favPlaces.length,
-                                itemBuilder: (_, i) {
-                                  final p = favPlaces[i];
-                                  return Card(
-                                    child: ListTile(
-                                      leading: const Icon(Icons.place,
-                                          color: AppTheme.primaryBlue),
-                                      title: Text(p.name),
-                                      subtitle: Text(p.category),
-                                      trailing: IconButton(
-                                        icon: const Icon(Icons.favorite,
-                                            color: AppTheme.accentGold),
-                                        onPressed: () => placesProvider
-                                            .toggleFavorite(p),
-                                      ),
-                                      onTap: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (_) =>
-                                              PlaceDetailScreen(place: p),
+                                      );
+                                    },
+                                  ),
+                            favPlaces.isEmpty
+                                ? const EmptyStateWidget(
+                                    icon: Icons.place,
+                                    message: 'Nenhum local favorito.')
+                                : ListView.builder(
+                                    itemCount: favPlaces.length,
+                                    itemBuilder: (_, i) {
+                                      final p = favPlaces[i];
+                                      return Card(
+                                        child: ListTile(
+                                          leading: const Icon(Icons.place,
+                                              color: AppTheme.primaryBlue),
+                                          title: Text(p.name),
+                                          subtitle: Text(p.category),
+                                          trailing: IconButton(
+                                            icon: const Icon(Icons.favorite,
+                                                color: AppTheme.accentGold),
+                                            onPressed: () => placesProvider
+                                                .toggleFavorite(p),
+                                          ),
+                                          onTap: () => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (_) =>
+                                                  PlaceDetailScreen(place: p),
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                        favNews.isEmpty
-                            ? const EmptyStateWidget(
-                                icon: Icons.newspaper,
-                                message: 'Nenhuma notícia favorita.')
-                            : ListView.builder(
-                                itemCount: favNews.length,
-                                itemBuilder: (_, i) {
-                                  final n = favNews[i];
-                                  return Card(
-                                    child: ListTile(
-                                      leading: const Icon(Icons.newspaper,
-                                          color: AppTheme.primaryBlue),
-                                      title: Text(n.title),
-                                      subtitle: Text(n.date),
-                                      trailing: IconButton(
-                                        icon: const Icon(Icons.favorite,
-                                            color: AppTheme.accentGold),
-                                        onPressed: () =>
-                                            newsProvider.toggleFavorite(n),
-                                      ),
-                                      onTap: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (_) =>
-                                              NewsDetailScreen(news: n),
+                                      );
+                                    },
+                                  ),
+                            favNews.isEmpty
+                                ? const EmptyStateWidget(
+                                    icon: Icons.newspaper,
+                                    message: 'Nenhuma notícia favorita.')
+                                : ListView.builder(
+                                    itemCount: favNews.length,
+                                    itemBuilder: (_, i) {
+                                      final n = favNews[i];
+                                      return Card(
+                                        child: ListTile(
+                                          leading: const Icon(Icons.newspaper,
+                                              color: AppTheme.primaryBlue),
+                                          title: Text(n.title),
+                                          subtitle: Text(n.date),
+                                          trailing: IconButton(
+                                            icon: const Icon(Icons.favorite,
+                                                color: AppTheme.accentGold),
+                                            onPressed: () =>
+                                                newsProvider.toggleFavorite(n),
+                                          ),
+                                          onTap: () => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (_) =>
+                                                  NewsDetailScreen(news: n),
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                      ],
-                    ),
+                                      );
+                                    },
+                                  ),
+                          ],
+                        ),
             ),
           ],
         ),
