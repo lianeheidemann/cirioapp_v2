@@ -1,5 +1,6 @@
 <p align="center">
-  <img src="new_app_cirio/assets/images/cirio_logo.png" alt="CírioApp" width="120" height="120">
+  <img width="10%" src="https://github.com/user-attachments/assets/30acce3c-a7c5-4e90-9d26-b74c679c8a32" />
+
 </p>
 
 <h1 align="center">CírioApp</h1>
