@@ -69,7 +69,7 @@ lib/
 │   ├── services/                 
 │   ├── repositories/           
 │   └── local/                 
-├─�� features/
+├── features/
 │   ├── home/         
 │   ├── events/               
 │   ├── places/                   
