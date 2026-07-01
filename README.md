@@ -132,54 +132,54 @@ flutter build apk --release
 
 ```
 lib/
-├── main.dart                          # 41 linhas
-├── app.dart                           # 21 linhas
+├── main.dart                          
+├── app.dart                           
 ├── core/
 │   ├── theme/
-│   │   └── app_theme.dart             # 70 linhas
+│   │   └── app_theme.dart             
 │   └── constants/
-│       └── app_constants.dart         # 16 linhas
+│       └── app_constants.dart
 ├── data/
 │   ├── models/
-│   │   ├── event_model.dart           # 38 linhas
-│   │   ├── place_model.dart           # 43 linhas
-│   │   └── news_model.dart            # 42 linhas
+│   │   ├── event_model.dart 
+│   │   ├── place_model.dart
+│   │   └── news_model.dart
 │   ├── services/
-│   │   ├── event_service.dart         # 79 linhas
-│   │   ├── place_service.dart         # 118 linhas
-│   │   └── news_service.dart          # 142 linhas
+│   │   ├── event_service.dart
+│   │   ├── place_service.dart
+│   │   └── news_service.dart
 │   ├── repositories/
-│   │   ├── event_repository.dart      # 9 linhas
-│   │   ├── place_repository.dart      # 9 linhas
-│   │   └── news_repository.dart       # 9 linhas
+│   │   ├── event_repository.dart
+│   │   ├── place_repository.dart
+│   │   └── news_repository.dart
 │   └── local/
-│       └── favorites_local_storage.dart # 43 linhas
+│       └── favorites_local_storage.dart
 ├── features/
 │   ├── home/
-│   │   └── home_screen.dart           # 240 linhas
+│   │   └── home_screen.dart           
 │   ├── events/
-│   │   ├── events_provider.dart       # 72 linhas
-│   │   ├── events_screen.dart         # 155 linhas
-│   │   └── event_detail_screen.dart   # 122 linhas
+│   │   ├── events_provider.dart       
+│   │   ├── events_screen.dart         
+│   │   └── event_detail_screen.dart   
 │   ├── places/
-│   │   ├── places_provider.dart       # 79 linhas
-│   │   ├── places_screen.dart         # 227 linhas
-│   │   └── place_detail_screen.dart   # 107 linhas
+│   │   ├── places_provider.dart       
+│   │   ├── places_screen.dart         
+│   │   └── place_detail_screen.dart
 │   ├── map/
-│   │   ├── map_provider.dart          # 31 linhas
-│   │   └── map_screen.dart            # 167 linhas
+│   │   ├── map_provider.dart         
+│   │   └── map_screen.dart
 │   ├── news/
-│   │   ├── news_provider.dart         # 55 linhas
-│   │   ├── news_screen.dart           # 139 linhas
-│   │   └── news_detail_screen.dart    # 92 linhas
+│   │   ├── news_provider.dart
+│   │   ├── news_screen.dart
+│   │   └── news_detail_screen.dart
 │   └── favorites/
-│       ├── favorites_provider.dart    # 51 linhas
-│       └── favorites_screen.dart      # 218 linhas
+│       ├── favorites_provider.dart  
+│       └── favorites_screen.dart 
 └── shared/
     └── widgets/
-        ├── cirio_app_bar.dart         # 31 linhas
-        ├── favorite_button.dart       # 30 linhas
-        └── empty_state_widget.dart    # 33 linhas
+        ├── cirio_app_bar.dart
+        ├── favorite_button.dart
+        └── empty_state_widget.dart
 ```
 
 ---
