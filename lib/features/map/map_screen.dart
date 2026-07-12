@@ -6,6 +6,7 @@ import '../../core/constants/app_constants.dart';
 import '../../core/theme/app_theme.dart';
 import '../../data/models/place_model.dart';
 import '../../shared/widgets/cirio_app_bar.dart';
+import '../../shared/widgets/empty_state_widget.dart';
 import 'map_provider.dart';
 
 class MapScreen extends StatefulWidget {
@@ -40,6 +41,12 @@ class _MapScreenState extends State<MapScreen> {
         builder: (context, provider, _) {
           if (provider.isLoading) {
             return const Center(child: CircularProgressIndicator());
+          }
+          if (provider.errorMessage != null) {
+            return EmptyStateWidget(
+              icon: Icons.error_outline,
+              message: provider.errorMessage!,
+            );
           }
 
           return Stack(

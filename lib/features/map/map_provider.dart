@@ -11,16 +11,30 @@ class MapProvider extends ChangeNotifier {
   List<PlaceModel> places = [];
   PlaceModel? selectedPlace;
   bool isLoading = false;
+  String? errorMessage;
 
   MapProvider(this._repository);
 
   /// Carrega todos os pontos de interesse do repositório.
+  ///
+  /// Evita recarregar se já houver dados ou uma busca em andamento, e
+  /// trata falhas do repositório para não deixar a tela presa em
+  /// carregamento indefinidamente.
   Future<void> loadPlaces() async {
+    if (isLoading || places.isNotEmpty) return;
+
     isLoading = true;
+    errorMessage = null;
     notifyListeners();
-    places = await _repository.getPlaces();
-    isLoading = false;
-    notifyListeners();
+
+    try {
+      places = await _repository.getPlaces();
+    } catch (e) {
+      errorMessage = 'Não foi possível carregar o mapa.';
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
   }
 
   /// Define o local selecionado (exibe card) ou null (oculta card).

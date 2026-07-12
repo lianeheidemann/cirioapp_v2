@@ -1,0 +1,65 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import '../../data/repositories/ai_assistant_repository.dart';
+import '../../data/services/gemini_service.dart';
+
+/// Provider do Assistente IA do Círio.
+///
+/// Gerencia o estado da pergunta atual, resposta, carregamento e erro.
+/// Expõe [askQuestion] para a [AiAssistantScreen], chamado tanto pelo
+/// campo de texto livre quanto pelos botões de perguntas rápidas.
+class AiAssistantProvider extends ChangeNotifier {
+  final AiAssistantRepository _repository;
+
+  AiAssistantProvider({AiAssistantRepository? repository})
+      : _repository = repository ?? AiAssistantRepository();
+
+  bool isLoading = false;
+  String? errorMessage;
+  String? answer;
+  String? lastQuestion;
+  String get geminiApiKey => dotenv.env['GEMINI_API_KEY'] ?? '';
+
+  /// Perguntas rápidas sugeridas na tela.
+  static const List<String> quickQuestions = [
+    'Roteiro para primeira vez no Círio',
+    'Onde encontrar hidratação?',
+    'Quais locais turísticos visitar?',
+    'Dicas de segurança',
+  ];
+
+  /// Envia [question] ao assistente e atualiza o estado com a resposta.
+  ///
+  /// Ignora chamadas com texto vazio ou enquanto uma pergunta anterior
+  /// ainda está sendo processada.
+  Future<void> askQuestion(String question) async {
+    final trimmed = question.trim();
+    if (trimmed.isEmpty || isLoading) return;
+
+    isLoading = true;
+    errorMessage = null;
+    answer = null;
+    lastQuestion = trimmed;
+    notifyListeners();
+
+    try {
+      answer = await _repository.askQuestion(trimmed);
+    } on GeminiServiceException catch (e) {
+      errorMessage = e.message;
+    } catch (_) {
+      errorMessage =
+          'Não foi possível obter uma resposta agora. Tente novamente.';
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  /// Limpa a conversa atual (pergunta, resposta e erro).
+  void clear() {
+    answer = null;
+    errorMessage = null;
+    lastQuestion = null;
+    notifyListeners();
+  }
+}

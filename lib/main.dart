@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'app.dart';
@@ -10,6 +11,7 @@ import 'features/places/places_provider.dart';
 import 'features/map/map_provider.dart';
 import 'features/news/news_provider.dart';
 import 'features/favorites/favorites_provider.dart';
+import 'features/ai_assistant/ai_assistant_provider.dart';
 
 /// Ponto de entrada do app.
 ///
@@ -25,6 +27,8 @@ void main() async {
 
   final favoritesProvider = FavoritesProvider(favoritesStorage);
   await favoritesProvider.load();
+
+  await dotenv.load(fileName: ".env");
 
   runApp(
     MultiProvider(
@@ -54,6 +58,8 @@ void main() async {
           update: (_, favs, prev) => prev!..updateFavorites(favs),
         ),
         ChangeNotifierProvider(create: (_) => MapProvider(PlaceRepository())),
+        // Assistente IA — não depende de favoritos, apenas lê eventos/locais.
+        ChangeNotifierProvider(create: (_) => AiAssistantProvider()),
       ],
       child: const CirioApp(),
     ),

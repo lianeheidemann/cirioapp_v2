@@ -36,6 +36,12 @@ class _NewsScreenState extends State<NewsScreen> {
           if (provider.isLoading) {
             return const Center(child: CircularProgressIndicator());
           }
+          if (provider.errorMessage != null) {
+            return EmptyStateWidget(
+              icon: Icons.error_outline,
+              message: provider.errorMessage!,
+            );
+          }
           if (provider.news.isEmpty) {
             return const EmptyStateWidget(
                 icon: Icons.newspaper, message: 'Nenhuma notícia encontrada.');

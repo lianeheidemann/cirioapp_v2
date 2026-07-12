@@ -15,6 +15,7 @@ class PlacesProvider extends ChangeNotifier {
   List<PlaceModel> _places = [];
   String _selectedCategory = 'Todos';
   bool isLoading = false;
+  String? errorMessage;
 
   PlacesProvider(this._repository, this._favoritesProvider);
 
@@ -50,11 +51,14 @@ class PlacesProvider extends ChangeNotifier {
     if (isLoading || _places.isNotEmpty) return;
 
     isLoading = true;
+    errorMessage = null;
     notifyListeners();
 
     try {
       _places = await _repository.getPlaces();
       _syncFavorites();
+    } catch (e) {
+      errorMessage = 'Não foi possível carregar os locais.';
     } finally {
       isLoading = false;
       notifyListeners();

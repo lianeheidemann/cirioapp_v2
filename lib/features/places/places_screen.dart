@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../core/constants/app_constants.dart';
 import '../../core/theme/app_theme.dart';
 import '../../shared/widgets/cirio_app_bar.dart';
 import '../../shared/widgets/empty_state_widget.dart';
@@ -34,6 +35,12 @@ class _PlacesScreenState extends State<PlacesScreen> {
         builder: (context, provider, _) {
           if (provider.isLoading) {
             return const Center(child: CircularProgressIndicator());
+          }
+          if (provider.errorMessage != null) {
+            return EmptyStateWidget(
+              icon: Icons.error_outline,
+              message: provider.errorMessage!,
+            );
           }
 
           return Column(
@@ -133,35 +140,39 @@ class _PlacesScreenState extends State<PlacesScreen> {
 
   IconData _categoryIcon(String category) {
     switch (category) {
-      case 'Igreja':
+      case AppConstants.categoryChurch:
         return Icons.church;
-      case 'Hidratação':
+      case AppConstants.categoryHydration:
         return Icons.water_drop;
-      case 'Alimentação':
+      case AppConstants.categoryFood:
         return Icons.restaurant;
-      case 'Saúde':
+      case AppConstants.categoryHealth:
         return Icons.local_hospital;
-      case 'Banheiro':
+      case AppConstants.categoryRestroom:
         return Icons.wc;
-      default:
+      case AppConstants.categoryTourism:
         return Icons.star;
+      default:
+        return Icons.place;
     }
   }
 
   Color _categoryColor(String category) {
     switch (category) {
-      case 'Igreja':
+      case AppConstants.categoryChurch:
         return AppTheme.primaryBlue;
-      case 'Hidratação':
+      case AppConstants.categoryHydration:
         return Colors.blue;
-      case 'Alimentação':
+      case AppConstants.categoryFood:
         return Colors.orange;
-      case 'Saúde':
+      case AppConstants.categoryHealth:
         return Colors.red;
-      case 'Banheiro':
+      case AppConstants.categoryRestroom:
         return Colors.teal;
-      default:
+      case AppConstants.categoryTourism:
         return Colors.purple;
+      default:
+        return Colors.grey;
     }
   }
 }

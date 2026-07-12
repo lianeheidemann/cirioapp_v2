@@ -5,6 +5,7 @@ import '../places/places_screen.dart';
 import '../map/map_screen.dart';
 import '../news/news_screen.dart';
 import '../favorites/favorites_screen.dart';
+import '../ai_assistant/ai_assistant_screen.dart';
 
 /// Tela inicial com hero SliverAppBar e grid de acesso rápido.
 ///
@@ -137,6 +138,15 @@ class HomeScreen extends StatelessWidget {
         onTap: () => Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => const FavoritesScreen()),
+        ),
+      ),
+      _QuickAccessItem(
+        label: 'Assistente IA',
+        icon: Icons.auto_awesome,
+        color: const Color(0xFF00897B),
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const AiAssistantScreen()),
         ),
       ),
     ];

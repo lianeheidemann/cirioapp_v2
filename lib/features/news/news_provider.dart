@@ -14,6 +14,7 @@ class NewsProvider extends ChangeNotifier {
 
   List<NewsModel> _news = [];
   bool isLoading = false;
+  String? errorMessage;
 
   NewsProvider(this._repository, this._favoritesProvider);
 
@@ -30,11 +31,14 @@ class NewsProvider extends ChangeNotifier {
     if (isLoading || _news.isNotEmpty) return;
 
     isLoading = true;
+    errorMessage = null;
     notifyListeners();
 
     try {
       _news = await _repository.getNews();
       _syncFavorites();
+    } catch (e) {
+      errorMessage = 'Não foi possível carregar as notícias.';
     } finally {
       isLoading = false;
       notifyListeners();
