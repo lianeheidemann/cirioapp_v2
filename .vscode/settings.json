@@ -2,5 +2,6 @@
     "java.compile.nullAnalysis.mode": "automatic",
     "java.project.sourcePaths": [
         "build/app/outputs/flutter-apk"
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
