@@ -1,3 +1,5 @@
+<img width="5%" src="assets/icon/icon.png"/> 
+
 # CírioApp
 
 Aplicativo mobile informativo sobre o Círio de Nazaré — Belém do Pará. A maior procissão católica do Brasil, na palma da sua mão.
