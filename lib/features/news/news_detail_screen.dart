@@ -1,86 +1,77 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import '../../core/localization/app_language.dart';
+import '../../core/localization/content_translations.dart';
+import 'package:provider/provider.dart';
 import '../../core/theme/app_theme.dart';
 import '../../data/models/news_model.dart';
 import '../../shared/widgets/cirio_app_bar.dart';
 import '../../shared/widgets/favorite_button.dart';
 import 'news_provider.dart';
 
-/// Tela de detalhes de uma notícia.
-///
-/// Exibe imagem de capa (se houver), título, data e conteúdo completo.
-/// Inclui botão de favoritar na AppBar.
 class NewsDetailScreen extends StatelessWidget {
   final NewsModel news;
-
   const NewsDetailScreen({super.key, required this.news});
-
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CirioAppBar(
-        title: 'Notícia',
-        actions: [
-          Consumer<NewsProvider>(
-            builder: (_, provider, __) {
-              final current = provider.news
-                  .firstWhere((n) => n.id == news.id, orElse: () => news);
-              return FavoriteButton(
-                isFavorite: current.isFavorite,
-                onTap: () => provider.toggleFavorite(current),
-              );
-            },
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (news.imageUrl != null)
-              CachedNetworkImage(
-                imageUrl: news.imageUrl!,
-                height: 220,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                placeholder: (_, __) => Container(
-                  height: 220,
-                  color: AppTheme.primaryBlue.withValues(alpha: 0.1),
-                ),
-                errorWidget: (_, __, ___) => const SizedBox.shrink(),
-              ),
-            Padding(
+  Widget build(BuildContext context) => Scaffold(
+        appBar: CirioAppBar(title: tr(context, 'Notícia', 'News'), actions: [
+          Consumer<NewsProvider>(builder: (_, p, __) {
+            final current =
+                p.news.firstWhere((n) => n.id == news.id, orElse: () => news);
+            return Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: FavoriteButton(
+                    isFavorite: current.isFavorite,
+                    onTap: () => p.toggleFavorite(current)));
+          })
+        ]),
+        body: CustomScrollView(slivers: [
+          SliverToBoxAdapter(
+              child: news.imageUrl == null
+                  ? const SizedBox.shrink()
+                  : CachedNetworkImage(
+                      imageUrl: news.imageUrl!,
+                      height: 240,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      placeholder: (_, __) =>
+                          Container(height: 240, color: AppColors.softBlue),
+                      errorWidget: (_, __, ___) => Container(
+                          height: 180,
+                          color: AppColors.softBlue,
+                          child: const Icon(Icons.photo_outlined,
+                              color: AppColors.secondaryBlue, size: 40)),
+                    )),
+          SliverPadding(
               padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    news.title,
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    news.date,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.copyWith(color: AppTheme.accentGold),
-                  ),
-                  const Divider(height: 28),
-                  Text(
-                    news.content,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(height: 1.8),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+              sliver: SliverList.list(children: [
+                Row(children: [
+                  const Icon(Icons.calendar_today_outlined,
+                      size: 15, color: AppColors.gold),
+                  const SizedBox(width: 7),
+                  Text(ContentTranslations.news(context, news, 'date'),
+                      style: Theme.of(context).textTheme.bodySmall)
+                ]),
+                const SizedBox(height: 12),
+                Text(ContentTranslations.news(context, news, 'title'),
+                    style: Theme.of(context).textTheme.headlineMedium),
+                const SizedBox(height: 16),
+                Container(
+                    width: 48,
+                    height: 3,
+                    decoration: BoxDecoration(
+                        color: AppColors.gold,
+                        borderRadius: BorderRadius.circular(4))),
+                const SizedBox(height: 20),
+                Text(ContentTranslations.news(context, news, 'summary'),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.secondaryBlue)),
+                const SizedBox(height: 20),
+                Text(ContentTranslations.news(context, news, 'content'),
+                    style: Theme.of(context).textTheme.bodyLarge),
+                const SizedBox(height: 32),
+              ])),
+        ]),
+      );
 }

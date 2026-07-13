@@ -3,5 +3,5 @@
     "java.project.sourcePaths": [
         "build/app/outputs/flutter-apk"
     ],
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "automatic"
 }

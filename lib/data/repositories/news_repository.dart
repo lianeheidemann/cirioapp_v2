@@ -7,8 +7,7 @@ import '../services/news_service.dart';
 class NewsRepository {
   final NewsService _service;
 
-  NewsRepository({NewsService? service})
-      : _service = service ?? NewsService();
+  NewsRepository({NewsService? service}) : _service = service ?? NewsService();
 
   Future<List<NewsModel>> getNews() => _service.fetchNews();
 }

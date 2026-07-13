@@ -48,8 +48,7 @@ class NewsService {
         id: 'n3',
         title: 'Gastronomia paraense invade o Círio: o que comer em Belém',
         date: '08 de outubro de 2026',
-        summary:
-            'Do maniçoba ao pato no tucupi, a culinária local é parte '
+        summary: 'Do maniçoba ao pato no tucupi, a culinária local é parte '
             'fundamental da festa.',
         imageUrl: 'https://picsum.photos/seed/cirio3/800/400',
         content:
@@ -84,12 +83,10 @@ class NewsService {
         id: 'n5',
         title: 'Como se preparar para participar do Círio com segurança',
         date: '10 de outubro de 2026',
-        summary:
-            'Dicas essenciais para quem vai participar da procissão pela '
+        summary: 'Dicas essenciais para quem vai participar da procissão pela '
             'primeira vez.',
         imageUrl: 'https://picsum.photos/seed/cirio5/800/400',
-        content:
-            'Participar do Círio exige preparo físico e logístico. '
+        content: 'Participar do Círio exige preparo físico e logístico. '
             'Especialistas recomendam: usar roupas leves e calçados '
             'confortáveis; levar água e protetor solar; evitar o centro do '
             'percurso se você tem claustrofobia; combinar ponto de encontro '

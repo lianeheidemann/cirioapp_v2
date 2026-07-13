@@ -50,7 +50,8 @@ void main() {
     );
   }
 
-  testWidgets('exibe favoritos salvos sem visitar outras telas', (tester) async {
+  testWidgets('exibe favoritos salvos sem visitar outras telas',
+      (tester) async {
     final storage = FavoritesLocalStorage();
     await storage.init();
     await storage.add('${AppConstants.favoriteTypeEvent}:e1');

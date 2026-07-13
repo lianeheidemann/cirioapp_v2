@@ -32,7 +32,8 @@ class AiAssistantProvider extends ChangeNotifier {
   ///
   /// Ignora chamadas com texto vazio ou enquanto uma pergunta anterior
   /// ainda está sendo processada.
-  Future<void> askQuestion(String question) async {
+  Future<void> askQuestion(String question,
+      {bool respondInEnglish = false}) async {
     final trimmed = question.trim();
     if (trimmed.isEmpty || isLoading) return;
 
@@ -43,12 +44,14 @@ class AiAssistantProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      answer = await _repository.askQuestion(trimmed);
+      answer = await _repository.askQuestion(trimmed,
+          respondInEnglish: respondInEnglish);
     } on GeminiServiceException catch (e) {
       errorMessage = e.message;
     } catch (_) {
-      errorMessage =
-          'Não foi possível obter uma resposta agora. Tente novamente.';
+      errorMessage = respondInEnglish
+          ? 'Unable to get an answer right now. Please try again.'
+          : 'Não foi possível obter uma resposta agora. Tente novamente.';
     } finally {
       isLoading = false;
       notifyListeners();

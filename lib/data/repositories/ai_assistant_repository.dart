@@ -39,9 +39,13 @@ class AiAssistantRepository {
       'agente de segurança oficial em casos que fujam de dicas gerais.';
 
   /// Envia a [question] do usuário ao Gemini, já com contexto do app.
-  Future<String> askQuestion(String question) async {
+  Future<String> askQuestion(String question,
+      {bool respondInEnglish = false}) async {
     final context = await _buildContext();
-    final prompt = _buildPrompt(context: context, question: question);
+    final prompt = _buildPrompt(
+        context: context,
+        question: question,
+        respondInEnglish: respondInEnglish);
     return _geminiService.generateResponse(prompt);
   }
 
@@ -80,9 +84,16 @@ class AiAssistantRepository {
   String _summarizePlace(PlaceModel p) =>
       '- ${p.name} (${p.category}): ${p.address}.';
 
-  String _buildPrompt({required String context, required String question}) {
+  String _buildPrompt(
+      {required String context,
+      required String question,
+      required bool respondInEnglish}) {
+    final languageInstruction = respondInEnglish
+        ? 'Answer entirely in English.'
+        : 'Responda integralmente em português.';
     return '''
 $_systemInstruction
+$languageInstruction
 
 Dados disponíveis no app para embasar sua resposta (use quando forem
 relevantes; não é necessário mencionar todos):

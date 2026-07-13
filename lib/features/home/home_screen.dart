@@ -1,256 +1,424 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../core/localization/app_language.dart';
 import '../../core/theme/app_theme.dart';
+import '../ai_assistant/ai_assistant_screen.dart';
 import '../events/events_screen.dart';
-import '../places/places_screen.dart';
+import '../favorites/favorites_screen.dart';
 import '../map/map_screen.dart';
 import '../news/news_screen.dart';
-import '../favorites/favorites_screen.dart';
-import '../ai_assistant/ai_assistant_screen.dart';
+import '../places/places_screen.dart';
 
-/// Tela inicial com hero SliverAppBar e grid de acesso rápido.
-///
-/// Exibe um gradiente azul com ícone do Círio, navegação rápida para
-/// as 5 seções principais (Eventos, Mapa, Notícias, Pontos, Favoritos)
-/// e um card informativo com a data da próxima procissão.
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
+  void _open(BuildContext context, Widget page) =>
+      Navigator.push(context, MaterialPageRoute(builder: (_) => page));
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          _buildHeroAppBar(context),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildSectionTitle(context, 'Acesso Rápido'),
-                  const SizedBox(height: 12),
-                  _buildQuickAccessGrid(context),
-                  const SizedBox(height: 24),
-                  _buildInfoCard(context),
-                  const SizedBox(height: 24),
-                ],
-              ),
-            ),
-          ),
-        ],
+    final language = context.watch<LanguageProvider>();
+    final english = language.isEnglish;
+    final links = [
+      (
+        english ? 'Events' : 'Eventos',
+        Icons.calendar_month_outlined,
+        const EventsScreen()
       ),
-    );
-  }
-
-  Widget _buildHeroAppBar(BuildContext context) {
-    return SliverAppBar(
-      expandedHeight: 220,
-      pinned: true,
-      backgroundColor: AppTheme.primaryBlue,
-      flexibleSpace: FlexibleSpaceBar(
-        title: const Text(
-          'CírioApp',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
-          ),
-        ),
-        background: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [AppTheme.primaryBlue, Color(0xFF0D2137)],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(height: 20),
-              const Icon(Icons.church, color: AppTheme.accentGold, size: 52),
-              const SizedBox(height: 8),
-              Text(
-                'Círio de Nazaré 2026',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppTheme.accentGold,
-                      letterSpacing: 1.2,
-                    ),
-              ),
-              const SizedBox(height: 4),
-              const Text(
-                'Belém do Pará',
-                style: TextStyle(color: Colors.white70, fontSize: 13),
-              ),
-            ],
-          ),
-        ),
+      (english ? 'Map' : 'Mapa', Icons.map_outlined, const MapScreen()),
+      (
+        english ? 'News' : 'Notícias',
+        Icons.newspaper_outlined,
+        const NewsScreen()
       ),
-    );
-  }
-
-  Widget _buildSectionTitle(BuildContext context, String title) {
-    return Text(title, style: Theme.of(context).textTheme.titleLarge);
-  }
-
-  Widget _buildQuickAccessGrid(BuildContext context) {
-    final items = [
-      _QuickAccessItem(
-        label: 'Eventos',
-        icon: Icons.event,
-        color: const Color(0xFF1A3A6B),
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const EventsScreen()),
-        ),
+      (
+        english ? 'Places' : 'Locais',
+        Icons.location_on_outlined,
+        const PlacesScreen()
       ),
-      _QuickAccessItem(
-        label: 'Mapa',
-        icon: Icons.map,
-        color: const Color(0xFF2E7D32),
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const MapScreen()),
-        ),
+      (
+        english ? 'Favorites' : 'Favoritos',
+        Icons.favorite_border_rounded,
+        const FavoritesScreen()
       ),
-      _QuickAccessItem(
-        label: 'Notícias',
-        icon: Icons.newspaper,
-        color: const Color(0xFF6A1B9A),
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const NewsScreen()),
-        ),
-      ),
-      _QuickAccessItem(
-        label: 'Pontos de\nInteresse',
-        icon: Icons.place,
-        color: const Color(0xFFB71C1C),
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const PlacesScreen()),
-        ),
-      ),
-      _QuickAccessItem(
-        label: 'Favoritos',
-        icon: Icons.favorite,
-        color: AppTheme.accentGold,
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const FavoritesScreen()),
-        ),
-      ),
-      _QuickAccessItem(
-        label: 'Assistente IA',
-        icon: Icons.auto_awesome,
-        color: const Color(0xFF00897B),
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const AiAssistantScreen()),
-        ),
+      (
+        english ? 'AI Assistant' : 'Assistente IA',
+        Icons.auto_awesome_outlined,
+        const AiAssistantScreen()
       ),
     ];
-
-    return GridView.count(
-      crossAxisCount: 3,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisSpacing: 12,
-      mainAxisSpacing: 12,
-      children: items.map((item) => _QuickAccessCard(item: item)).toList(),
+    return Scaffold(
+      body: CustomScrollView(slivers: [
+        SliverToBoxAdapter(
+          child: Container(
+            constraints: const BoxConstraints(minHeight: 300),
+            padding: EdgeInsets.fromLTRB(
+                24, MediaQuery.paddingOf(context).top + 20, 24, 48),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [AppColors.navy, AppColors.secondaryBlue],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(AppRadius.extraLarge),
+              ),
+            ),
+            child: Stack(children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 54),
+                child: Row(children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          english ? 'HELLO, PILGRIM' : 'OLÁ, PEREGRINO',
+                          style:
+                              Theme.of(context).textTheme.labelMedium?.copyWith(
+                                    color: AppColors.gold,
+                                    letterSpacing: 1.4,
+                                  ),
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          english
+                              ? 'Círio is now\ncloser to you.'
+                              : 'O Círio está\nmais perto de você.',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineLarge
+                              ?.copyWith(color: Colors.white),
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          english
+                              ? 'Information, faith and care at every moment.'
+                              : 'Informação, fé e cuidado em cada momento.',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(color: Colors.white70),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Container(
+                    width: 104,
+                    height: 104,
+                    padding: const EdgeInsets.all(7),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: .08),
+                      borderRadius: BorderRadius.circular(28),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: .28),
+                      ),
+                      boxShadow: AppShadows.floating,
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(21),
+                      child: Image.asset(
+                        'assets/icon/icon.png',
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                ]),
+              ),
+              Positioned(
+                top: 0,
+                right: 0,
+                child: _LanguageButton(language: language),
+              ),
+            ]),
+          ),
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+          sliver: SliverList.list(children: [
+            Transform.translate(
+              offset: Offset.zero,
+              child: _ActionCard(
+                icon: Icons.campaign_outlined,
+                title: english ? 'Latest news' : 'Últimas notícias',
+                subtitle: english
+                    ? 'Círio updates and guidance'
+                    : 'Novidades e orientações do Círio',
+                onTap: () => _open(context, const NewsScreen()),
+              ),
+            ),
+            const SizedBox(height: 26),
+            _HomeSectionHeader(
+              title: english ? 'Quick access' : 'Acessos rápidos',
+              subtitle: english
+                  ? 'Everything you need for Círio'
+                  : 'Tudo para viver o Círio com tranquilidade',
+            ),
+            const SizedBox(height: 18),
+            LayoutBuilder(
+                builder: (_, constraints) => GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: links.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: constraints.maxWidth >= 600 ? 3 : 2,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12,
+                          childAspectRatio: 1.8),
+                      itemBuilder: (_, i) => _QuickCard(
+                          label: links[i].$1,
+                          icon: links[i].$2,
+                          gold: i == 5,
+                          onTap: () => _open(context, links[i].$3)),
+                    )),
+            const SizedBox(height: 24),
+            Text(english ? 'Important information' : 'Informações importantes',
+                style: Theme.of(context).textTheme.titleLarge),
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                  color: AppColors.navy,
+                  borderRadius: BorderRadius.circular(28)),
+              child:
+                  Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                const Icon(Icons.info_outline_rounded,
+                    color: AppColors.gold, size: 28),
+                const SizedBox(width: 16),
+                Expanded(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                      Text(
+                          english
+                              ? 'Next major procession'
+                              : 'Próxima grande procissão',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(color: Colors.white)),
+                      const SizedBox(height: 8),
+                      Text(
+                          english
+                              ? 'Círio of Nazaré • October 11, 2026 at 7:00 AM'
+                              : 'Círio de Nazaré • 11 de outubro de 2026, às 07:00',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(color: Colors.white70)),
+                    ])),
+              ]),
+            ),
+          ]),
+        ),
+      ]),
     );
   }
+}
 
-  Widget _buildInfoCard(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppTheme.accentGold.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppTheme.accentGold.withValues(alpha: 0.3)),
-      ),
-      child: Row(
+class _ActionCard extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
+  const _ActionCard(
+      {required this.icon,
+      required this.title,
+      required this.subtitle,
+      required this.onTap});
+
+  @override
+  Widget build(BuildContext context) => Container(
+        decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(color: AppColors.divider),
+            boxShadow: AppShadows.soft),
+        child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+                borderRadius: BorderRadius.circular(24),
+                onTap: onTap,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(children: [
+                    Container(
+                        width: 48,
+                        height: 48,
+                        decoration: const BoxDecoration(
+                            color: AppColors.softGold, shape: BoxShape.circle),
+                        child: Icon(icon, color: AppColors.gold)),
+                    const SizedBox(width: 16),
+                    Expanded(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                          Text(title,
+                              style: Theme.of(context).textTheme.titleMedium),
+                          Text(subtitle,
+                              style: Theme.of(context).textTheme.bodySmall),
+                        ])),
+                    const Icon(Icons.arrow_forward_ios_rounded,
+                        size: 17, color: AppColors.navy),
+                  ]),
+                ))),
+      );
+}
+
+class _QuickCard extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final bool gold;
+  final VoidCallback onTap;
+  const _QuickCard(
+      {required this.label,
+      required this.icon,
+      required this.gold,
+      required this.onTap});
+
+  @override
+  Widget build(BuildContext context) => Material(
+        color: AppColors.surface,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+            side: const BorderSide(color: AppColors.divider)),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+            onTap: onTap,
+            child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(children: [
+                  Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                          color: gold ? AppColors.softGold : AppColors.softBlue,
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Icon(icon,
+                          color:
+                              gold ? AppColors.gold : AppColors.secondaryBlue)),
+                  const SizedBox(width: 12),
+                  Expanded(
+                      child: Text(label,
+                          style: Theme.of(context).textTheme.titleSmall)),
+                ]))),
+      );
+}
+
+class _HomeSectionHeader extends StatelessWidget {
+  final String title;
+  final String subtitle;
+
+  const _HomeSectionHeader({
+    required this.title,
+    required this.subtitle,
+  });
+
+  @override
+  Widget build(BuildContext context) => Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Icon(Icons.info_outline, color: AppTheme.accentGold, size: 28),
+          Container(
+            width: 4,
+            height: 42,
+            decoration: BoxDecoration(
+              color: AppColors.gold,
+              borderRadius: BorderRadius.circular(AppRadius.pill),
+            ),
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Próxima procissão',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  '11 de outubro de 2026 — 07:00h',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall
-                      ?.copyWith(color: AppTheme.accentGold),
-                ),
+                Text(title, style: Theme.of(context).textTheme.titleLarge),
+                const SizedBox(height: 4),
+                Text(subtitle, style: Theme.of(context).textTheme.bodySmall),
               ],
             ),
           ),
         ],
-      ),
-    );
-  }
+      );
 }
 
-class _QuickAccessItem {
-  final String label;
-  final IconData icon;
-  final Color color;
-  final VoidCallback onTap;
+class _LanguageButton extends StatelessWidget {
+  final LanguageProvider language;
 
-  _QuickAccessItem({
-    required this.label,
-    required this.icon,
-    required this.color,
-    required this.onTap,
-  });
-}
-
-class _QuickAccessCard extends StatelessWidget {
-  final _QuickAccessItem item;
-
-  const _QuickAccessCard({required this.item});
+  const _LanguageButton({required this.language});
 
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: item.onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        decoration: BoxDecoration(
-          color: item.color,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: item.color.withValues(alpha: 0.3),
-              blurRadius: 8,
-              offset: const Offset(0, 3),
+  Widget build(BuildContext context) => Semantics(
+        label: language.isEnglish
+            ? 'Current language: English'
+            : 'Idioma atual: português',
+        child: Container(
+          height: 48,
+          padding: const EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            color: Colors.black.withValues(alpha: .12),
+            borderRadius: BorderRadius.circular(AppRadius.pill),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: .22),
             ),
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(item.icon, color: Colors.white, size: 32),
-            const SizedBox(height: 8),
-            Text(
-              item.label,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
+          ),
+          child: Row(mainAxisSize: MainAxisSize.min, children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Icon(
+                Icons.language_rounded,
+                size: 18,
+                color: language.isEnglish ? Colors.white70 : AppColors.gold,
               ),
             ),
-          ],
+            _LanguageOption(
+              label: 'PT',
+              selected: !language.isEnglish,
+              onTap: language.isEnglish ? language.toggleLanguage : null,
+            ),
+            const SizedBox(width: 2),
+            _LanguageOption(
+              label: 'EN',
+              selected: language.isEnglish,
+              onTap: language.isEnglish ? null : language.toggleLanguage,
+            ),
+          ]),
         ),
-      ),
-    );
-  }
+      );
+}
+
+class _LanguageOption extends StatelessWidget {
+  final String label;
+  final bool selected;
+  final VoidCallback? onTap;
+
+  const _LanguageOption({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) => Material(
+        color: selected ? AppColors.gold : Colors.transparent,
+        borderRadius: BorderRadius.circular(AppRadius.pill),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(AppRadius.pill),
+          child: SizedBox(
+            width: 38,
+            height: 38,
+            child: Center(
+              child: Text(
+                label,
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      color: selected ? AppColors.navy : Colors.white70,
+                      fontWeight: FontWeight.w700,
+                    ),
+              ),
+            ),
+          ),
+        ),
+      );
 }

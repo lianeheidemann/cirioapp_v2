@@ -2,6 +2,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'app.dart';
+import 'core/localization/app_language.dart';
 import 'data/repositories/event_repository.dart';
 import 'data/repositories/place_repository.dart';
 import 'data/repositories/news_repository.dart';
@@ -30,9 +31,12 @@ void main() async {
 
   await dotenv.load(fileName: ".env");
 
+  final languageProvider = await LanguageProvider.load();
+
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(value: languageProvider),
         // Provider raiz de favoritos — carregado do SharedPreferences
         ChangeNotifierProvider.value(value: favoritesProvider),
         // Providers filhos que escutam o FavoritesProvider

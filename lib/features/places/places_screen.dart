@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
+import '../../core/localization/app_language.dart';
+import '../../core/localization/content_translations.dart';
 import 'package:provider/provider.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/theme/app_theme.dart';
+import '../../data/models/place_model.dart';
+import '../../shared/widgets/app_loading.dart';
 import '../../shared/widgets/cirio_app_bar.dart';
 import '../../shared/widgets/empty_state_widget.dart';
-import 'places_provider.dart';
+import '../../shared/widgets/favorite_button.dart';
 import 'place_detail_screen.dart';
+import 'places_provider.dart';
 
-/// Tela de listagem de pontos de interesse.
-///
-/// Exibe filtro horizontal por categoria e lista de cards.
-/// Cada card mostra nome, categoria com ícone colorido e endereço.
 class PlacesScreen extends StatefulWidget {
   const PlacesScreen({super.key});
-
   @override
   State<PlacesScreen> createState() => _PlacesScreenState();
 }
@@ -22,157 +22,156 @@ class _PlacesScreenState extends State<PlacesScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<PlacesProvider>().loadPlaces();
-    });
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) => context.read<PlacesProvider>().loadPlaces());
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CirioAppBar(title: 'Pontos de Interesse'),
-      body: Consumer<PlacesProvider>(
-        builder: (context, provider, _) {
-          if (provider.isLoading) {
-            return const Center(child: CircularProgressIndicator());
+  Widget build(BuildContext context) => Scaffold(
+        appBar: CirioAppBar(
+            title: tr(context, 'Locais', 'Places'),
+            subtitle: tr(context, 'Pontos úteis e lugares para conhecer',
+                'Useful places and sights')),
+        body: Consumer<PlacesProvider>(builder: (context, p, _) {
+          if (p.isLoading) {
+            return const AppLoadingList();
           }
-          if (provider.errorMessage != null) {
+          if (p.errorMessage != null) {
             return EmptyStateWidget(
-              icon: Icons.error_outline,
-              message: provider.errorMessage!,
-            );
+                icon: Icons.error_outline,
+                title:
+                    tr(context, 'Locais indisponíveis', 'Places unavailable'),
+                message: p.errorMessage!,
+                onRetry: p.loadPlaces);
           }
-
-          return Column(
-            children: [
-              SizedBox(
-                height: 50,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
+          return Column(children: [
+            SizedBox(
+                height: 62,
+                child: ListView.separated(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  children: provider.categories.map((cat) {
-                    final selected = provider.selectedCategory == cat;
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: FilterChip(
-                        label: Text(cat),
-                        selected: selected,
-                        onSelected: (_) => provider.setCategory(cat),
-                        selectedColor: AppTheme.primaryBlue,
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: p.categories.length,
+                  separatorBuilder: (_, __) => const SizedBox(width: 8),
+                  itemBuilder: (_, i) {
+                    final cat = p.categories[i];
+                    return FilterChip(
+                        label: Text(ContentTranslations.category(context, cat)),
+                        selected: p.selectedCategory == cat,
+                        showCheckmark: false,
+                        onSelected: (_) => p.setCategory(cat),
                         labelStyle: TextStyle(
-                          color: selected ? Colors.white : AppTheme.primaryBlue,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ),
-              Expanded(
-                child: provider.filteredPlaces.isEmpty
-                    ? const EmptyStateWidget(
-                        icon: Icons.place_outlined,
-                        message: 'Nenhum local encontrado.')
-                    : ListView.builder(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        itemCount: provider.filteredPlaces.length,
+                            color: p.selectedCategory == cat
+                                ? Colors.white
+                                : AppColors.navy,
+                            fontWeight: FontWeight.w600));
+                  },
+                )),
+            Expanded(
+                child: p.filteredPlaces.isEmpty
+                    ? EmptyStateWidget(
+                        icon: Icons.location_off_outlined,
+                        message: tr(context, 'Nenhum local nesta categoria.',
+                            'No places in this category.'))
+                    : ListView.separated(
+                        padding: const EdgeInsets.fromLTRB(16, 6, 16, 24),
+                        itemCount: p.filteredPlaces.length,
+                        separatorBuilder: (_, __) => const SizedBox(height: 12),
                         itemBuilder: (_, i) {
-                          final place = provider.filteredPlaces[i];
-                          return Card(
-                            child: ListTile(
-                              leading: CircleAvatar(
-                                backgroundColor: _categoryColor(place.category)
-                                    .withValues(alpha: 0.15),
-                                child: Icon(
-                                  _categoryIcon(place.category),
-                                  color: _categoryColor(place.category),
-                                  size: 20,
-                                ),
-                              ),
-                              title: Text(place.name,
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Chip(
-                                    label: Text(place.category),
-                                    padding: EdgeInsets.zero,
-                                    materialTapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                  ),
-                                  Text(place.address,
-                                      style:
-                                          Theme.of(context).textTheme.bodySmall,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis),
-                                ],
-                              ),
-                              trailing: Icon(
-                                place.isFavorite
-                                    ? Icons.favorite
-                                    : Icons.favorite_border,
-                                color: place.isFavorite
-                                    ? AppTheme.accentGold
-                                    : Colors.grey[400],
-                                size: 20,
-                              ),
-                              isThreeLine: true,
+                          final place = p.filteredPlaces[i];
+                          return _PlaceCard(
+                              place: place,
+                              onFavorite: () => p.toggleFavorite(place),
                               onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) =>
-                                      PlaceDetailScreen(place: place),
-                                ),
-                              ),
-                            ),
-                          );
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) =>
+                                          PlaceDetailScreen(place: place))));
                         },
-                      ),
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
+                      )),
+          ]);
+        }),
+      );
+}
 
-  IconData _categoryIcon(String category) {
-    switch (category) {
-      case AppConstants.categoryChurch:
-        return Icons.church;
-      case AppConstants.categoryHydration:
-        return Icons.water_drop;
-      case AppConstants.categoryFood:
-        return Icons.restaurant;
-      case AppConstants.categoryHealth:
-        return Icons.local_hospital;
-      case AppConstants.categoryRestroom:
-        return Icons.wc;
-      case AppConstants.categoryTourism:
-        return Icons.star;
-      default:
-        return Icons.place;
-    }
-  }
+class _PlaceCard extends StatelessWidget {
+  final PlaceModel place;
+  final VoidCallback onTap;
+  final VoidCallback onFavorite;
+  const _PlaceCard(
+      {required this.place, required this.onTap, required this.onFavorite});
+  @override
+  Widget build(BuildContext context) => Material(
+        color: AppColors.surface,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+            side: const BorderSide(color: AppColors.divider)),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+            onTap: onTap,
+            child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(children: [
+                  Container(
+                      width: 52,
+                      height: 52,
+                      decoration: BoxDecoration(
+                          color: AppColors.softBlue,
+                          borderRadius: BorderRadius.circular(18)),
+                      child: Icon(_icon(place.category),
+                          color: AppColors.secondaryBlue)),
+                  const SizedBox(width: 16),
+                  Expanded(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                        Text(
+                            ContentTranslations.place(
+                                context, place, 'category'),
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium
+                                ?.copyWith(color: AppColors.secondaryBlue)),
+                        const SizedBox(height: 4),
+                        Text(ContentTranslations.place(context, place, 'name'),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.titleMedium),
+                        const SizedBox(height: 6),
+                        Row(children: [
+                          const Icon(Icons.location_on_outlined,
+                              size: 15, color: AppColors.muted),
+                          const SizedBox(width: 4),
+                          Expanded(
+                              child: Text(
+                                  ContentTranslations.place(
+                                      context, place, 'address'),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context).textTheme.bodySmall))
+                        ]),
+                      ])),
+                  FavoriteButton(
+                      isFavorite: place.isFavorite, onTap: onFavorite),
+                ]))),
+      );
+}
 
-  Color _categoryColor(String category) {
-    switch (category) {
-      case AppConstants.categoryChurch:
-        return AppTheme.primaryBlue;
-      case AppConstants.categoryHydration:
-        return Colors.blue;
-      case AppConstants.categoryFood:
-        return Colors.orange;
-      case AppConstants.categoryHealth:
-        return Colors.red;
-      case AppConstants.categoryRestroom:
-        return Colors.teal;
-      case AppConstants.categoryTourism:
-        return Colors.purple;
-      default:
-        return Colors.grey;
-    }
+IconData _icon(String category) {
+  switch (category) {
+    case AppConstants.categoryChurch:
+      return Icons.church_outlined;
+    case AppConstants.categoryHydration:
+      return Icons.water_drop_outlined;
+    case AppConstants.categoryFood:
+      return Icons.restaurant_outlined;
+    case AppConstants.categoryHealth:
+      return Icons.local_hospital_outlined;
+    case AppConstants.categoryRestroom:
+      return Icons.wc_outlined;
+    case AppConstants.categoryTourism:
+      return Icons.explore_outlined;
+    default:
+      return Icons.location_on_outlined;
   }
 }

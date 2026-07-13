@@ -72,3 +72,9 @@ app.*.map.json
 
 # Environment variables / secrets — nunca commitar chaves reais.
 .env
+
+# Exclude Android build reports
+android/build/reports/
+android/build/
+.gradle/
+*.iml
