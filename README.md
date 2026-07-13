@@ -12,7 +12,7 @@ Aplicativo mobile sobre o Círio de Nazaré, em Belém do Pará.
 
 </div>
 
-<img src='assets/images/interface_v2.png' />
+<img src='assets/images/GridArt_20260713_051055219.png' />
 
 ## Funcionalidades
 
