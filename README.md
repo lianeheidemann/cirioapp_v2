@@ -4,17 +4,14 @@
 
 # CírioApp
 
-Mobile app about the Círio de Nazaré, in Belém do Pará.
-
-
+Mobile app about the Círio de Nazaré, in Belém do Pará
 
 ![Flutter](https://img.shields.io/badge/Flutter-02569B?style=flat-square)
 ![Dart](https://img.shields.io/badge/Dart-0175C2?style=flat-square)
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=flat-square)
 
-
-
 </div>
+
 
 <img src='assets/images/GridArt_20260713_051055219.png' />
 
