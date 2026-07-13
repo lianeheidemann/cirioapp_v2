@@ -10,6 +10,16 @@ abstract final class ContentTranslations {
 
   static String news(BuildContext context, NewsModel item, String field) {
     if (!_english(context)) return _newsFallback(item, field);
+    final firestoreTranslation = switch (field) {
+      'title' => item.titleEn,
+      'date' => item.dateEn,
+      'summary' => item.summaryEn,
+      'content' => item.contentEn,
+      _ => null,
+    };
+    if (firestoreTranslation != null && firestoreTranslation.isNotEmpty) {
+      return firestoreTranslation;
+    }
     return _news[item.id]?[field] ?? _newsFallback(item, field);
   }
 

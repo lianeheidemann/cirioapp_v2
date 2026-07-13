@@ -1,9 +1,19 @@
 import '../models/news_model.dart';
 
-/// Serviço de dados das notícias.
+/// Contrato das fontes de notícias.
 ///
-/// Mock com latência simulada. Substituir por feed RSS ou API REST.
-class NewsService {
+/// O stream padrão mantém os fakes e fontes locais simples, enquanto o
+/// Firestore sobrescreve [watchNews] para entregar atualizações em tempo real.
+abstract class NewsService {
+  Future<List<NewsModel>> fetchNews();
+
+  Stream<List<NewsModel>> watchNews() => Stream.fromFuture(fetchNews());
+}
+
+/// Conteúdo embarcado usado em testes e quando o Firebase ainda não foi
+/// configurado. Assim a seção de notícias não fica vazia durante o setup.
+class LocalNewsService extends NewsService {
+  @override
   Future<List<NewsModel>> fetchNews() async {
     await Future.delayed(const Duration(milliseconds: 500));
 

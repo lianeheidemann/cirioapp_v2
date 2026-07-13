@@ -1,4 +1,4 @@
-package com.example.new_app_cirio
+package com.lianeheidemann.cirioapp
 
 import io.flutter.embedding.android.FlutterActivity
 

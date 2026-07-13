@@ -1,0 +1,18 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Notícias publicadas são públicas porque o app não exige login.
+    // Escritas pelo SDK cliente são sempre negadas: publique pelo Console
+    // Firebase ou por um backend que utilize o Admin SDK.
+    match /news/{newsId} {
+      allow read: if resource.data.isPublished == true;
+      allow create, update, delete: if false;
+    }
+
+    // Qualquer coleção não declarada permanece inacessível.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -8,6 +8,7 @@ import '../../shared/widgets/app_loading.dart';
 import '../../shared/widgets/cirio_app_bar.dart';
 import '../../shared/widgets/empty_state_widget.dart';
 import 'news_detail_screen.dart';
+import 'news_cover_image.dart';
 import 'news_provider.dart';
 
 class NewsScreen extends StatefulWidget {
@@ -87,9 +88,7 @@ class _NewsCard extends StatelessWidget {
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Stack(children: [
-                _Cover(
-                    assetPath: article.imageAsset,
-                    height: featured ? 190 : 150),
+                NewsCoverImage(news: article, height: featured ? 190 : 150),
                 if (featured)
                   Positioned(
                       left: 12,
@@ -156,26 +155,4 @@ class _NewsCard extends StatelessWidget {
                       ])),
             ])),
       );
-}
-
-class _Cover extends StatelessWidget {
-  final String? assetPath;
-  final double height;
-  const _Cover({required this.assetPath, required this.height});
-  @override
-  Widget build(BuildContext context) {
-    final fallback = Container(
-        height: height,
-        width: double.infinity,
-        color: AppColors.softBlue,
-        child: const Center(
-            child: Icon(Icons.photo_outlined,
-                size: 40, color: AppColors.secondaryBlue)));
-    if (assetPath == null) return fallback;
-    return Image.asset(assetPath!,
-        height: height,
-        width: double.infinity,
-        fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) => fallback);
-  }
 }

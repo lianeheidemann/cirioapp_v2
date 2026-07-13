@@ -35,9 +35,136 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _initializeMap());
+  }
+
+  Future<void> _initializeMap() async {
+    await context.read<MapProvider>().loadPlaces();
+    if (!mounted) return;
+    await _locateUser();
+  }
+
+  Future<void> _locateUser() async {
+    final provider = context.read<MapProvider>();
+    var result = await provider.locateUser();
+    if (!mounted) return;
+
+    if (result == LocationRequestResult.permissionRequired) {
+      final shouldRequest = await _showLocationExplanation();
+      if (!mounted || !shouldRequest) return;
+      result = await provider.locateUser(requestPermission: true);
+      if (!mounted) return;
+    }
+
+    if (result == LocationRequestResult.success) {
+      _centerCurrentLocation(provider);
+      return;
+    }
+    _showLocationIssue(provider, result);
+  }
+
+  Future<bool> _showLocationExplanation() async {
+    return await showDialog<bool>(
+          context: context,
+          builder: (dialogContext) => AlertDialog(
+            icon: const Icon(
+              Icons.my_location_rounded,
+              color: AppColors.secondaryBlue,
+            ),
+            title: Text(tr(
+              context,
+              'Mostrar sua localização?',
+              'Show your location?',
+            )),
+            content: Text(tr(
+              context,
+              'O CírioApp usa sua localização somente enquanto você utiliza o mapa. Ela não é compartilhada nem armazenada.',
+              'CírioApp uses your location only while you use the map. It is not shared or stored.',
+            )),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(dialogContext, false),
+                child: Text(tr(context, 'Agora não', 'Not now')),
+              ),
+              FilledButton(
+                onPressed: () => Navigator.pop(dialogContext, true),
+                child: Text(tr(context, 'Continuar', 'Continue')),
+              ),
+            ],
+          ),
+        ) ??
+        false;
+  }
+
+  void _centerCurrentLocation(MapProvider provider) {
+    final location = provider.currentLocation;
+    if (location == null) return;
+    provider.selectPlace(null);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<MapProvider>().loadPlaces();
+      if (!mounted) return;
+      _mapController.move(
+        LatLng(location.latitude, location.longitude),
+        16,
+      );
     });
+  }
+
+  void _showLocationIssue(
+    MapProvider provider,
+    LocationRequestResult result,
+  ) {
+    final (message, actionLabel, action) = switch (result) {
+      LocationRequestResult.serviceDisabled => (
+          tr(
+            context,
+            'Ative a localização do aparelho para mostrar sua posição.',
+            'Turn on device location to show your position.',
+          ),
+          tr(context, 'Configurações', 'Settings'),
+          provider.openLocationSettings,
+        ),
+      LocationRequestResult.permissionDeniedForever => (
+          tr(
+            context,
+            'A localização foi bloqueada. Autorize nas configurações do aplicativo.',
+            'Location is blocked. Allow it in the app settings.',
+          ),
+          tr(context, 'Configurações', 'Settings'),
+          provider.openAppSettings,
+        ),
+      LocationRequestResult.permissionDenied => (
+          tr(
+            context,
+            'Permissão de localização não concedida.',
+            'Location permission was not granted.',
+          ),
+          null,
+          null,
+        ),
+      LocationRequestResult.error => (
+          tr(
+            context,
+            'Não foi possível obter sua localização. Tente novamente.',
+            'Your location could not be obtained. Try again.',
+          ),
+          null,
+          null,
+        ),
+      _ => (null, null, null),
+    };
+    if (message == null) return;
+
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(
+        content: Text(message),
+        action: action == null
+            ? null
+            : SnackBarAction(
+                label: actionLabel!,
+                onPressed: () => action(),
+              ),
+      ));
   }
 
   void _centerCirioRoute() {
@@ -61,8 +188,8 @@ class _MapScreenState extends State<MapScreen> {
     return Scaffold(
       appBar: CirioAppBar(
           title: tr(context, 'Mapa', 'Map'),
-          subtitle: tr(context, 'Explore pontos úteis perto de você',
-              'Explore useful places near you')),
+          subtitle: tr(context, 'Veja sua localização e pontos úteis',
+              'See your location and useful places')),
       body: Consumer<MapProvider>(
         builder: (context, provider, _) {
           if (provider.isLoading) {
@@ -138,6 +265,28 @@ class _MapScreenState extends State<MapScreen> {
                       return _buildMarker(context, place, provider);
                     }).toList(),
                   ),
+                  if (provider.currentLocation != null) ...[
+                    CircleLayer(
+                      circles: [
+                        CircleMarker(
+                          point: LatLng(
+                            provider.currentLocation!.latitude,
+                            provider.currentLocation!.longitude,
+                          ),
+                          radius:
+                              provider.currentLocation!.accuracy.clamp(8, 1000),
+                          useRadiusInMeter: true,
+                          color: AppColors.secondaryBlue.withValues(alpha: .16),
+                          borderStrokeWidth: 1.5,
+                          borderColor:
+                              AppColors.secondaryBlue.withValues(alpha: .45),
+                        ),
+                      ],
+                    ),
+                    MarkerLayer(
+                      markers: [_buildUserLocationMarker(context, provider)],
+                    ),
+                  ],
                 ],
               ),
 
@@ -146,6 +295,15 @@ class _MapScreenState extends State<MapScreen> {
                 left: 12,
                 child: _RouteCenterButton(
                   onPressed: _centerCirioRoute,
+                ),
+              ),
+
+              Positioned(
+                top: 72,
+                left: 12,
+                child: _UserLocationButton(
+                  isLoading: provider.isLocating,
+                  onPressed: provider.isLocating ? null : _locateUser,
                 ),
               ),
 
@@ -193,6 +351,34 @@ class _MapScreenState extends State<MapScreen> {
             boxShadow: AppShadows.soft,
           ),
           child: Icon(icon, color: AppColors.gold, size: 22),
+        ),
+      ),
+    );
+  }
+
+  Marker _buildUserLocationMarker(
+    BuildContext context,
+    MapProvider provider,
+  ) {
+    final location = provider.currentLocation!;
+    return Marker(
+      point: LatLng(location.latitude, location.longitude),
+      width: 48,
+      height: 48,
+      child: Tooltip(
+        message: tr(context, 'Você está aqui', 'You are here'),
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColors.secondaryBlue,
+            shape: BoxShape.circle,
+            border: Border.all(color: Colors.white, width: 4),
+            boxShadow: AppShadows.floating,
+          ),
+          child: const Icon(
+            Icons.navigation_rounded,
+            color: Colors.white,
+            size: 21,
+          ),
         ),
       ),
     );
@@ -323,6 +509,49 @@ class _RouteCenterButton extends StatelessWidget {
       );
 }
 
+class _UserLocationButton extends StatelessWidget {
+  final bool isLoading;
+  final VoidCallback? onPressed;
+
+  const _UserLocationButton({
+    required this.isLoading,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) => Material(
+        color: AppColors.surface.withValues(alpha: .96),
+        borderRadius: BorderRadius.circular(AppRadius.medium),
+        child: Container(
+          width: 48,
+          height: 48,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(AppRadius.medium),
+            border: Border.all(color: AppColors.divider),
+            boxShadow: AppShadows.soft,
+          ),
+          child: isLoading
+              ? const Padding(
+                  padding: EdgeInsets.all(14),
+                  child: CircularProgressIndicator(strokeWidth: 2.5),
+                )
+              : IconButton(
+                  tooltip: tr(
+                    context,
+                    'Minha localização',
+                    'My location',
+                  ),
+                  onPressed: onPressed,
+                  icon: const Icon(
+                    Icons.my_location_rounded,
+                    color: AppColors.secondaryBlue,
+                    size: 22,
+                  ),
+                ),
+        ),
+      );
+}
+
 // Card exibido ao selecionar um marcador
 class _PlaceInfoCard extends StatelessWidget {
   final PlaceModel place;
@@ -424,13 +653,9 @@ class _MapLegendState extends State<_MapLegend> {
     _LegendItem(
         label: 'Igreja', color: AppTheme.primaryBlue, icon: Icons.church),
     _LegendItem(
-        label: 'Hidratação',
-        color: Color(0xFF1E88E5),
-        icon: Icons.water_drop),
+        label: 'Hidratação', color: Color(0xFF1E88E5), icon: Icons.water_drop),
     _LegendItem(
-        label: 'Alimentação',
-        color: Color(0xFFE65100),
-        icon: Icons.restaurant),
+        label: 'Alimentação', color: Color(0xFFE65100), icon: Icons.restaurant),
     _LegendItem(
         label: 'Saúde', color: Color(0xFFD32F2F), icon: Icons.local_hospital),
     _LegendItem(label: 'Banheiro', color: Color(0xFF00796B), icon: Icons.wc),

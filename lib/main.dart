@@ -1,5 +1,6 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:provider/provider.dart';
 import 'app.dart';
 import 'core/localization/app_language.dart';
@@ -7,12 +8,16 @@ import 'data/repositories/event_repository.dart';
 import 'data/repositories/place_repository.dart';
 import 'data/repositories/news_repository.dart';
 import 'data/local/favorites_local_storage.dart';
+import 'data/local/notifications_local_storage.dart';
+import 'data/services/firebase_notifications_service.dart';
 import 'features/events/events_provider.dart';
 import 'features/places/places_provider.dart';
 import 'features/map/map_provider.dart';
 import 'features/news/news_provider.dart';
 import 'features/favorites/favorites_provider.dart';
+import 'features/notifications/notifications_provider.dart';
 import 'features/ai_assistant/ai_assistant_provider.dart';
+import 'core/firebase/firebase_bootstrap.dart';
 
 /// Ponto de entrada do app.
 ///
@@ -23,6 +28,14 @@ import 'features/ai_assistant/ai_assistant_provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Quando o projeto Firebase ainda não está vinculado, a inicialização falha
+  // de forma controlada e o repositório mantém as notícias locais de fallback.
+  await FirebaseBootstrap.initialize();
+
+  if (FirebaseBootstrap.isAvailable) {
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  }
+
   final favoritesStorage = FavoritesLocalStorage();
   await favoritesStorage.init();
 
@@ -32,6 +45,11 @@ void main() async {
   await dotenv.load(fileName: ".env");
 
   final languageProvider = await LanguageProvider.load();
+  final notificationsProvider = NotificationsProvider(
+    NotificationsLocalStorage(),
+    FirebaseBootstrap.isAvailable ? FirebaseNotificationsService() : null,
+  );
+  await notificationsProvider.initialize();
 
   runApp(
     MultiProvider(
@@ -39,6 +57,7 @@ void main() async {
         ChangeNotifierProvider.value(value: languageProvider),
         // Provider raiz de favoritos — carregado do SharedPreferences
         ChangeNotifierProvider.value(value: favoritesProvider),
+        ChangeNotifierProvider.value(value: notificationsProvider),
         // Providers filhos que escutam o FavoritesProvider
         ChangeNotifierProxyProvider<FavoritesProvider, EventsProvider>(
           create: (ctx) => EventsProvider(

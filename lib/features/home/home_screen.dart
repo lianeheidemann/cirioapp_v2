@@ -7,6 +7,7 @@ import '../events/events_screen.dart';
 import '../favorites/favorites_screen.dart';
 import '../map/map_screen.dart';
 import '../news/news_screen.dart';
+import '../notifications/notifications_screen.dart';
 import '../places/places_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -141,12 +142,12 @@ class HomeScreen extends StatelessWidget {
             Transform.translate(
               offset: Offset.zero,
               child: _ActionCard(
-                icon: Icons.campaign_outlined,
-                title: english ? 'Latest news' : 'Últimas notícias',
+                icon: Icons.notifications_none_rounded,
+                title: english ? 'Notifications' : 'Notificações',
                 subtitle: english
-                    ? 'Círio updates and guidance'
-                    : 'Novidades e orientações do Círio',
-                onTap: () => _open(context, const NewsScreen()),
+                    ? 'Important alerts and guidance'
+                    : 'Avisos e orientações importantes',
+                onTap: () => _open(context, const NotificationsScreen()),
               ),
             ),
             const SizedBox(height: 26),

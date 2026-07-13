@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "602918672463",
+    "project_id": "project-cirioapp",
+    "storage_bucket": "project-cirioapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:602918672463:android:d2efb4a0cb37e9edf9b23a",
+        "android_client_info": {
+          "package_name": "com.lianeheidemann.cirioapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArr1TeErguL1IgIfjJRbyuEyH13is60Gc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

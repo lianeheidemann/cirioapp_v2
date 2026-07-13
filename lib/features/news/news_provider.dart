@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import '../../data/models/news_model.dart';
 import '../../data/repositories/news_repository.dart';
@@ -13,6 +15,7 @@ class NewsProvider extends ChangeNotifier {
   FavoritesProvider _favoritesProvider;
 
   List<NewsModel> _news = [];
+  StreamSubscription<List<NewsModel>>? _newsSubscription;
   bool isLoading = false;
   String? errorMessage;
 
@@ -26,23 +29,33 @@ class NewsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Busca notícias do repositório.
+  /// Inicia a assinatura das notícias. No Firestore, inserções e edições
+  /// publicadas chegam à interface sem precisar reiniciar o aplicativo.
   Future<void> loadNews() async {
-    if (isLoading || _news.isNotEmpty) return;
+    if (isLoading || _newsSubscription != null) return;
 
     isLoading = true;
     errorMessage = null;
     notifyListeners();
 
-    try {
-      _news = await _repository.getNews();
-      _syncFavorites();
-    } catch (e) {
-      errorMessage = 'Não foi possível carregar as notícias.';
-    } finally {
-      isLoading = false;
-      notifyListeners();
-    }
+    _newsSubscription = _repository.watchNews().listen(
+      (items) {
+        _news = items;
+        _syncFavorites();
+        isLoading = false;
+        errorMessage = null;
+        notifyListeners();
+      },
+      onError: (Object _) {
+        final failedSubscription = _newsSubscription;
+        _newsSubscription = null;
+        unawaited(failedSubscription?.cancel());
+        isLoading = false;
+        errorMessage = 'Não foi possível carregar as notícias.';
+        notifyListeners();
+      },
+      cancelOnError: true,
+    );
   }
 
   void _syncFavorites() {
@@ -63,5 +76,11 @@ class NewsProvider extends ChangeNotifier {
   List<NewsModel> getFavoriteNews() {
     final ids = _favoritesProvider.getIdsByType(AppConstants.favoriteTypeNews);
     return _news.where((n) => ids.contains(n.id)).toList();
+  }
+
+  @override
+  void dispose() {
+    unawaited(_newsSubscription?.cancel());
+    super.dispose();
   }
 }

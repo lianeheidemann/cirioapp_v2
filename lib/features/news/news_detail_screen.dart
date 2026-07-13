@@ -7,6 +7,7 @@ import '../../data/models/news_model.dart';
 import '../../shared/widgets/cirio_app_bar.dart';
 import '../../shared/widgets/favorite_button.dart';
 import 'news_provider.dart';
+import 'news_cover_image.dart';
 
 class NewsDetailScreen extends StatelessWidget {
   final NewsModel news;
@@ -25,20 +26,7 @@ class NewsDetailScreen extends StatelessWidget {
           })
         ]),
         body: CustomScrollView(slivers: [
-          SliverToBoxAdapter(
-              child: news.imageAsset == null
-                  ? const SizedBox.shrink()
-                  : Image.asset(
-                      news.imageAsset!,
-                      height: 240,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => Container(
-                          height: 180,
-                          color: AppColors.softBlue,
-                          child: const Icon(Icons.photo_outlined,
-                              color: AppColors.secondaryBlue, size: 40)),
-                    )),
+          SliverToBoxAdapter(child: NewsCoverImage(news: news, height: 240)),
           SliverPadding(
               padding: const EdgeInsets.all(20),
               sliver: SliverList.list(children: [

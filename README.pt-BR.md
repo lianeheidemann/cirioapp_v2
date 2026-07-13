@@ -1,161 +1,239 @@
-<div align='center'>
+<div align="center">
 
 [English](README.md) · **Português**
 
-<img width='15%' src='assets/icon/icon.png' alt='Ícone do CírioApp'/>
+<img width="120" src="assets/icon/icon.png" alt="Ícone do CírioApp" />
 
 # CírioApp
 
-Aplicativo mobile sobre o Círio de Nazaré, em Belém do Pará.
+Aplicativo de informação e assistência para o Círio de Nazaré e a cidade de Belém do Pará.
 
-![Flutter](https://img.shields.io/badge/Flutter-02569B?style=flat-square)
-![Dart](https://img.shields.io/badge/Dart-0175C2?style=flat-square)
-![Android](https://img.shields.io/badge/Android-3DDC84?style=flat-square)
+![Flutter](https://img.shields.io/badge/Flutter-02569B?style=flat-square&logo=flutter&logoColor=white)
+![Dart](https://img.shields.io/badge/Dart-0175C2?style=flat-square&logo=dart&logoColor=white)
+![Android](https://img.shields.io/badge/Android-3DDC84?style=flat-square&logo=android&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=flat-square&logo=firebase&logoColor=black)
 
 </div>
 
-<img src='assets/images/interface_v3.png' />
+![Interface do CírioApp](assets/images/interface_v3.png)
 
-## Funcionalidades
+## Sobre o projeto
 
-- **Eventos:** programação com datas, horários e locais.
-- **Mapa interativo:** trajeto do Círio e pontos de interesse no OpenStreetMap.
-- **Notícias:** conteúdo informativo com imagens locais.
-- **Favoritos:** eventos, locais e notícias salvos no dispositivo.
-- **Assistente IA com RAG local:** respostas contextualizadas usando busca semântica, top-5 e cache de perguntas semelhantes.
-- **Português e inglês:** troca de idioma em tempo real.
+O CírioApp reúne informações essenciais para moradores, visitantes e peregrinos
+durante o Círio de Nazaré. O aplicativo oferece programação de eventos, locais
+úteis, mapa interativo, notícias editoriais, notificações, favoritos e um
+assistente de IA fundamentado no conteúdo do próprio app.
+
+O projeto está direcionado atualmente ao Android e oferece interface em
+português e inglês. Os conteúdos essenciais permanecem disponíveis localmente,
+enquanto Firebase e Gemini adicionam recursos conectados quando configurados.
+
+## Principais recursos
+
+- Programação de eventos com datas, horários, categorias, descrições e locais.
+- Mapa OpenStreetMap com locais úteis e a posição atual do usuário.
+- Notícias editoriais sincronizadas em tempo real pelo Cloud Firestore.
+- Notificações push pelo Firebase Cloud Messaging (FCM).
+- Histórico local de notificações com deduplicação e limite de 100 itens.
+- Favoritos persistidos no dispositivo.
+- Assistente de IA com busca semântica local, contexto top-5 e cache de respostas.
+- Interface em português e inglês.
+- Fallback de notícias embarcadas quando o Firebase está indisponível.
 
 ## Tecnologias
 
-- Flutter e Dart
-- Provider para gerenciamento de estado
-- Flutter Map e OpenStreetMap
-- Shared Preferences para persistência local
-- Flutter Localizations para internacionalização
-- Gemini API via HTTP
-- Embeddings locais e similaridade de cosseno em Dart puro
+| Área | Tecnologia |
+|---|---|
+| Aplicativo | Flutter e Dart |
+| Plataforma alvo | Android |
+| Gerenciamento de estado | Provider e ChangeNotifier |
+| Dados remotos | Firebase Cloud Firestore |
+| Notificações | Firebase Cloud Messaging |
+| Persistência local | Shared Preferences |
+| Mapas | Flutter Map e OpenStreetMap |
+| Localização do dispositivo | Geolocator |
+| IA | Gemini API, embeddings e similaridade de cosseno em Dart |
+| Localização | Flutter Localizations |
+| Testes | Flutter Test |
 
-## Como executar
+## Arquitetura
 
-Tenha o Flutter SDK instalado e um dispositivo ou emulador Android configurado.
+O código é organizado por funcionalidade e utiliza um fluxo de dados em camadas:
+
+```text
+lib/
+├── core/          # configuração, tema, Firebase e localização
+├── data/
+│   ├── local/     # persistência no dispositivo
+│   ├── models/    # modelos de domínio
+│   ├── repositories/
+│   └── services/  # Firestore, FCM, Gemini e fontes embarcadas
+├── features/      # telas e providers agrupados por funcionalidade
+└── shared/        # componentes reutilizáveis de interface
+```
+
+```text
+Notícias:      Firestore → Service → Repository → Provider → UI
+Notificações:  FCM → Service → Persistência local → Provider → UI
+Assistente IA: Pergunta → Embedding → Cache semântico → Top-5 → Gemini → Cache
+```
+
+Essa separação mantém integrações de plataforma isoladas da apresentação e
+permite testar providers, persistência e conversões de domínio de forma
+independente.
+
+## Requisitos
+
+- Flutter compatível com Dart 3.6 ou superior.
+- Android Studio e Android SDK, ou um dispositivo físico configurado.
+- Projeto Firebase para notícias remotas e notificações push.
+- Chave da Gemini API somente para habilitar o assistente de IA.
+- Firebase CLI e FlutterFire CLI para reconfigurar ou publicar o Firebase.
+
+## Instalação
 
 ```bash
 git clone https://github.com/lianeheidemann/cirioapp_v2.git
 cd cirioapp_v2
+cp .env.example .env
 flutter pub get
 flutter run
 ```
 
-O mapa e o assistente de IA precisam de conexão com a internet. Os demais conteúdos estão disponíveis localmente.
+No PowerShell, copie o arquivo de ambiente com:
 
-## Assistente IA
+```powershell
+Copy-Item .env.example .env
+```
 
-A configuração da Gemini API é opcional. Sem uma chave, apenas o assistente fica indisponível.
+Sem uma chave Gemini, somente o assistente fica indisponível. Se o Firebase não
+puder ser inicializado, o app continua usando as notícias embarcadas e informa
+claramente que as notificações não estão configuradas.
 
-Para desenvolvimento local, copie `.env.example` para `.env` e informe a chave:
+## Configuração de ambiente
+
+Para desenvolvimento local, defina a chave Gemini em `.env`:
 
 ```env
 GEMINI_API_KEY=sua_chave
 ```
 
-Também é possível fornecê-la durante a execução:
+Para builds, prefira uma definição em tempo de compilação:
 
 ```bash
-flutter run --dart-define=GEMINI_API_KEY=SUA_CHAVE
+flutter run --dart-define=GEMINI_API_KEY=sua_chave
+flutter build apk --dart-define=GEMINI_API_KEY=sua_chave
 ```
 
-> Nunca envie o arquivo `.env` ou uma chave real para o repositório. Uma chave
-> distribuída dentro de um APK pode ser extraída; a configuração direta no app
-> é adequada apenas para desenvolvimento e demonstração. Em produção, use um
-> backend/proxy com autenticação, limites de uso e a chave armazenada no servidor.
+> Segredos incluídos em aplicativos mobile podem ser extraídos do APK. Em
+> produção, encaminhe as chamadas do modelo por um backend autenticado, aplique
+> cotas e mantenha as credenciais do provedor no servidor.
 
-### Busca semântica e embeddings
+## Configuração do Firebase
 
-O assistente usa uma implementação leve de RAG, sem banco vetorial externo:
+O pacote Android é `com.lianeheidemann.cirioapp`. O aplicativo Android no
+Firebase, o arquivo `google-services.json` e as opções do FlutterFire devem usar
+esse mesmo pacote. Alterá-lo após a publicação cria uma nova identidade de
+aplicativo no Android e no Firebase.
 
-1. Eventos, locais e FAQs são vetorizados offline no computador do desenvolvedor.
-2. O corpus e seus vetores são gravados em `assets/embeddings.json`.
-3. Para cada pergunta, o app faz uma única chamada ao endpoint de embeddings.
-4. O app compara o vetor da pergunta com o corpus usando cosseno em Dart puro.
-5. Somente os cinco itens mais próximos são adicionados ao prompt.
-6. Se não houver uma resposta equivalente no cache, o app chama `generateContent`.
-7. A resposta bem-sucedida é salva localmente para consultas futuras semelhantes.
+Para conectar outro projeto Firebase:
 
-O corpus completo nunca é enviado durante uma pergunta. A chamada de geração
-recebe apenas as instruções, a pergunta e os itens recuperados pelo ranking.
+```bash
+firebase login
+flutterfire configure
+firebase use --add
+firebase deploy --only firestore
+```
 
-### Gerar ou atualizar o asset
+O `flutterfire configure` gera `lib/firebase_options.dart` e configura a
+integração Android. A configuração cliente do Firebase não é uma credencial
+administrativa, mas contas de serviço e chaves de servidor nunca devem ser
+versionadas.
 
-Sempre que eventos, locais ou FAQs forem alterados, regenere o asset:
+### Notícias no Firestore
+
+O app acompanha a coleção `news`, seleciona documentos com
+`isPublished == true` e os ordena por `publishedAt`, do mais recente para o mais
+antigo. As regras versionadas permitem leitura pública somente do conteúdo
+publicado e bloqueiam escritas pelo cliente. As notícias devem ser administradas
+pelo Console Firebase ou por um backend protegido.
+
+Consulte [docs/firestore_news.md](docs/firestore_news.md) para ver o esquema, o
+índice, as regras de segurança e o fluxo de publicação.
+
+### Notificações pelo Cloud Messaging
+
+O usuário ativa os avisos na página **Notificações**. Após conceder a permissão,
+o dispositivo é inscrito no tópico `cirio_updates`. O aplicativo processa:
+
+- mensagens recebidas enquanto o app está aberto;
+- mensagens entregues enquanto o app está em segundo plano;
+- notificações que abrem o app em segundo plano ou encerrado;
+- payloads de notificação e payloads de dados com `title` e `body`.
+
+Para avisos gerais do Círio, envie uma campanha pelo Console Firebase ou direcione
+o tópico `cirio_updates` por um backend confiável com o Firebase Admin SDK. Não
+envie mensagens FCM diretamente pelo aplicativo mobile.
+
+No Android 13 ou superior, o usuário precisa conceder a permissão de notificações
+do sistema. Se ela for negada, também poderá ser alterada posteriormente nas
+configurações do aplicativo no Android.
+
+## Localização e privacidade
+
+Ao abrir o mapa, o aplicativo explica por que a localização é útil antes de
+solicitar a permissão do sistema Android. O acesso é limitado ao período em que
+o app está em uso; nenhuma permissão de localização em segundo plano é
+solicitada. As coordenadas servem somente para centralizar o mapa e exibir o
+marcador da posição atual — elas não são persistidas nem enviadas a um servidor.
+
+Se o serviço de localização estiver desligado ou a permissão for bloqueada
+permanentemente, o mapa continua disponível e oferece um atalho para a
+configuração correspondente do Android.
+
+## Assistente de IA e embeddings
+
+Eventos, locais e perguntas frequentes são vetorizados offline e armazenados em
+`assets/embeddings.json`. Durante o uso, somente a pergunta do usuário é
+vetorizada. O app calcula a similaridade de cosseno localmente, seleciona os
+cinco itens mais relevantes e envia esse contexto à Gemini. Respostas
+semanticamente equivalentes podem ser reutilizadas pelo cache local.
+
+Regere o asset de embeddings sempre que o corpus público mudar:
 
 ```bash
 dart run tool/generate_embeddings.dart
 ```
 
-O script lê `GEMINI_API_KEY` do ambiente ou do `.env` e grava
-`assets/embeddings.json`. O modelo padrão é `gemini-embedding-001`, sucessor
-atual do descontinuado `text-embedding-004`. Os vetores são gerados com 768
-dimensões para manter o asset compacto.
+O gerador lê `GEMINI_API_KEY` e, opcionalmente, `GEMINI_EMBEDDING_MODEL` do
+ambiente ou do arquivo `.env`.
 
-Para usar outro modelo compatível no PowerShell:
-
-```powershell
-$env:GEMINI_EMBEDDING_MODEL=nome-do-modelo
-dart run tool/generate_embeddings.dart
-```
-
-Em Bash:
-
-```bash
-GEMINI_EMBEDDING_MODEL=nome-do-modelo dart run tool/generate_embeddings.dart
-```
-
-O gerador só substitui o asset depois que todos os documentos forem processados
-e valida a dimensão devolvida pela API. O modelo e a dimensão ficam registrados
-no JSON; em runtime, o app lê esses metadados para produzir a pergunta no mesmo
-espaço vetorial.
-
-### Cache semântico
-
-- Persistido no dispositivo com Shared Preferences.
-- Limitado às 50 respostas mais recentes.
-- Reutiliza uma resposta quando a similaridade é igual ou superior a `0.94`.
-- Separa entradas por idioma e modelo de embeddings.
-- Perguntas sem correspondência continuam pelo fluxo normal de RAG e geração.
-
-## Arquitetura
-
-O projeto utiliza uma organização por funcionalidades com separação em camadas:
-
-- `features`: telas e providers de cada funcionalidade.
-- `data/services`: fontes de dados locais e integrações externas.
-- `data/repositories`: comunicação entre serviços e regras da aplicação.
-- `core`: tema, constantes e localização.
-- `shared`: componentes reutilizáveis da interface.
-
-O estado é gerenciado com `ChangeNotifier`, `Provider` e `ChangeNotifierProxyProvider`.
-
-Arquivos principais do assistente:
-
-- `tool/generate_embeddings.dart`: gera o corpus vetorial offline.
-- `assets/embeddings.json`: corpus empacotado no aplicativo.
-- `lib/data/services/gemini_service.dart`: chamadas de embedding e geração.
-- `lib/data/services/semantic_search_service.dart`: carregamento, validação, cosseno e top-5.
-- `lib/data/local/ai_response_cache.dart`: cache semântico persistente.
-- `lib/data/repositories/ai_assistant_repository.dart`: orquestra cache, recuperação e prompt.
-- `lib/core/constants/ai_faqs.dart`: fonte única das FAQs da interface e do corpus.
-
-## Testes
-
-Os testes cobrem providers, persistência de favoritos, widgets, similaridade de
-cosseno, validação do asset, ranking top-5 e isolamento do cache por idioma.
+## Qualidade e testes
 
 ```bash
 dart analyze
 flutter test
+flutter build apk --debug
 ```
+
+A suíte atual cobre providers, persistência local, favoritos, widgets,
+conversão de documentos Firestore, busca semântica, cache de respostas,
+embeddings e histórico de notificações. Todas as verificações devem passar antes
+de gerar uma versão de produção.
+
+## Arquivos importantes
+
+| Arquivo | Finalidade |
+|---|---|
+| `lib/main.dart` | Inicialização do aplicativo e registro dos providers |
+| `lib/core/firebase/firebase_bootstrap.dart` | Inicialização tolerante a falhas do Firebase |
+| `lib/data/services/firestore_news_service.dart` | Integração de notícias em tempo real |
+| `lib/data/services/firebase_notifications_service.dart` | Tratamento do ciclo de vida do FCM |
+| `lib/features/notifications/` | Estado e interface das notificações |
+| `firestore.rules` | Política de acesso ao Firestore |
+| `firestore.indexes.json` | Índices necessários do Firestore |
+| `docs/firestore_news.md` | Documentação da coleção de notícias |
 
 ## Interface
 
-<img src='assets/gif/interface_3.gif' alt='Interface do CírioApp' width='30%' />
-
+<img src="assets/gif/interface_3.gif" alt="Demonstração do CírioApp" width="300" />
