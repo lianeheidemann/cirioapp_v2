@@ -16,7 +16,6 @@ dependencies:
   shared_preferences: ^2.2.3
   flutter_map: ^8.3.1
   latlong2: ^0.10.1
-  cached_network_image: ^3.3.1
   http: ^1.2.2
 
 dev_dependencies:
@@ -30,6 +29,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icon/
+    - assets/news/
     - .env
 
 flutter_launcher_icons:

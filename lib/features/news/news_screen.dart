@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../core/localization/app_language.dart';
 import '../../core/localization/content_translations.dart';
@@ -88,7 +87,9 @@ class _NewsCard extends StatelessWidget {
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Stack(children: [
-                _Cover(url: article.imageUrl, height: featured ? 190 : 150),
+                _Cover(
+                    assetPath: article.imageAsset,
+                    height: featured ? 190 : 150),
                 if (featured)
                   Positioned(
                       left: 12,
@@ -158,9 +159,9 @@ class _NewsCard extends StatelessWidget {
 }
 
 class _Cover extends StatelessWidget {
-  final String? url;
+  final String? assetPath;
   final double height;
-  const _Cover({required this.url, required this.height});
+  const _Cover({required this.assetPath, required this.height});
   @override
   Widget build(BuildContext context) {
     final fallback = Container(
@@ -170,17 +171,11 @@ class _Cover extends StatelessWidget {
         child: const Center(
             child: Icon(Icons.photo_outlined,
                 size: 40, color: AppColors.secondaryBlue)));
-    if (url == null) return fallback;
-    return CachedNetworkImage(
-        imageUrl: url!,
+    if (assetPath == null) return fallback;
+    return Image.asset(assetPath!,
         height: height,
         width: double.infinity,
         fit: BoxFit.cover,
-        placeholder: (_, __) => Container(
-            height: height,
-            color: AppColors.softBlue,
-            child:
-                const Center(child: CircularProgressIndicator(strokeWidth: 2))),
-        errorWidget: (_, __, ___) => fallback);
+        errorBuilder: (_, __, ___) => fallback);
   }
 }

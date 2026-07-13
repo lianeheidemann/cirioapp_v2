@@ -1,14 +1,13 @@
 /// Modelo que representa uma notícia relacionada ao Círio.
 ///
-/// [imageUrl] é opcional e, quando fornecido, é exibido via
-/// [CachedNetworkImage] com cache automático.
+/// [imageAsset] é opcional e aponta para uma imagem empacotada com o app.
 class NewsModel {
   final String id;
   final String title;
   final String date;
   final String summary;
   final String content;
-  final String? imageUrl;
+  final String? imageAsset;
   bool isFavorite;
 
   NewsModel({
@@ -17,7 +16,7 @@ class NewsModel {
     required this.date,
     required this.summary,
     required this.content,
-    this.imageUrl,
+    this.imageAsset,
     this.isFavorite = false,
   });
 
@@ -29,7 +28,7 @@ class NewsModel {
       date: date,
       summary: summary,
       content: content,
-      imageUrl: imageUrl,
+      imageAsset: imageAsset,
       isFavorite: isFavorite ?? this.isFavorite,
     );
   }

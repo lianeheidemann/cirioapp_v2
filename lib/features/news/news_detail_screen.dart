@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../core/localization/app_language.dart';
 import '../../core/localization/content_translations.dart';
@@ -27,16 +26,14 @@ class NewsDetailScreen extends StatelessWidget {
         ]),
         body: CustomScrollView(slivers: [
           SliverToBoxAdapter(
-              child: news.imageUrl == null
+              child: news.imageAsset == null
                   ? const SizedBox.shrink()
-                  : CachedNetworkImage(
-                      imageUrl: news.imageUrl!,
+                  : Image.asset(
+                      news.imageAsset!,
                       height: 240,
                       width: double.infinity,
                       fit: BoxFit.cover,
-                      placeholder: (_, __) =>
-                          Container(height: 240, color: AppColors.softBlue),
-                      errorWidget: (_, __, ___) => Container(
+                      errorBuilder: (_, __, ___) => Container(
                           height: 180,
                           color: AppColors.softBlue,
                           child: const Icon(Icons.photo_outlined,

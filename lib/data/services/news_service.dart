@@ -14,7 +14,7 @@ class NewsService {
         date: '28 de setembro de 2026',
         summary:
             'Organização prevê recorde de público para a maior procissão católica do Brasil.',
-        imageUrl: 'https://picsum.photos/seed/cirio1/800/400',
+        imageAsset: 'assets/news/n1.png',
         content:
             'A Arquidiocese de Belém divulgou estimativa de 2,5 milhões de '
             'participantes para o Círio de Nazaré 2026. O planejamento inclui '
@@ -32,7 +32,7 @@ class NewsService {
         summary:
             'Entenda o significado e a história da famosa corda que guia a '
             'procissão do Círio.',
-        imageUrl: 'https://picsum.photos/seed/cirio2/800/400',
+        imageAsset: 'assets/news/n2.png',
         content:
             'A corda do Círio é muito mais do que um elemento organizacional '
             'da procissão. Com cerca de 400 metros de comprimento, ela '
@@ -50,7 +50,7 @@ class NewsService {
         date: '08 de outubro de 2026',
         summary: 'Do maniçoba ao pato no tucupi, a culinária local é parte '
             'fundamental da festa.',
-        imageUrl: 'https://picsum.photos/seed/cirio3/800/400',
+        imageAsset: 'assets/news/n3.png',
         content:
             'A culinária paraense é protagonista durante o período do Círio. '
             'O almoço do Círio, realizado nas casas de família no domingo da '
@@ -69,7 +69,7 @@ class NewsService {
         summary:
             'Shows, exposições e atividades culturais movimentam Belém durante '
             'todo o mês de outubro.',
-        imageUrl: 'https://picsum.photos/seed/cirio4/800/400',
+        imageAsset: 'assets/news/n4.png',
         content:
             'A Prefeitura de Belém divulgou a programação cultural do Círio '
             '2026, com mais de 50 eventos gratuitos espalhados pela cidade. '
@@ -85,7 +85,7 @@ class NewsService {
         date: '10 de outubro de 2026',
         summary: 'Dicas essenciais para quem vai participar da procissão pela '
             'primeira vez.',
-        imageUrl: 'https://picsum.photos/seed/cirio5/800/400',
+        imageAsset: 'assets/news/n5.png',
         content: 'Participar do Círio exige preparo físico e logístico. '
             'Especialistas recomendam: usar roupas leves e calçados '
             'confortáveis; levar água e protetor solar; evitar o centro do '
