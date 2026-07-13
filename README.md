@@ -158,4 +158,4 @@ flutter test
 
 ## Interface
 
-<img src='assets/gif/interface_3.gif' alt='CírioApp Interface' width='50%' />
+<img src='assets/gif/interface_3.gif' alt='CírioApp Interface' width='30%' />
