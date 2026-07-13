@@ -95,7 +95,7 @@ lib/
 
 ---
 
-<img width="100%" src="https://github.com/user-attachments/assets/f29362d6-449f-4676-8de8-f7d4f0e3139a" alt="CírioApp Screenshots" />
+<img width="100%" src="https://github.com/lianeheidemann/cirioapp_v2/blob/main/assets/image/image-2.png" alt="CírioApp Screenshots" />
 
 <!--
 ---
