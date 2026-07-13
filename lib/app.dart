@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'core/localization/app_language.dart';
 import 'core/theme/app_theme.dart';
 import 'features/home/home_screen.dart';
+import 'features/permissions/startup_permissions_gate.dart';
 
 class CirioApp extends StatelessWidget {
   const CirioApp({super.key});
@@ -21,7 +22,9 @@ class CirioApp extends StatelessWidget {
       scrollBehavior:
           const MaterialScrollBehavior().copyWith(overscroll: false),
       theme: AppTheme.lightTheme,
-      home: const HomeScreen(),
+      home: const StartupPermissionsGate(
+        child: HomeScreen(),
+      ),
     );
   }
 }
