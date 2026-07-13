@@ -58,8 +58,7 @@ class GeminiService {
 
     if (response.statusCode != 200) {
       throw GeminiServiceException(
-        'A Gemini API retornou um erro (${response.statusCode}). '
-        'Tente novamente em instantes.',
+        _messageForError(response.statusCode, response.bodyBytes),
       );
     }
 
@@ -91,6 +90,69 @@ class GeminiService {
       rethrow;
     } catch (_) {
       throw GeminiServiceException('Resposta inesperada da Gemini API.');
+    }
+  }
+
+  /// Traduz o erro retornado pela Gemini API em uma mensagem clara para o
+  /// usuário final, com base no [statusCode] HTTP e no `status` (código de
+  /// erro do Google, ex: "RESOURCE_EXHAUSTED") presente no corpo da
+  /// resposta, quando disponível.
+  String _messageForError(int statusCode, List<int> bodyBytes) {
+    String? googleStatus;
+    try {
+      final data = jsonDecode(utf8.decode(bodyBytes)) as Map<String, dynamic>;
+      googleStatus =
+          (data['error'] as Map<String, dynamic>?)?['status'] as String?;
+    } catch (_) {
+      // Corpo não veio em JSON (ou formato inesperado); segue só com o
+      // código HTTP.
+    }
+
+    switch (googleStatus) {
+      case 'INVALID_ARGUMENT':
+        return 'A pergunta enviada não pôde ser processada (formato '
+            'inválido). Tente reformular.';
+      case 'PERMISSION_DENIED':
+        return 'A chave da Gemini API não tem permissão para usar este '
+            'recurso. Verifique se a chave está correta e ativa.';
+      case 'NOT_FOUND':
+        return 'O modelo de IA configurado não está mais disponível. É '
+            'preciso atualizar o app para usar um modelo atual.';
+      case 'RESOURCE_EXHAUSTED':
+        return 'O limite de uso gratuito da Gemini API foi atingido por '
+            'hoje. Tente novamente mais tarde.';
+      case 'UNAVAILABLE':
+        return 'O assistente de IA está sobrecarregado no momento. '
+            'Aguarde alguns instantes e tente novamente.';
+      case 'DEADLINE_EXCEEDED':
+        return 'O assistente demorou demais para responder. Tente '
+            'novamente.';
+      case 'INTERNAL':
+        return 'Ocorreu um erro interno no servidor da Gemini API. Tente '
+            'novamente em instantes.';
+    }
+
+    // Sem status reconhecido: cai para uma mensagem genérica baseada no
+    // código HTTP.
+    switch (statusCode) {
+      case 400:
+        return 'A pergunta enviada não pôde ser processada. Tente '
+            'reformular.';
+      case 401:
+      case 403:
+        return 'Problema com a chave da Gemini API. Verifique se ela está '
+            'correta e ativa.';
+      case 404:
+        return 'O modelo de IA configurado não está mais disponível.';
+      case 429:
+        return 'Limite de uso da Gemini API atingido. Tente novamente mais '
+            'tarde.';
+      case 503:
+        return 'O assistente de IA está sobrecarregado no momento. '
+            'Tente novamente em instantes.';
+      default:
+        return 'A Gemini API retornou um erro ($statusCode). Tente '
+            'novamente em instantes.';
     }
   }
 }
