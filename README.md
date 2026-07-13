@@ -1,40 +1,44 @@
 <div align='center'>
 
-<img width='15%' src='assets/icon/icon.png' alt='Ícone do CírioApp'/>
+<img width='15%' src='assets/icon/icon.png' alt='CírioApp Icon'/>
 
 # CírioApp
 
-Aplicativo mobile sobre o Círio de Nazaré, em Belém do Pará.
+Mobile app about the Círio de Nazaré, in Belém do Pará.
+
+
 
 ![Flutter](https://img.shields.io/badge/Flutter-02569B?style=flat-square)
 ![Dart](https://img.shields.io/badge/Dart-0175C2?style=flat-square)
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=flat-square)
 
+
+
 </div>
 
 <img src='assets/images/GridArt_20260713_051055219.png' />
 
-## Funcionalidades
+## Features
 
-- **Eventos:** programação com datas, horários e locais.
-- **Mapa interativo:** trajeto do Círio e pontos de interesse no OpenStreetMap.
-- **Notícias:** conteúdo informativo com imagens locais.
-- **Favoritos:** eventos, locais e notícias salvos no dispositivo.
-- **Assistente IA:** respostas contextualizadas sobre o Círio e Belém com a Gemini API.
-- **Português e inglês:** troca de idioma em tempo real.
+- **Events:** schedule with dates, times, and locations.
+- **Interactive map:** Círio route and points of interest on OpenStreetMap.
+- **News:** informative content with local images.
+- **Favorites:** events, locations, and news saved on the device.
+- **AI Assistant:** contextualized answers about the Círio and Belém using the Gemini API.
+- **Portuguese and English:** real-time language switching.
 
-## Tecnologias
+## Technologies
 
-- Flutter e Dart
-- Provider para gerenciamento de estado
-- Flutter Map e OpenStreetMap
-- Shared Preferences para persistência local
-- Flutter Localizations para internacionalização
+- Flutter and Dart
+- Provider for state management
+- Flutter Map and OpenStreetMap
+- Shared Preferences for local persistence
+- Flutter Localizations for internationalization
 - Gemini API via HTTP
 
-## Como executar
+## How to run
 
-Tenha o Flutter SDK instalado e um dispositivo ou emulador Android configurado.
+Have the Flutter SDK installed and an Android device or emulator configured.
 
 ```bash
 git clone https://github.com/lianeheidemann/cirioapp_v2.git
@@ -43,41 +47,41 @@ flutter pub get
 flutter run
 ```
 
-O mapa e o assistente de IA precisam de conexão com a internet. Os demais conteúdos estão disponíveis localmente.
+The map and AI assistant require an internet connection. The remaining content is available locally.
 
-## Assistente IA
+## AI Assistant
 
-A configuração da Gemini API é opcional. Sem uma chave, apenas o assistente fica indisponível.
+Configuring the Gemini API is optional. Without a key, only the assistant will be unavailable.
 
-Para desenvolvimento local, copie `.env.example` para `.env` e informe a chave:
+For local development, copy `.env.example` to `.env` and provide the key:
 
 ```env
-GEMINI_API_KEY=sua_chave
+GEMINI_API_KEY=your_key
 ```
 
-Também é possível fornecê-la durante a execução:
+You can also provide it at runtime:
 
 ```bash
-flutter run --dart-define=GEMINI_API_KEY=SUA_CHAVE
+flutter run --dart-define=GEMINI_API_KEY=YOUR_KEY
 ```
 
-> Nunca envie o arquivo `.env` ou uma chave real para o repositório.
+> Never commit the `.env` file or a real key to the repository.
 
-## Arquitetura
+## Architecture
 
-O projeto utiliza uma organização por funcionalidades com separação em camadas:
+The project uses a feature-based organization with layered separation:
 
-- `features`: telas e providers de cada funcionalidade.
-- `data/services`: fontes de dados locais e integrações externas.
-- `data/repositories`: comunicação entre serviços e regras da aplicação.
-- `core`: tema, constantes e localização.
-- `shared`: componentes reutilizáveis da interface.
+- `features`: screens and providers for each feature.
+- `data/services`: local data sources and external integrations.
+- `data/repositories`: communication between services and application rules.
+- `core`: theme, constants, and localization.
+- `shared`: reusable UI components.
 
-O estado é gerenciado com `ChangeNotifier`, `Provider` e `ChangeNotifierProxyProvider`.
+State is managed with `ChangeNotifier`, `Provider`, and `ChangeNotifierProxyProvider`.
 
-## Testes
+## Tests
 
-Os testes cobrem providers, persistência de favoritos e widgets principais.
+Tests cover providers, favorites persistence, and main widgets.
 
 ```bash
 flutter test
@@ -85,4 +89,4 @@ flutter test
 
 ## Interface
 
-<img src='assets/gif/interface_3.gif' alt='Interface do CírioApp' width='50%' />
+<img src='assets/gif/interface_3.gif' alt='CírioApp Interface' width='50%' />
