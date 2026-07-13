@@ -38,9 +38,10 @@ class _AiAssistantScreenState extends State<AiAssistantScreen> {
   @override
   Widget build(BuildContext context) => Scaffold(
         resizeToAvoidBottomInset: true,
-        appBar: const CirioAppBar(
-            title: 'Assistente IA',
-            subtitle: 'Orientação para viver melhor o Círio'),
+        appBar: CirioAppBar(
+            title: tr(context, 'Assistente IA', 'AI Assistant'),
+            subtitle: tr(context, 'Orientação para viver melhor o Círio',
+                'Guidance for a better Círio experience')),
         body: SafeArea(
             child: Column(children: [
           Expanded(
@@ -157,9 +158,12 @@ class _AiAssistantScreenState extends State<AiAssistantScreen> {
                                   enabled: !p.isLoading,
                                   textInputAction: TextInputAction.send,
                                   onSubmitted: _send,
-                                  decoration: const InputDecoration(
-                                      hintText: 'Pergunte sobre o Círio...',
-                                      prefixIcon: Icon(
+                                  decoration: InputDecoration(
+                                      hintText: tr(
+                                          context,
+                                          'Pergunte sobre o Círio...',
+                                          'Ask about Círio...'),
+                                      prefixIcon: const Icon(
                                           Icons.chat_bubble_outline_rounded)))),
                           const SizedBox(width: 8),
                           IconButton.filled(

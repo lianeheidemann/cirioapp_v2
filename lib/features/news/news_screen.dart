@@ -40,7 +40,8 @@ class _NewsScreenState extends State<NewsScreen> {
                 icon: Icons.error_outline,
                 title:
                     tr(context, 'Notícias indisponíveis', 'News unavailable'),
-                message: p.errorMessage!,
+                message: tr(context, 'Não foi possível carregar as notícias.',
+                    'Unable to load news.'),
                 onRetry: p.loadNews);
           }
           if (p.news.isEmpty) {

@@ -44,7 +44,9 @@ class AiAssistantProvider extends ChangeNotifier {
       answer = await _repository.askQuestion(trimmed,
           respondInEnglish: respondInEnglish);
     } on GeminiServiceException catch (e) {
-      errorMessage = e.message;
+      errorMessage = respondInEnglish
+          ? 'The AI service is unavailable right now. Check the configuration or try again.'
+          : e.message;
     } catch (_) {
       errorMessage = respondInEnglish
           ? 'Unable to get an answer right now. Please try again.'

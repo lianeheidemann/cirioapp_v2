@@ -1,6 +1,6 @@
 /// Documento do corpus local acompanhado do vetor calculado offline.
 ///
-/// [type] identifica a origem (`evento`, `local` ou `faq`) e permite que o
+/// [type] identifica a origem (`evento`, `local`, `notícia` ou `faq`) e permite que o
 /// prompt preserve essa informação sem depender dos modelos de cada feature.
 class KnowledgeEmbedding {
   final String id;

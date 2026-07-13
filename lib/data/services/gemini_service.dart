@@ -1,4 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import '../../core/constants/gemini_config.dart';
 
@@ -9,52 +12,27 @@ import '../../core/constants/gemini_config.dart';
 /// lógica de negócio — isso fica a cargo do [AiAssistantRepository].
 class GeminiService {
   final http.Client _client;
+  final String? _apiKeyOverride;
 
-  GeminiService({http.Client? client}) : _client = client ?? http.Client();
+  GeminiService({http.Client? client, String? apiKey})
+      : _client = client ?? http.Client(),
+        _apiKeyOverride = apiKey;
+
+  String get _apiKey => _apiKeyOverride ?? GeminiConfig.apiKey;
 
   /// Envia [prompt] para a Gemini API e retorna o texto gerado.
   ///
   /// Lança [GeminiServiceException] em caso de chave ausente, falha de
   /// rede, erro retornado pela API ou resposta em formato inesperado.
   Future<String> generateResponse(String prompt) async {
-    if (!GeminiConfig.hasApiKey) {
+    if (_apiKey.isEmpty) {
       throw GeminiServiceException(
         'Chave da Gemini API não configurada. Veja o README para saber '
         'como configurá-la.',
       );
     }
 
-    late final http.Response response;
-    try {
-      response = await _client
-          .post(
-            Uri.parse(GeminiConfig.endpoint),
-            headers: {
-              'Content-Type': 'application/json',
-              'x-goog-api-key': GeminiConfig.apiKey,
-            },
-            body: jsonEncode({
-              'contents': [
-                {
-                  'role': 'user',
-                  'parts': [
-                    {'text': prompt},
-                  ],
-                },
-              ],
-              'generationConfig': {
-                'temperature': 0.4,
-                'maxOutputTokens': 800,
-              },
-            }),
-          )
-          .timeout(const Duration(seconds: 20));
-    } catch (_) {
-      throw GeminiServiceException(
-        'Não foi possível conectar à Gemini API. Verifique sua internet '
-        'e tente novamente.',
-      );
-    }
+    final response = await _generateContentRequest(prompt);
 
     if (response.statusCode != 200) {
       throw GeminiServiceException(
@@ -99,7 +77,7 @@ class GeminiService {
   /// Assim uma atualização do corpus nunca compara vetores incompatíveis.
   Future<List<double>> embedQuestion(String text,
       {required String model, required int dimensions}) async {
-    if (!GeminiConfig.hasApiKey) {
+    if (_apiKey.isEmpty) {
       throw GeminiServiceException(
         'Chave da Gemini API não configurada. Veja o README para configurá-la.',
       );
@@ -112,7 +90,7 @@ class GeminiService {
             Uri.parse(GeminiConfig.embeddingEndpoint(model)),
             headers: {
               'Content-Type': 'application/json',
-              'x-goog-api-key': GeminiConfig.apiKey,
+              'x-goog-api-key': _apiKey,
             },
             body: jsonEncode({
               'content': {
@@ -158,6 +136,58 @@ class GeminiService {
     } catch (_) {
       throw GeminiServiceException('Embedding inesperado da Gemini API.');
     }
+  }
+
+  Future<http.Response> _generateContentRequest(String prompt) async {
+    final body = jsonEncode({
+      'contents': [
+        {
+          'role': 'user',
+          'parts': [
+            {'text': prompt},
+          ],
+        },
+      ],
+      'generationConfig': {
+        'temperature': 0.4,
+        'maxOutputTokens': 800,
+      },
+    });
+
+    for (var attempt = 0; attempt < 2; attempt++) {
+      try {
+        final response = await _client
+            .post(
+              Uri.parse(GeminiConfig.endpoint),
+              headers: {
+                'Content-Type': 'application/json',
+                'x-goog-api-key': _apiKey,
+              },
+              body: body,
+            )
+            .timeout(const Duration(seconds: 45));
+        if (response.statusCode == 503 && attempt == 0) {
+          await Future<void>.delayed(const Duration(seconds: 1));
+          continue;
+        }
+        return response;
+      } on TimeoutException {
+        throw GeminiServiceException(
+          'O assistente demorou demais para responder. Tente novamente.',
+        );
+      } on SocketException {
+        throw GeminiServiceException(
+          'Sem conexão com a Gemini API. Verifique sua internet.',
+        );
+      } on http.ClientException {
+        throw GeminiServiceException(
+          'Não foi possível estabelecer uma conexão segura com a Gemini API.',
+        );
+      }
+    }
+    throw GeminiServiceException(
+      'O assistente de IA está temporariamente indisponível.',
+    );
   }
 
   /// Traduz o erro retornado pela Gemini API em uma mensagem clara para o

@@ -10,6 +10,7 @@ import 'data/repositories/news_repository.dart';
 import 'data/local/favorites_local_storage.dart';
 import 'data/local/notifications_local_storage.dart';
 import 'data/services/firebase_notifications_service.dart';
+import 'data/services/local_notifications_service.dart';
 import 'features/events/events_provider.dart';
 import 'features/places/places_provider.dart';
 import 'features/map/map_provider.dart';
@@ -45,9 +46,18 @@ void main() async {
   await dotenv.load(fileName: ".env");
 
   final languageProvider = await LanguageProvider.load();
+  LocalNotificationsService? localNotificationsService;
+  if (FirebaseBootstrap.isAvailable) {
+    localNotificationsService = LocalNotificationsService();
+    await localNotificationsService.initialize();
+  }
   final notificationsProvider = NotificationsProvider(
     NotificationsLocalStorage(),
-    FirebaseBootstrap.isAvailable ? FirebaseNotificationsService() : null,
+    FirebaseBootstrap.isAvailable
+        ? FirebaseNotificationsService(
+            localNotifications: localNotificationsService,
+          )
+        : null,
   );
   await notificationsProvider.initialize();
 

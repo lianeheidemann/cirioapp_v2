@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cirio_app/core/constants/ai_faqs.dart';
 import 'package:cirio_app/data/services/event_service.dart';
+import 'package:cirio_app/data/services/news_service.dart';
 import 'package:cirio_app/data/services/place_service.dart';
 import 'package:http/http.dart' as http;
 
@@ -62,10 +63,12 @@ Future<void> main() async {
   stdout.writeln('Asset gerado com ${output.length} itens.');
 }
 
-/// Normaliza as três fontes do app para um formato textual único.
+/// Normaliza as fontes públicas do app para um formato textual único.
 Future<List<Map<String, String>>> _buildDocuments() async {
   final events = await EventService().fetchEvents();
   final places = await PlaceService().fetchPlaces();
+  final news =
+      (await LocalNewsService().fetchNews()).where((item) => item.isPublished);
   return [
     for (final event in events)
       {
@@ -82,6 +85,14 @@ Future<List<Map<String, String>>> _buildDocuments() async {
         'title': place.name,
         'content':
             '${place.name}. Categoria: ${place.category}. Endereço: ${place.address}. ${place.description}',
+      },
+    for (final article in news)
+      {
+        'id': 'news-${article.id}',
+        'type': 'notícia',
+        'title': article.title,
+        'content':
+            'Notícia publicada em ${article.date}. ${article.title}. ${article.summary} ${article.content}',
       },
     for (final faq in aiFaqs)
       {

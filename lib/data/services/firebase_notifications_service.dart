@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import '../../firebase_options.dart';
 import '../local/notifications_local_storage.dart';
 import '../models/app_notification.dart';
+import 'local_notifications_service.dart';
 
 enum NotificationsPermission { authorized, provisional, denied, notDetermined }
 
@@ -39,12 +40,25 @@ AppNotification notificationFromMessage(RemoteMessage message) {
 
 class FirebaseNotificationsService {
   final FirebaseMessaging _messaging;
+  final LocalNotificationsService? _localNotifications;
 
-  FirebaseNotificationsService({FirebaseMessaging? messaging})
-      : _messaging = messaging ?? FirebaseMessaging.instance;
+  FirebaseNotificationsService({
+    FirebaseMessaging? messaging,
+    LocalNotificationsService? localNotifications,
+  })  : _messaging = messaging ?? FirebaseMessaging.instance,
+        _localNotifications = localNotifications;
 
   Stream<AppNotification> get onForegroundMessage =>
-      FirebaseMessaging.onMessage.map(notificationFromMessage);
+      FirebaseMessaging.onMessage.asyncMap((message) async {
+        final notification = notificationFromMessage(message);
+        try {
+          await _localNotifications?.show(notification);
+        } catch (_) {
+          // The in-app history must still be updated if Android cannot display
+          // the system banner (for example, when permission was revoked).
+        }
+        return notification;
+      });
 
   Stream<AppNotification> get onNotificationOpened =>
       FirebaseMessaging.onMessageOpenedApp.map(notificationFromMessage);

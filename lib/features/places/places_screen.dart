@@ -41,7 +41,8 @@ class _PlacesScreenState extends State<PlacesScreen> {
                 icon: Icons.error_outline,
                 title:
                     tr(context, 'Locais indisponíveis', 'Places unavailable'),
-                message: p.errorMessage!,
+                message: tr(context, 'Não foi possível carregar os locais.',
+                    'Unable to load places.'),
                 onRetry: p.loadPlaces);
           }
           return Column(children: [

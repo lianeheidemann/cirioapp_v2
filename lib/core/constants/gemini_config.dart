@@ -57,10 +57,9 @@ class GeminiConfig {
 
   /// Modelo do Gemini utilizado nas chamadas.
   ///
-  /// `gemini-flash-latest` é um alias mantido pelo Google que sempre aponta
-  /// para a versão Flash estável mais recente, evitando a necessidade de
-  /// atualizar o código quando um modelo é descontinuado.
-  static const String model = 'gemini-flash-latest';
+  /// Um identificador estável evita mudanças inesperadas de latência e
+  /// disponibilidade causadas pelo alias `latest`.
+  static const String model = 'gemini-3.5-flash';
 
   /// Modelo de embeddings usado ao gerar um corpus novo. Em runtime, o app
   /// usa o modelo registrado no próprio asset para manter os vetores compatíveis.

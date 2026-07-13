@@ -38,4 +38,21 @@ void main() {
     expect(matches.first.item.id, first['id']);
     expect(matches.first.similarity, closeTo(1, 1e-10));
   });
+
+  test('corpus contém notícias publicadas para respostas relevantes', () async {
+    final json = jsonDecode(
+      await rootBundle.loadString(SemanticSearchService.assetPath),
+    ) as Map<String, dynamic>;
+    final items = (json['items'] as List).cast<Map<String, dynamic>>();
+
+    final news = items.where((item) => item['type'] == 'notícia').toList();
+    expect(news, hasLength(5));
+
+    final embedding = (news.first['embedding'] as List)
+        .map((value) => (value as num).toDouble())
+        .toList();
+    final matches = await SemanticSearchService().search(embedding);
+    expect(matches.first.item.id, news.first['id']);
+    expect(matches.first.similarity, closeTo(1, 1e-10));
+  });
 }

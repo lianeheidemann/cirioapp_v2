@@ -198,7 +198,8 @@ class _MapScreenState extends State<MapScreen> {
           if (provider.errorMessage != null) {
             return EmptyStateWidget(
               icon: Icons.error_outline,
-              message: provider.errorMessage!,
+              message: tr(context, 'Não foi possível carregar o mapa.',
+                  'Unable to load the map.'),
             );
           }
 

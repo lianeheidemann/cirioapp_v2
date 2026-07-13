@@ -38,7 +38,8 @@ class _EventsScreenState extends State<EventsScreen> {
                 icon: Icons.error_outline,
                 title:
                     tr(context, 'Não foi possível carregar', 'Unable to load'),
-                message: p.errorMessage!,
+                message: tr(context, 'Não foi possível carregar os eventos.',
+                    'Unable to load events.'),
                 onRetry: p.loadEvents);
           }
           if (p.events.isEmpty) {
