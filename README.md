@@ -95,6 +95,23 @@ lib/
 
 ---
 
+## Como configurar a Gemini API Key
+
+1. Gere uma chave gratuita em [Google AI Studio](https://aistudio.google.com/app/apikey).
+2. **Nunca** cole a chave diretamente no código. Rode o app passando a chave via `--dart-define`:
+
+   ```bash
+   flutter run --dart-define=GEMINI_API_KEY=SUA_CHAVE_AQUI
+   ```
+
+   Para builds de release:
+
+   ```bash
+   flutter build apk --dart-define=GEMINI_API_KEY=SUA_CHAVE_AQUI
+   ```
+
+---
+
 <img width="100%" src="https://github.com/lianeheidemann/cirioapp_v2/blob/main/assets/image/image-2.png" alt="CírioApp Screenshots" />
 
 <!--
