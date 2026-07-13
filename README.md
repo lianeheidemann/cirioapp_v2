@@ -1,12 +1,15 @@
-<img width="5%" src="assets/icon/icon.png"/> 
+<div align="center">
+
+<img width="15%" src="assets/icon/icon.png"/>
 
 # CírioApp
-
 Aplicativo mobile informativo sobre o Círio de Nazaré — Belém do Pará. A maior procissão católica do Brasil, na palma da sua mão.
 
 ![Flutter](https://img.shields.io/badge/Flutter-3.16+-02569B?style=flat-square)
 ![Dart](https://img.shields.io/badge/Dart-3.0+-0175C2?style=flat-square)
 ![Platform](https://img.shields.io/badge/Platform-Android-brightgreen?style=flat-square)
+
+</div>
 
 ---
 
