@@ -29,7 +29,10 @@ class GeminiService {
       response = await _client
           .post(
             Uri.parse(GeminiConfig.endpoint),
-            headers: {'Content-Type': 'application/json'},
+            headers: {
+              'Content-Type': 'application/json',
+              'x-goog-api-key': GeminiConfig.apiKey,
+            },
             body: jsonEncode({
               'contents': [
                 {

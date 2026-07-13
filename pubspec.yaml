@@ -31,7 +31,7 @@ flutter:
     - assets/images/
     - .env
 
-flutter_icons:
+flutter_launcher_icons:
   android: true
-  ios: true
+  ios: false
   image_path: "assets/icon/icon.png"

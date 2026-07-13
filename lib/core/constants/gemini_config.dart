@@ -64,5 +64,5 @@ class GeminiConfig {
 
   /// Endpoint REST de geração de conteúdo (generateContent) da Gemini API.
   static String get endpoint =>
-      'https://generativelanguage.googleapis.com/v1beta/models/$model:generateContent?key=$apiKey';
+      'https://generativelanguage.googleapis.com/v1beta/models/$model:generateContent';
 }
