@@ -82,3 +82,7 @@ Os testes cobrem providers, persistência de favoritos e widgets principais.
 ```bash
 flutter test
 ```
+
+## Interface
+
+<img src='assets/gif/interface_3.gif' alt='Interface do CírioApp' width='100%' />
