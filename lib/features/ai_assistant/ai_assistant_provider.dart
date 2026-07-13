@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../../data/repositories/ai_assistant_repository.dart';
 import '../../data/services/gemini_service.dart';
+import '../../core/constants/ai_faqs.dart';
 
 /// Provider do Assistente IA do Círio.
 ///
@@ -21,12 +22,8 @@ class AiAssistantProvider extends ChangeNotifier {
   String get geminiApiKey => dotenv.env['GEMINI_API_KEY'] ?? '';
 
   /// Perguntas rápidas sugeridas na tela.
-  static const List<String> quickQuestions = [
-    'Roteiro para primeira vez no Círio',
-    'Onde encontrar hidratação?',
-    'Quais locais turísticos visitar?',
-    'Dicas de segurança',
-  ];
+  static final List<String> quickQuestions =
+      List.unmodifiable(aiFaqs.map((faq) => faq.question));
 
   /// Envia [question] ao assistente e atualiza o estado com a resposta.
   ///

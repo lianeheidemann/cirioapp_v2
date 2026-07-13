@@ -30,6 +30,7 @@ flutter:
     - assets/images/
     - assets/icon/
     - assets/news/
+    - assets/embeddings.json
     - .env
 
 flutter_launcher_icons:

@@ -62,7 +62,18 @@ class GeminiConfig {
   /// atualizar o código quando um modelo é descontinuado.
   static const String model = 'gemini-flash-latest';
 
+  /// Modelo de embeddings usado ao gerar um corpus novo. Em runtime, o app
+  /// usa o modelo registrado no próprio asset para manter os vetores compatíveis.
+  static const String embeddingModel = String.fromEnvironment(
+    'GEMINI_EMBEDDING_MODEL',
+    defaultValue: 'gemini-embedding-001',
+  );
+
   /// Endpoint REST de geração de conteúdo (generateContent) da Gemini API.
   static String get endpoint =>
       'https://generativelanguage.googleapis.com/v1beta/models/$model:generateContent';
+
+  static String embeddingEndpoint(String modelName) =>
+      'https://generativelanguage.googleapis.com/v1beta/models/'
+      '$modelName:embedContent';
 }

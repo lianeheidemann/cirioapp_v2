@@ -1,5 +1,7 @@
 <div align='center'>
 
+[English](README.md) · **Português**
+
 <img width='15%' src='assets/icon/icon.png' alt='Ícone do CírioApp'/>
 
 # CírioApp
@@ -12,7 +14,7 @@ Aplicativo mobile sobre o Círio de Nazaré, em Belém do Pará.
 
 </div>
 
-<img src='assets/images/GridArt_20260713_051055219.png' />
+<img src='assets/images/interface_v3.png' />
 
 ## Funcionalidades
 
@@ -20,7 +22,7 @@ Aplicativo mobile sobre o Círio de Nazaré, em Belém do Pará.
 - **Mapa interativo:** trajeto do Círio e pontos de interesse no OpenStreetMap.
 - **Notícias:** conteúdo informativo com imagens locais.
 - **Favoritos:** eventos, locais e notícias salvos no dispositivo.
-- **Assistente IA:** respostas contextualizadas sobre o Círio e Belém com a Gemini API.
+- **Assistente IA com RAG local:** respostas contextualizadas usando busca semântica, top-5 e cache de perguntas semelhantes.
 - **Português e inglês:** troca de idioma em tempo real.
 
 ## Tecnologias
@@ -31,6 +33,7 @@ Aplicativo mobile sobre o Círio de Nazaré, em Belém do Pará.
 - Shared Preferences para persistência local
 - Flutter Localizations para internacionalização
 - Gemini API via HTTP
+- Embeddings locais e similaridade de cosseno em Dart puro
 
 ## Como executar
 
@@ -61,7 +64,64 @@ Também é possível fornecê-la durante a execução:
 flutter run --dart-define=GEMINI_API_KEY=SUA_CHAVE
 ```
 
-> Nunca envie o arquivo `.env` ou uma chave real para o repositório.
+> Nunca envie o arquivo `.env` ou uma chave real para o repositório. Uma chave
+> distribuída dentro de um APK pode ser extraída; a configuração direta no app
+> é adequada apenas para desenvolvimento e demonstração. Em produção, use um
+> backend/proxy com autenticação, limites de uso e a chave armazenada no servidor.
+
+### Busca semântica e embeddings
+
+O assistente usa uma implementação leve de RAG, sem banco vetorial externo:
+
+1. Eventos, locais e FAQs são vetorizados offline no computador do desenvolvedor.
+2. O corpus e seus vetores são gravados em `assets/embeddings.json`.
+3. Para cada pergunta, o app faz uma única chamada ao endpoint de embeddings.
+4. O app compara o vetor da pergunta com o corpus usando cosseno em Dart puro.
+5. Somente os cinco itens mais próximos são adicionados ao prompt.
+6. Se não houver uma resposta equivalente no cache, o app chama `generateContent`.
+7. A resposta bem-sucedida é salva localmente para consultas futuras semelhantes.
+
+O corpus completo nunca é enviado durante uma pergunta. A chamada de geração
+recebe apenas as instruções, a pergunta e os itens recuperados pelo ranking.
+
+### Gerar ou atualizar o asset
+
+Sempre que eventos, locais ou FAQs forem alterados, regenere o asset:
+
+```bash
+dart run tool/generate_embeddings.dart
+```
+
+O script lê `GEMINI_API_KEY` do ambiente ou do `.env` e grava
+`assets/embeddings.json`. O modelo padrão é `gemini-embedding-001`, sucessor
+atual do descontinuado `text-embedding-004`. Os vetores são gerados com 768
+dimensões para manter o asset compacto.
+
+Para usar outro modelo compatível no PowerShell:
+
+```powershell
+$env:GEMINI_EMBEDDING_MODEL=nome-do-modelo
+dart run tool/generate_embeddings.dart
+```
+
+Em Bash:
+
+```bash
+GEMINI_EMBEDDING_MODEL=nome-do-modelo dart run tool/generate_embeddings.dart
+```
+
+O gerador só substitui o asset depois que todos os documentos forem processados
+e valida a dimensão devolvida pela API. O modelo e a dimensão ficam registrados
+no JSON; em runtime, o app lê esses metadados para produzir a pergunta no mesmo
+espaço vetorial.
+
+### Cache semântico
+
+- Persistido no dispositivo com Shared Preferences.
+- Limitado às 50 respostas mais recentes.
+- Reutiliza uma resposta quando a similaridade é igual ou superior a `0.94`.
+- Separa entradas por idioma e modelo de embeddings.
+- Perguntas sem correspondência continuam pelo fluxo normal de RAG e geração.
 
 ## Arquitetura
 
@@ -75,12 +135,23 @@ O projeto utiliza uma organização por funcionalidades com separação em camad
 
 O estado é gerenciado com `ChangeNotifier`, `Provider` e `ChangeNotifierProxyProvider`.
 
+Arquivos principais do assistente:
+
+- `tool/generate_embeddings.dart`: gera o corpus vetorial offline.
+- `assets/embeddings.json`: corpus empacotado no aplicativo.
+- `lib/data/services/gemini_service.dart`: chamadas de embedding e geração.
+- `lib/data/services/semantic_search_service.dart`: carregamento, validação, cosseno e top-5.
+- `lib/data/local/ai_response_cache.dart`: cache semântico persistente.
+- `lib/data/repositories/ai_assistant_repository.dart`: orquestra cache, recuperação e prompt.
+- `lib/core/constants/ai_faqs.dart`: fonte única das FAQs da interface e do corpus.
+
 ## Testes
 
-Os testes cobrem providers, persistência de favoritos e widgets principais.
-
+Os testes cobrem providers, persistência de favoritos, widgets, similaridade de
+cosseno, validação do asset, ranking top-5 e isolamento do cache por idioma.
 
 ```bash
+dart analyze
 flutter test
 ```
 

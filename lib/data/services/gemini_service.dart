@@ -93,6 +93,73 @@ class GeminiService {
     }
   }
 
+  /// Gera somente o embedding da pergunta. O corpus é vetorizado offline.
+  ///
+  /// [model] e [dimensions] vêm do asset, não de uma constante independente.
+  /// Assim uma atualização do corpus nunca compara vetores incompatíveis.
+  Future<List<double>> embedQuestion(String text,
+      {required String model, required int dimensions}) async {
+    if (!GeminiConfig.hasApiKey) {
+      throw GeminiServiceException(
+        'Chave da Gemini API não configurada. Veja o README para configurá-la.',
+      );
+    }
+
+    late final http.Response response;
+    try {
+      response = await _client
+          .post(
+            Uri.parse(GeminiConfig.embeddingEndpoint(model)),
+            headers: {
+              'Content-Type': 'application/json',
+              'x-goog-api-key': GeminiConfig.apiKey,
+            },
+            body: jsonEncode({
+              'content': {
+                'parts': [
+                  {'text': text},
+                ],
+              },
+              // Consultas e documentos usam task types complementares para
+              // melhorar a recuperação assimétrica recomendada pela Gemini.
+              'taskType': 'RETRIEVAL_QUERY',
+              'outputDimensionality': dimensions,
+            }),
+          )
+          .timeout(const Duration(seconds: 20));
+    } catch (_) {
+      throw GeminiServiceException(
+        'Não foi possível gerar a busca semântica. Verifique sua internet.',
+      );
+    }
+
+    if (response.statusCode != 200) {
+      throw GeminiServiceException(
+        _messageForError(response.statusCode, response.bodyBytes),
+      );
+    }
+
+    try {
+      final data =
+          jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
+      final values =
+          (data['embedding'] as Map<String, dynamic>)['values'] as List;
+      final embedding = values
+          .map((value) => (value as num).toDouble())
+          .toList(growable: false);
+      if (embedding.length != dimensions) {
+        throw GeminiServiceException(
+          'A Gemini retornou um embedding com dimensão incompatível.',
+        );
+      }
+      return embedding;
+    } on GeminiServiceException {
+      rethrow;
+    } catch (_) {
+      throw GeminiServiceException('Embedding inesperado da Gemini API.');
+    }
+  }
+
   /// Traduz o erro retornado pela Gemini API em uma mensagem clara para o
   /// usuário final, com base no [statusCode] HTTP e no `status` (código de
   /// erro do Google, ex: "RESOURCE_EXHAUSTED") presente no corpo da
