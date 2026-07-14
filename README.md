@@ -20,7 +20,7 @@ Information and assistance for the Círio of Nazaré in Belém, Pará.
 
 CírioApp helps residents, visitors, and pilgrims access reliable information
 about the Círio of Nazaré. It combines event schedules, useful places, news,
-notifications, and an AI assistant in a bilingual Android application.
+notifications, and an AI assistant.
 
 ## Features
 
