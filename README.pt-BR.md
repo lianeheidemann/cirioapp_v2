@@ -20,8 +20,7 @@ Informação e assistência para o Círio de Nazaré em Belém do Pará.
 
 O CírioApp ajuda moradores, visitantes e peregrinos a acessar informações
 confiáveis sobre o Círio de Nazaré. O aplicativo reúne programação, locais
-úteis, notícias, notificações e um assistente de IA em uma experiência Android
-bilíngue.
+úteis, notícias, notificações e um assistente de IA.
 
 ## Funcionalidades
 
