@@ -72,7 +72,7 @@ A interface é organizada por funcionalidade. Os providers gerenciam o estado da
 cirioapp_v2/
 ├── android/                    # Projeto Android e configurações nativas
 ├── assets/
-│   ├── embeddings.json        # Embeddings da busca semântica local
+│   ├── embeddings.json         # Embeddings da busca semântica local
 │   ├── gif/                    # Demonstrações usadas no README
 │   ├── icon/                   # Ícone do aplicativo
 │   ├── images/                 # Imagens da interface e imagens gerais
