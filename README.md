@@ -98,3 +98,5 @@ dart analyze
 flutter test
 flutter build apk --debug
 ```
+
+![CírioApp interface](assets/gif/AppCirio_Gif.gif)
