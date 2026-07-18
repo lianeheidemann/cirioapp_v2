@@ -197,11 +197,11 @@ Completed foundations:
 - [x] Local semantic retrieval with Gemini integration.
 - [x] Unit and widget tests.
 - [x] Continuous integration with GitHub Actions.
-- [x] Downloadable Android test build.
 
 Planned improvements:
 
 - [ ] [Protect Gemini API calls with a backend service](https://github.com/lianeheidemann/cirioapp_v2/issues/1)
+- [ ] Downloadable Android test build.
 - [ ] [Document beta tests with Android users](https://github.com/lianeheidemann/cirioapp_v2/issues/2)
 - [ ] [Improve accessibility and permission guidance](https://github.com/lianeheidemann/cirioapp_v2/issues/3)
 - [ ] [Add integration tests for critical user flows](https://github.com/lianeheidemann/cirioapp_v2/issues/4)
