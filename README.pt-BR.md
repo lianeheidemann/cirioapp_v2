@@ -197,11 +197,12 @@ Bases concluídas:
 - [x] Recuperação semântica local com integração ao Gemini.
 - [x] Testes unitários e de widgets.
 - [x] Integração contínua com GitHub Actions.
-- [x] Build Android de testes disponível para download.
+.
 
 Melhorias planejadas:
 
 - [ ] [Proteger chamadas ao Gemini com um backend](https://github.com/lianeheidemann/cirioapp_v2/issues/1)
+- [ ] Build Android de testes disponível para download
 - [ ] [Documentar testes beta com usuários Android](https://github.com/lianeheidemann/cirioapp_v2/issues/2)
 - [ ] [Melhorar acessibilidade e explicações de permissões](https://github.com/lianeheidemann/cirioapp_v2/issues/3)
 - [ ] [Adicionar testes de integração para fluxos críticos](https://github.com/lianeheidemann/cirioapp_v2/issues/4)
