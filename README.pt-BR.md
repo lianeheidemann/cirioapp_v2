@@ -210,20 +210,6 @@ Melhorias planejadas:
 
 Consulte todo o trabalho aberto na página de [Issues](https://github.com/lianeheidemann/cirioapp_v2/issues).
 
-## Convenção de commits
-
-Os novos commits devem usar mensagens curtas e específicas:
-
-```text
-feat: add event filtering
-fix: handle denied location permission
-test: cover favorites persistence
-docs: document Firebase setup
-ci: add Flutter test workflow
-```
-
-Sempre que possível, cada commit deve representar uma única alteração compreensível.
-
 ## Demonstração
 
 <p align="center">
