@@ -224,7 +224,7 @@ ci: add Flutter test workflow
 
 Each commit should represent one understandable change whenever possible.
 
-## Demonstração
+## Demonstration 
 
 <p align="center">
   <img
