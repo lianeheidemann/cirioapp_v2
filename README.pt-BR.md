@@ -212,6 +212,8 @@ Consulte todo o trabalho aberto na página de [Issues](https://github.com/lianeh
 
 ## Demonstração
 
+A demonstração abaixo apresenta os principais fluxos da aplicação, incluindo navegação, mapa, favoritos, notícias e assistente de IA.
+
 <p align="center">
   <img
     src="assets/gif/AppCirio_Gif.gif"
