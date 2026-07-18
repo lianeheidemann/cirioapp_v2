@@ -95,9 +95,9 @@ cirioapp_v2/
 │   ├── shared/                 # Componentes reutilizáveis de interface
 │   └── main.dart               # Ponto de entrada da aplicação
 ├── test/                       # Testes unitários e de widgets
-├── .env.example               # Modelo das variáveis de ambiente
-├── firestore.indexes.json     # Índices do Firestore
-├── firestore.rules            # Regras de segurança do Firestore
+├── .env.example                # Modelo das variáveis de ambiente
+├── firestore.indexes.json      # Índices do Firestore
+├── firestore.rules             # Regras de segurança do Firestore
 └── pubspec.yaml                # Dependências e assets do Flutter
 ```
 
