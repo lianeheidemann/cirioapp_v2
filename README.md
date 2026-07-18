@@ -215,7 +215,7 @@ See all open work on the [Issues page](https://github.com/lianeheidemann/cirioap
 <p align="center">
   <img
     src="assets/gif/AppCirio_Gif.gif"
-    alt="Demonstração do CírioApp"
+    alt="CírioApp Demonstation"
     width="320"
   />
 </p>
