@@ -17,7 +17,7 @@ Information and assistance for the Círio of Nazaré in Belém, Pará.
 
 </div>
 
-![CírioApp interface](assets/gif/AppCirio_Gif.gif)
+![Interface do CírioApp](assets/images/interface_v3.png)
 
 ## Overview
 
@@ -223,3 +223,13 @@ ci: add Flutter test workflow
 ```
 
 Each commit should represent one understandable change whenever possible.
+
+## Demonstração
+
+<p align="center">
+  <img
+    src="assets/gif/AppCirio_Gif.gif"
+    alt="Demonstração do CírioApp"
+    width="320"
+  />
+</p>
