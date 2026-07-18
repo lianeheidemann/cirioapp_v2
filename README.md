@@ -210,20 +210,6 @@ Planned improvements:
 
 See all open work on the [Issues page](https://github.com/lianeheidemann/cirioapp_v2/issues).
 
-## Commit convention
-
-New commits should use short, specific messages:
-
-```text
-feat: add event filtering
-fix: handle denied location permission
-test: cover favorites persistence
-docs: document Firebase setup
-ci: add Flutter test workflow
-```
-
-Each commit should represent one understandable change whenever possible.
-
 ## Demonstration 
 
 <p align="center">
