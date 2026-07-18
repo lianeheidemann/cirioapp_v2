@@ -99,4 +99,6 @@ flutter test
 flutter build apk --debug
 ```
 
+## Ilustração 
+
 ![CírioApp interface](assets/gif/AppCirio_Gif.gif)
