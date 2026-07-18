@@ -72,7 +72,7 @@ The interface is organized by feature. Providers manage screen state, repositori
 cirioapp_v2/
 ├── android/                    # Android project and native configuration
 ├── assets/
-│   ├── embeddings.json        # Local semantic-search embeddings
+│   ├── embeddings.json         # Local semantic-search embeddings
 │   ├── gif/                    # README demonstrations
 │   ├── icon/                   # Application icon
 │   ├── images/                 # Interface and general images
