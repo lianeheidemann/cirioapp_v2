@@ -2,7 +2,7 @@
 
 [English](README.md) · **Português**
 
-<img width="110" src="assets/icon/icon.png" alt="Ícone do CírioApp" />
+<img width="110" src="../../assets/icon/icon.png" alt="Ícone do CírioApp" />
 
 # CírioApp
 
@@ -17,7 +17,7 @@ Informação e assistência para o Círio de Nazaré em Belém do Pará.
 
 </div>
 
-![Interface do CírioApp](assets/images/interface_v3.png)
+![Interface do CírioApp](../../assets/images/interface_v3.png)
 
 ## Visão geral
 
@@ -131,7 +131,7 @@ Copy-Item .env.example .env
 
 O aplicativo Android utiliza o pacote `com.lianeheidemann.cirioapp`. Para conectar outro projeto Firebase, execute `flutterfire configure` e publique as regras e os índices versionados do Firestore.
 
-As notícias são lidas da coleção `news`. As notificações utilizam o tópico FCM `cirio_updates`. Consulte [docs/firestore_news.md](docs/firestore_news.md) para ver o esquema e o fluxo de publicação.
+As notícias são lidas da coleção `news`. As notificações utilizam o tópico FCM `cirio_updates`. Consulte [docs/firestore_news.md](../firestore_news.md) para ver o esquema e o fluxo de publicação.
 
 ### Gemini
 
@@ -217,7 +217,7 @@ A demonstração abaixo apresenta os principais fluxos da aplicação, incluindo
 
 <p align="center">
   <img
-    src="assets/gif/AppCirio_Gif.gif"
+    src="../../assets/gif/AppCirio_Gif.gif"
     alt="Demonstração do CírioApp"
     width="320"
   />

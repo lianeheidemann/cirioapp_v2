@@ -1,46 +1,57 @@
 <div align="center">
 
-**English** · [Português](README.pt-BR.md)
-
 <img width="110" src="assets/icon/icon.png" alt="CírioApp icon" />
 
 # CírioApp
 
-Information and assistance for the Círio of Nazaré in Belém, Pará.
+**Information and assistance for the Círio of Nazaré in Belém, Pará.**
 
 [![Flutter CI](https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/flutter-ci.yml/badge.svg)](https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/flutter-ci.yml)
 ![Flutter](https://img.shields.io/badge/Flutter-02569B?style=flat-square&logo=flutter&logoColor=white)
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=flat-square&logo=android&logoColor=white)
 ![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=flat-square&logo=firebase&logoColor=black)
+![License](https://img.shields.io/badge/license-Unlicensed-lightgrey?style=flat-square)
 
-[Download Android installer](https://drive.google.com/drive/folders/1aZ0Zg-uLfLyYJAsUqHGTTOmi-ysluc3D)
+[Download Android installer](https://drive.google.com/drive/folders/1aZ0Zg-uLfLyYJAsUqHGTTOmi-ysluc3D) · [Report an issue](https://github.com/lianeheidemann/cirioapp_v2/issues)
 
 </div>
 
-![Interface do CírioApp](assets/images/interface_v3.png)
+![CírioApp interface](assets/images/interface_v3.png)
 
-## Overview
+## About the project
 
-CírioApp helps residents, visitors, and pilgrims access reliable information about the Círio of Nazaré. It combines event schedules, useful places, news, notifications, maps and an AI assistant in a single Android application.
+**CírioApp** brings together, in a single Android application, the information residents, visitors, and pilgrims need to follow the Círio of Nazaré: event schedules, points of interest on the map, real-time official news, push notifications, favorites, and an AI assistant trained on the context of the celebration.
 
-The downloadable APK is a test distribution. It is not yet a Play Store production release.
+> The downloadable APK is a test distribution and does not yet correspond to a production release on the Play Store.
+
+## Table of contents
+
+- [Features](#features)
+- [Technology stack](#technology-stack)
+- [Architecture](#architecture)
+- [Project structure](#project-structure)
+- [Getting started](#getting-started)
+- [Configuration](#configuration)
+- [Quality and continuous integration](#quality-and-continuous-integration)
+- [Roadmap](#roadmap)
+- [Demonstration](#demonstration)
 
 ## Features
 
-- Event schedule and procession information.
-- OpenStreetMap with points of interest and the user's current location.
-- Real-time editorial news from Cloud Firestore.
-- Push notifications through Firebase Cloud Messaging.
-- On-device favorites and notification history.
-- AI assistant with local semantic retrieval and Gemini.
-- Portuguese and English interface.
+- 📅 Event schedule and procession information.
+- 🗺️ Map with OpenStreetMap, points of interest, and the user's current location.
+- 📰 Real-time editorial news via Cloud Firestore.
+- 🔔 Push notifications with Firebase Cloud Messaging.
+- ⭐ On-device favorites and notification history.
+- 🤖 AI assistant with local semantic retrieval and Gemini.
+- 🌐 Portuguese and English interface.
 
-## Technology
+## Technology stack
 
 | Area | Stack |
 |---|---|
 | App | Flutter, Dart, Provider |
-| Remote services | Firebase Firestore and Cloud Messaging |
+| Remote services | Firebase Firestore, Firebase Cloud Messaging |
 | Maps and location | Flutter Map, OpenStreetMap, Geolocator |
 | Local storage | Shared Preferences |
 | AI | Gemini API and local embeddings |
@@ -64,7 +75,7 @@ flowchart LR
     FB --> FCM[Cloud Messaging]
 ```
 
-The interface is organized by feature. Providers manage screen state, repositories coordinate data access, and services integrate external resources such as Firebase, maps and Gemini.
+The interface is organized by feature. Providers manage screen state, repositories coordinate data access, and services integrate external resources such as Firebase, maps, and Gemini.
 
 ## Project structure
 
@@ -73,9 +84,8 @@ cirioapp_v2/
 ├── android/                    # Android project and native configuration
 ├── assets/
 │   ├── embeddings.json         # Local semantic-search embeddings
-│   ├── gif/                    # README demonstrations
 │   ├── icon/                   # Application icon
-│   ├── images/                 # Interface and general images
+│   ├── images/                 # Interface images
 │   └── news/                   # Local news assets
 ├── docs/                       # Technical documentation
 ├── lib/
@@ -84,24 +94,24 @@ cirioapp_v2/
 │   │   ├── models/             # Domain and persistence models
 │   │   ├── repositories/       # Data-access abstraction
 │   │   ├── services/           # Gemini, Firebase and platform integrations
-│   │   └── storage/            # Local persistence
+│   │   └── local/              # Local persistence
 │   ├── features/
 │   │   ├── ai_assistant/       # AI assistant state and interface
 │   │   ├── events/             # Event schedule
 │   │   ├── favorites/          # Saved items
 │   │   ├── map/                # Map, places and location
-│   │   ├── news/               # Firestore news
+│   │   ├── news/                # Firestore news
 │   │   └── notifications/      # Notification history and state
 │   ├── shared/                 # Reusable UI components
-│   └── main.dart               # Application entry point
+│   └── main.dart                # Application entry point
 ├── test/                       # Unit and widget tests
-├── .env.example                # Environment-variable template
-├── firestore.indexes.json      # Firestore indexes
-├── firestore.rules             # Firestore security rules
-└── pubspec.yaml                # Flutter dependencies and assets
+├── .env.example                 # Environment-variable template
+├── firestore.indexes.json       # Firestore indexes
+├── firestore.rules              # Firestore security rules
+└── pubspec.yaml                 # Flutter dependencies and assets
 ```
 
-## Run locally
+## Getting started
 
 ### Requirements
 
@@ -110,6 +120,8 @@ cirioapp_v2/
 - Android device or emulator
 - Firebase project for remote news and notifications
 - Gemini API key for the AI assistant
+
+### Steps
 
 ```bash
 git clone https://github.com/lianeheidemann/cirioapp_v2.git
@@ -145,7 +157,7 @@ For production, provider credentials must be stored in a protected backend inste
 
 ## Quality and continuous integration
 
-GitHub Actions automatically installs dependencies, runs static analysis and executes the test suite for pushes and pull requests to `main`.
+GitHub Actions automatically installs dependencies, runs static analysis, and executes the test suite for pushes and pull requests to `main`.
 
 Run the same checks locally:
 
@@ -157,42 +169,12 @@ flutter build apk --debug
 
 The badge at the top of this README shows whether the most recent continuous-integration run passed.
 
-## Common problems
-
-### `.env` file not found
-
-Create it from the template before running Flutter:
-
-```bash
-cp .env.example .env
-```
-
-### Gemini assistant reports a missing key
-
-Confirm that `GEMINI_API_KEY` exists in `.env`, then fully restart the application. Hot reload does not always reload environment assets.
-
-### Firebase initialization fails
-
-Confirm that the Android package matches the Firebase application and regenerate the configuration with `flutterfire configure` when using another project.
-
-### Device is not detected
-
-Run `flutter devices`, enable USB debugging on the Android device, or start an emulator before running `flutter run`.
-
-### Location is unavailable
-
-Enable the device location service and grant location permission. The map remains usable without current-location access, but user-position features will be limited.
-
-### Tests fail because configuration is missing
-
-Create `.env` from `.env.example`. The GitHub Actions workflow performs this step automatically.
-
-## Roadmap and issues
+## Roadmap
 
 Completed foundations:
 
 - [x] Flutter application with feature-based organization.
-- [x] Event schedule, maps, favorites, news and notifications.
+- [x] Event schedule, maps, favorites, news, and notifications.
 - [x] Portuguese and English localization.
 - [x] Local semantic retrieval with Gemini integration.
 - [x] Unit and widget tests.
@@ -210,14 +192,22 @@ Planned improvements:
 
 See all open work on the [Issues page](https://github.com/lianeheidemann/cirioapp_v2/issues).
 
-## Demonstration 
+## Demonstration
 
 The demonstration below showcases the application's main user flows, including navigation, maps, favorites, news, and the AI assistant.
 
 <p align="center">
   <img
     src="assets/gif/AppCirio_Gif.gif"
-    alt="CírioApp Demonstation"
+    alt="CírioApp Demonstration"
     width="320"
   />
 </p>
+
+---
+
+<div align="center">
+
+Made for the Círio de Nazaré community 🙏
+
+</div>
