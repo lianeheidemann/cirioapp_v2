@@ -208,6 +208,6 @@ The demonstration below showcases the application's main user flows, including n
 
 <div align="center">
 
-Made for the Círio de Nazaré community 🙏
+Developed by Liane Heidemann
 
 </div>
