@@ -29,7 +29,13 @@ jobs:
           cache: true
 
       - name: Create local environment file
-        run: cp .env.example .env
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          cp .env.example .env
+          if [ -n "$GEMINI_API_KEY" ]; then
+            sed -i "s/^GEMINI_API_KEY=.*/GEMINI_API_KEY=$GEMINI_API_KEY/" .env
+          fi
 
       - name: Install dependencies
         run: flutter pub get
