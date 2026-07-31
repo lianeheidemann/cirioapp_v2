@@ -51,7 +51,8 @@ class GeminiService {
         );
       }
 
-      final content = candidates.first['content'] as Map<String, dynamic>?;
+      final first = candidates.first as Map<String, dynamic>;
+      final content = first['content'] as Map<String, dynamic>?;
       final parts = content?['parts'] as List?;
       final text =
           parts?.map((p) => p['text'] ?? '').join('').toString().trim();
@@ -60,6 +61,16 @@ class GeminiService {
         throw GeminiServiceException(
           'O assistente não retornou uma resposta. Tente reformular a '
           'pergunta.',
+        );
+      }
+
+      // O modelo pode ser interrompido por atingir maxOutputTokens antes de
+      // concluir a resposta. Cachear ou exibir esse texto cortado como se
+      // fosse completo confunde o usuário, então tratamos como erro.
+      if (first['finishReason'] == 'MAX_TOKENS') {
+        throw GeminiServiceException(
+          'A resposta ficou longa demais e foi interrompida. Tente uma '
+          'pergunta mais específica.',
         );
       }
 
@@ -150,7 +161,7 @@ class GeminiService {
       ],
       'generationConfig': {
         'temperature': 0.4,
-        'maxOutputTokens': 800,
+        'maxOutputTokens': 2048,
       },
     });
 

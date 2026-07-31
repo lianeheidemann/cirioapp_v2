@@ -1,3 +1,4 @@
+import '../../core/constants/ai_faqs.dart';
 import '../local/ai_response_cache.dart';
 import '../models/knowledge_embedding.dart';
 import '../services/gemini_service.dart';
@@ -38,6 +39,13 @@ class AiAssistantRepository {
   /// quando não houver cache hit, uma chamada de geração de conteúdo.
   Future<String> askQuestion(String question,
       {bool respondInEnglish = false}) async {
+    final trimmed = question.trim();
+    for (final faq in aiFaqs) {
+      if (trimmed == faq.question || trimmed == faq.questionEn) {
+        return respondInEnglish ? faq.contentEn : faq.content;
+      }
+    }
+
     final embeddingModel = await _semanticSearch.loadModel();
 
     // Esta é a única chamada de embedding feita durante uma pergunta.

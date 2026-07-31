@@ -3,6 +3,7 @@ import '../../core/localization/app_language.dart';
 import 'package:provider/provider.dart';
 import '../../core/theme/app_theme.dart';
 import '../../shared/widgets/cirio_app_bar.dart';
+import '../../core/constants/ai_faqs.dart';
 import 'ai_assistant_provider.dart';
 
 class AiAssistantScreen extends StatefulWidget {
@@ -261,16 +262,8 @@ class _ErrorBubble extends StatelessWidget {
 
 String _translatedQuestion(BuildContext context, String question) {
   if (!context.read<LanguageProvider>().isEnglish) return question;
-  switch (question) {
-    case 'Roteiro para primeira vez no Círio':
-      return 'Guide for my first Círio';
-    case 'Onde encontrar hidratação?':
-      return 'Where can I find hydration points?';
-    case 'Quais locais turísticos visitar?':
-      return 'Which tourist attractions should I visit?';
-    case 'Dicas de segurança':
-      return 'Safety tips';
-    default:
-      return question;
+  for (final faq in aiFaqs) {
+    if (faq.question == question) return faq.questionEn;
   }
+  return question;
 }
