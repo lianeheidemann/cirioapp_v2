@@ -159,7 +159,8 @@ class _FavoriteList extends StatelessWidget {
           title: tr(context, 'Comece sua coleção', 'Start your collection'),
           message: emptyText)
       : ListView.separated(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.fromLTRB(
+              16, 16, 16, 16 + MediaQuery.paddingOf(context).bottom),
           itemCount: count,
           separatorBuilder: (_, __) => const SizedBox(height: 12),
           itemBuilder: builder);

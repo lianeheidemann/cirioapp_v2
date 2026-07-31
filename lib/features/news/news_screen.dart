@@ -51,7 +51,8 @@ class _NewsScreenState extends State<NewsScreen> {
                     context, 'Nenhuma notícia encontrada.', 'No news found.'));
           }
           return ListView.separated(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.fromLTRB(
+                16, 16, 16, 16 + MediaQuery.paddingOf(context).bottom),
             itemCount: p.news.length,
             separatorBuilder: (_, __) => const SizedBox(height: 16),
             itemBuilder: (_, i) => _NewsCard(

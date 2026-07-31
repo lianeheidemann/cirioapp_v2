@@ -75,7 +75,8 @@ class _PlacesScreenState extends State<PlacesScreen> {
                         message: tr(context, 'Nenhum local nesta categoria.',
                             'No places in this category.'))
                     : ListView.separated(
-                        padding: const EdgeInsets.fromLTRB(16, 6, 16, 24),
+                        padding: EdgeInsets.fromLTRB(16, 6, 16,
+                            24 + MediaQuery.paddingOf(context).bottom),
                         itemCount: p.filteredPlaces.length,
                         separatorBuilder: (_, __) => const SizedBox(height: 12),
                         itemBuilder: (_, i) {

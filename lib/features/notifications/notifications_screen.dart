@@ -80,7 +80,8 @@ class NotificationsScreen extends StatelessWidget {
                     )
                   else
                     SliverPadding(
-                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+                      padding: EdgeInsets.fromLTRB(16, 8, 16,
+                          32 + MediaQuery.paddingOf(context).bottom),
                       sliver: SliverList.separated(
                         itemCount: provider.notifications.length,
                         separatorBuilder: (_, __) => const SizedBox(height: 12),
