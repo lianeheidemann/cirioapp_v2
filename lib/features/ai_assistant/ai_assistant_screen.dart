@@ -121,20 +121,21 @@ class _AiAssistantScreenState extends State<AiAssistantScreen> {
                                           : () => _send(
                                               _translatedQuestion(context, q))))
                                   .toList()),
-                          for (final entry in p.history) ...[
+                          if (p.lastQuestion != null) ...[
                             const SizedBox(height: 24),
-                            _Bubble(text: entry.question, user: true),
-                            if (entry.errorMessage != null) ...[
-                              const SizedBox(height: 12),
-                              _ErrorBubble(message: entry.errorMessage!),
-                            ] else if (entry.answer != null) ...[
-                              const SizedBox(height: 12),
-                              _Bubble(text: entry.answer!, user: false),
-                            ] else if (p.isLoading &&
-                                entry == p.history.last) ...[
-                              const SizedBox(height: 12),
-                              const _ThinkingBubble(),
-                            ],
+                            _Bubble(text: p.lastQuestion!, user: true)
+                          ],
+                          if (p.isLoading) ...[
+                            const SizedBox(height: 12),
+                            const _ThinkingBubble()
+                          ],
+                          if (p.errorMessage != null) ...[
+                            const SizedBox(height: 12),
+                            _ErrorBubble(message: p.errorMessage!)
+                          ],
+                          if (p.answer != null) ...[
+                            const SizedBox(height: 12),
+                            _Bubble(text: p.answer!, user: false)
                           ],
                           const SizedBox(height: 16),
                         ],
