@@ -182,7 +182,7 @@ Completed foundations:
 - [x] [Downloadable Android test build via GitHub Releases](https://github.com/lianeheidemann/cirioapp_v2/releases).
 - [x] Versioned GitHub Releases with automatically generated changelogs.
 - [x] AI assistant reliability fixes: cost-free FAQ shortcuts, truncated-response detection, a numeric response-length limit, and a full conversation history for the app session.
-- [x] Home screen layout fix so the system navigation bar no longer covers the bottom card.
+- [x] Safe-area layout fix across the home, events, news, places, favorites, and notifications screens so the system navigation bar no longer covers list content.
 
 Planned improvements:
 
