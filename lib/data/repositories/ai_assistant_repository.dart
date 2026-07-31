@@ -32,8 +32,11 @@ class AiAssistantRepository {
       'completamente desse escopo, explique educadamente que você só pode '
       'ajudar com assuntos do Círio de Nazaré e de Belém. Não invente dados '
       'ausentes do contexto. Responda de forma clara, objetiva e útil, em no '
-      'máximo alguns parágrafos curtos ou uma lista. Em orientações de saúde '
-      'ou segurança, recomende ajuda oficial quando não forem dicas gerais.';
+      'máximo 150 palavras, usando no máximo 6 itens caso a resposta seja '
+      'uma lista. Nunca deixe uma frase ou item pela metade: se o limite não '
+      'for suficiente, priorize os pontos mais importantes e conclua a '
+      'resposta de forma completa. Em orientações de saúde ou segurança, '
+      'recomende ajuda oficial quando não forem dicas gerais.';
 
   /// Responde à pergunta usando no máximo uma chamada de embedding e, apenas
   /// quando não houver cache hit, uma chamada de geração de conteúdo.
