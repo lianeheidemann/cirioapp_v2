@@ -180,6 +180,9 @@ Completed foundations:
 - [x] Unit and widget tests.
 - [x] Continuous integration with GitHub Actions.
 - [x] [Downloadable Android test build via GitHub Releases](https://github.com/lianeheidemann/cirioapp_v2/releases).
+- [x] Versioned GitHub Releases with automatically generated changelogs.
+- [x] AI assistant reliability fixes: cost-free FAQ shortcuts, truncated-response detection, a numeric response-length limit, and a full conversation history for the app session.
+- [x] Home screen layout fix so the system navigation bar no longer covers the bottom card.
 
 Planned improvements:
 
@@ -187,7 +190,6 @@ Planned improvements:
 - [ ] [Document beta tests with Android users](https://github.com/lianeheidemann/cirioapp_v2/issues/2)
 - [ ] [Improve accessibility and permission guidance](https://github.com/lianeheidemann/cirioapp_v2/issues/3)
 - [ ] [Add integration tests for critical user flows](https://github.com/lianeheidemann/cirioapp_v2/issues/4)
-- [ ] Publish a versioned GitHub Release with changelog and known limitations.
 - [ ] Prepare a production distribution strategy.
 
 See all open work on the [Issues page](https://github.com/lianeheidemann/cirioapp_v2/issues).
