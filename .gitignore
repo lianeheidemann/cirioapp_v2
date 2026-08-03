@@ -78,3 +78,10 @@ android/build/reports/
 android/build/
 .gradle/
 *.iml
+
+# Firebase config gerada — não commitar, cada dev/ambiente usa a sua.
+android/app/google-services.json
+
+# Lixo de OS/editor
+desktop.ini
+.vscode/*-index.json
