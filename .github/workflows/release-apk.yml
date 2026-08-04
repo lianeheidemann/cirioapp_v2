@@ -30,7 +30,7 @@ jobs:
 
       - name: Create local environment file
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_KEY_INSTITUCIONAL }}
         run: |
           cp .env.example .env
           if [ -n "$GEMINI_API_KEY" ]; then
