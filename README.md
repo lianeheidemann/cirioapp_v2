@@ -31,7 +31,7 @@
 - [Architecture](#architecture)
 - [Project structure](#project-structure)
 - [Getting started](#getting-started)
-- [Configuration](#configuration)
+- [Configuration Keys](#configuration-keys)
 - [Quality and continuous integration](#quality-and-continuous-integration)
 - [Roadmap](#roadmap)
 - [Demonstration](#demonstration)
@@ -137,7 +137,10 @@ On PowerShell, use:
 Copy-Item .env.example .env
 ```
 
-## Configuration
+## Configuration Keys
+
+<details>
+<summary>Show details</summary>
 
 Anyone who wants to run or build their own copy of the project needs their own Gemini and Firebase credentials — create both on their respective sites, as described below. Never commit real keys to the repository.
 
@@ -170,7 +173,12 @@ The [release workflow](.github/workflows/release-apk.yml) builds the release APK
 | `GEMINI_API_KEY` | The Gemini API key created above. |
 | `GOOGLE_SERVICES_JSON_BASE64` | Your `android/app/google-services.json`, base64-encoded (`base64 -w 0 android/app/google-services.json`). |
 
+</details>
+
 ## Quality and continuous integration
+
+<details>
+<summary>Show details</summary>
 
 GitHub Actions automatically installs dependencies, runs static analysis, and executes the test suite for pushes and pull requests to `main`.
 
@@ -184,7 +192,12 @@ flutter build apk --debug
 
 The badge at the top of this README shows whether the most recent continuous-integration run passed.
 
+</details>
+
 ## Roadmap
+
+<details>
+<summary>Show details</summary>
 
 Completed foundations:
 
@@ -208,6 +221,8 @@ Planned improvements:
 - [ ] Prepare a production distribution strategy.
 
 See all open work on the [Issues page](https://github.com/lianeheidemann/cirioapp_v2/issues).
+
+</details>
 
 ## Demonstration
 
