@@ -31,7 +31,7 @@
 - [Architecture](#architecture)
 - [Project structure](#project-structure)
 - [Getting started](#getting-started)
-- [Configuration](#configuration)
+- [Configuration Keys](#configuration-keys)
 - [Quality and continuous integration](#quality-and-continuous-integration)
 - [Roadmap](#roadmap)
 - [Demonstration](#demonstration)
@@ -137,7 +137,7 @@ On PowerShell, use:
 Copy-Item .env.example .env
 ```
 
-## Configuration
+## Configuration Keys
 
 Anyone who wants to run or build their own copy of the project needs their own Gemini and Firebase credentials — create both on their respective sites, as described below. Never commit real keys to the repository.
 
