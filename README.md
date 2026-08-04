@@ -139,21 +139,36 @@ Copy-Item .env.example .env
 
 ## Configuration
 
+Anyone who wants to run or build their own copy of the project needs their own Gemini and Firebase credentials — create both on their respective sites, as described below. Never commit real keys to the repository.
+
 ### Firebase
 
-The Android app uses the package `com.lianeheidemann.cirioapp`. To connect another Firebase project, run `flutterfire configure` and deploy the versioned Firestore rules and indexes.
+The Android app uses the package `com.lianeheidemann.cirioapp`.
+
+1. Create a project at the [Firebase console](https://console.firebase.google.com/) and register an Android app under that package name.
+2. Install the [FlutterFire CLI](https://firebase.google.com/docs/flutter/setup) and run `flutterfire configure` to download `android/app/google-services.json` and regenerate `lib/firebase_options.dart` with your project's credentials.
+3. Deploy the versioned Firestore rules and indexes: `firebase deploy --only firestore:rules,firestore:indexes`.
 
 News is read from the `news` collection. Notifications use the `cirio_updates` FCM topic. See [docs/firestore_news.md](docs/firestore_news.md) for the schema and publishing workflow.
 
 ### Gemini
 
-Add a development key to `.env`:
+Create an API key at [Google AI Studio](https://aistudio.google.com/app/apikey), then copy `.env.example` to `.env` and fill it in:
 
 ```env
 GEMINI_API_KEY=your_key
 ```
 
 For production, provider credentials must be stored in a protected backend instead of being shipped inside the APK. This improvement is tracked in [issue #1](https://github.com/lianeheidemann/cirioapp_v2/issues/1).
+
+### GitHub Actions secrets
+
+The [release workflow](.github/workflows/release-apk.yml) builds the release APK with your credentials instead of `.env`. Add these as repository secrets under **Settings → Secrets and variables → Actions**:
+
+| Secret | Value |
+|---|---|
+| `GEMINI_API_KEY` | The Gemini API key created above. |
+| `GOOGLE_SERVICES_JSON_BASE64` | Your `android/app/google-services.json`, base64-encoded (`base64 -w 0 android/app/google-services.json`). |
 
 ## Quality and continuous integration
 
