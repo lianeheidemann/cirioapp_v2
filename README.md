@@ -141,17 +141,36 @@ Copy-Item .env.example .env
 
 ### Firebase
 
-The Android app uses the package `com.lianeheidemann.cirioapp`. To connect another Firebase project, run `flutterfire configure` and deploy the versioned Firestore rules and indexes.
+The Android app uses the package `com.lianeheidemann.cirioapp`. To connect your own Firebase project:
+
+1. Create a Firebase project (or reuse an existing one) with an Android app registered under that package name.
+2. Install the [FlutterFire CLI](https://firebase.google.com/docs/flutter/setup) and run `flutterfire configure`. This downloads `android/app/google-services.json` and regenerates `lib/firebase_options.dart` with your project's credentials.
+3. `android/app/google-services.json` is listed in `.gitignore` — never commit it; each developer or environment keeps their own copy.
+4. Deploy the versioned Firestore rules and indexes: `firebase deploy --only firestore:rules,firestore:indexes`.
 
 News is read from the `news` collection. Notifications use the `cirio_updates` FCM topic. See [docs/firestore_news.md](docs/firestore_news.md) for the schema and publishing workflow.
 
 ### Gemini
 
-Add a development key to `.env`:
+1. Create an API key at [Google AI Studio](https://aistudio.google.com/app/apikey).
+2. Provide the key to the app using one of the following (checked in this priority order, see `lib/core/constants/gemini_config.dart`):
 
-```env
-GEMINI_API_KEY=your_key
-```
+   - **Recommended** — pass it at build/run time with `--dart-define`:
+
+     ```bash
+     flutter run --dart-define=GEMINI_API_KEY=your_key
+     flutter build apk --dart-define=GEMINI_API_KEY=your_key
+     ```
+
+   - **Local development** — copy `.env.example` to `.env` and fill in the key:
+
+     ```env
+     GEMINI_API_KEY=your_key
+     ```
+
+     `.env` is listed in `.gitignore` — never commit a real key.
+
+   - **Quick local testing only** — set `GeminiConfig.fallbackApiKey` directly in `lib/core/constants/gemini_config.dart`. Keep it empty before committing.
 
 For production, provider credentials must be stored in a protected backend instead of being shipped inside the APK. This improvement is tracked in [issue #1](https://github.com/lianeheidemann/cirioapp_v2/issues/1).
 
