@@ -139,40 +139,36 @@ Copy-Item .env.example .env
 
 ## Configuration
 
+Anyone who wants to run or build their own copy of the project needs their own Gemini and Firebase credentials — create both on their respective sites, as described below. Never commit real keys to the repository.
+
 ### Firebase
 
-The Android app uses the package `com.lianeheidemann.cirioapp`. To connect your own Firebase project:
+The Android app uses the package `com.lianeheidemann.cirioapp`.
 
-1. Create a Firebase project (or reuse an existing one) with an Android app registered under that package name.
-2. Install the [FlutterFire CLI](https://firebase.google.com/docs/flutter/setup) and run `flutterfire configure`. This downloads `android/app/google-services.json` and regenerates `lib/firebase_options.dart` with your project's credentials.
-3. `android/app/google-services.json` is listed in `.gitignore` — never commit it; each developer or environment keeps their own copy.
-4. Deploy the versioned Firestore rules and indexes: `firebase deploy --only firestore:rules,firestore:indexes`.
+1. Create a project at the [Firebase console](https://console.firebase.google.com/) and register an Android app under that package name.
+2. Install the [FlutterFire CLI](https://firebase.google.com/docs/flutter/setup) and run `flutterfire configure` to download `android/app/google-services.json` and regenerate `lib/firebase_options.dart` with your project's credentials.
+3. Deploy the versioned Firestore rules and indexes: `firebase deploy --only firestore:rules,firestore:indexes`.
 
 News is read from the `news` collection. Notifications use the `cirio_updates` FCM topic. See [docs/firestore_news.md](docs/firestore_news.md) for the schema and publishing workflow.
 
 ### Gemini
 
-1. Create an API key at [Google AI Studio](https://aistudio.google.com/app/apikey).
-2. Provide the key to the app using one of the following (checked in this priority order, see `lib/core/constants/gemini_config.dart`):
+Create an API key at [Google AI Studio](https://aistudio.google.com/app/apikey), then copy `.env.example` to `.env` and fill it in:
 
-   - **Recommended** — pass it at build/run time with `--dart-define`:
-
-     ```bash
-     flutter run --dart-define=GEMINI_API_KEY=your_key
-     flutter build apk --dart-define=GEMINI_API_KEY=your_key
-     ```
-
-   - **Local development** — copy `.env.example` to `.env` and fill in the key:
-
-     ```env
-     GEMINI_API_KEY=your_key
-     ```
-
-     `.env` is listed in `.gitignore` — never commit a real key.
-
-   - **Quick local testing only** — set `GeminiConfig.fallbackApiKey` directly in `lib/core/constants/gemini_config.dart`. Keep it empty before committing.
+```env
+GEMINI_API_KEY=your_key
+```
 
 For production, provider credentials must be stored in a protected backend instead of being shipped inside the APK. This improvement is tracked in [issue #1](https://github.com/lianeheidemann/cirioapp_v2/issues/1).
+
+### GitHub Actions secrets
+
+The [release workflow](.github/workflows/release-apk.yml) builds the release APK with your credentials instead of `.env`. Add these as repository secrets under **Settings → Secrets and variables → Actions**:
+
+| Secret | Value |
+|---|---|
+| `GEMINI_API_KEY` | The Gemini API key created above. |
+| `GOOGLE_SERVICES_JSON_BASE64` | Your `android/app/google-services.json`, base64-encoded (`base64 -w 0 android/app/google-services.json`). |
 
 ## Quality and continuous integration
 
