@@ -45,9 +45,7 @@ jobs:
             echo "::error::Secret GOOGLE_SERVICES_JSON_BASE64 não configurado. Build do Android requer google-services.json."
             exit 1
           fi
-          clean=$(echo "$GOOGLE_SERVICES_JSON_BASE64" | tr -d '[:space:]')
-          echo "Diagnóstico (não sensível): tamanho do secret bruto=${#GOOGLE_SERVICES_JSON_BASE64} chars, limpo=${#clean} chars, resto na divisão por 4=$(( ${#clean} % 4 ))"
-          echo "$clean" | base64 -d --ignore-garbage > android/app/google-services.json
+          echo "$GOOGLE_SERVICES_JSON_BASE64" | tr -d '[:space:]' | base64 -d --ignore-garbage > android/app/google-services.json
 
       - name: Install dependencies
         run: flutter pub get
