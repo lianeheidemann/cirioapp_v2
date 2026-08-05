@@ -12,7 +12,7 @@
 ![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=flat-square&logo=firebase&logoColor=black)
 ![License](https://img.shields.io/badge/license-Unlicensed-lightgrey?style=flat-square)
 
-[Download Android installer](https://drive.google.com/drive/folders/1aZ0Zg-uLfLyYJAsUqHGTTOmi-ysluc3D) · [Report an issue](https://github.com/lianeheidemann/cirioapp/issues)
+[Download Android installer](https://github.com/lianeheidemann/cirioapp_v2/releases) · [Report an issue](https://github.com/lianeheidemann/cirioapp/issues)
 
 </div>
 
