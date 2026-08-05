@@ -6,13 +6,13 @@
 
 **Information and assistance for the Círio of Nazaré in Belém, Pará.**
 
-[![Flutter CI](https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/flutter-ci.yml/badge.svg)](https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/flutter-ci.yml)
+[![Flutter CI](https://github.com/lianeheidemann/cirioapp/actions/workflows/flutter-ci.yml/badge.svg)](https://github.com/lianeheidemann/cirioapp/actions/workflows/flutter-ci.yml)
 ![Flutter](https://img.shields.io/badge/Flutter-02569B?style=flat-square&logo=flutter&logoColor=white)
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=flat-square&logo=android&logoColor=white)
 ![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=flat-square&logo=firebase&logoColor=black)
 ![License](https://img.shields.io/badge/license-Unlicensed-lightgrey?style=flat-square)
 
-[Download Android installer](https://drive.google.com/drive/folders/1aZ0Zg-uLfLyYJAsUqHGTTOmi-ysluc3D) · [Report an issue](https://github.com/lianeheidemann/cirioapp_v2/issues)
+[Download Android installer](https://drive.google.com/drive/folders/1aZ0Zg-uLfLyYJAsUqHGTTOmi-ysluc3D) · [Report an issue](https://github.com/lianeheidemann/cirioapp/issues)
 
 </div>
 
@@ -80,7 +80,7 @@ The interface is organized by feature. Providers manage screen state, repositori
 ## Project structure
 
 ```text
-cirioapp_v2/
+cirioapp/
 ├── android/                    # Android project and native configuration
 ├── assets/
 │   ├── embeddings.json         # Local semantic-search embeddings
@@ -124,8 +124,8 @@ cirioapp_v2/
 ### Steps
 
 ```bash
-git clone https://github.com/lianeheidemann/cirioapp_v2.git
-cd cirioapp_v2
+git clone https://github.com/lianeheidemann/cirioapp.git
+cd cirioapp
 cp .env.example .env
 flutter pub get
 flutter run
@@ -162,7 +162,7 @@ Create an API key at [Google AI Studio](https://aistudio.google.com/app/apikey),
 GEMINI_API_KEY=your_key
 ```
 
-For production, provider credentials must be stored in a protected backend instead of being shipped inside the APK. This improvement is tracked in [issue #1](https://github.com/lianeheidemann/cirioapp_v2/issues/1).
+For production, provider credentials must be stored in a protected backend instead of being shipped inside the APK. This improvement is tracked in [issue #1](https://github.com/lianeheidemann/cirioapp/issues/1).
 
 ### GitHub Actions secrets
 
@@ -207,20 +207,20 @@ Completed foundations:
 - [x] Local semantic retrieval with Gemini integration.
 - [x] Unit and widget tests.
 - [x] Continuous integration with GitHub Actions.
-- [x] [Downloadable Android test build via GitHub Releases](https://github.com/lianeheidemann/cirioapp_v2/releases).
+- [x] [Downloadable Android test build via GitHub Releases](https://github.com/lianeheidemann/cirioapp/releases).
 - [x] Versioned GitHub Releases with automatically generated changelogs.
 - [x] AI assistant reliability fixes: cost-free FAQ shortcuts, truncated-response detection, a numeric response-length limit, and a full conversation history for the app session.
 - [x] Safe-area layout fix across the home, events, news, places, favorites, and notifications screens so the system navigation bar no longer covers list content.
 
 Planned improvements:
 
-- [ ] [Protect Gemini API calls with a backend service](https://github.com/lianeheidemann/cirioapp_v2/issues/1)
-- [ ] [Document beta tests with Android users](https://github.com/lianeheidemann/cirioapp_v2/issues/2)
-- [ ] [Improve accessibility and permission guidance](https://github.com/lianeheidemann/cirioapp_v2/issues/3)
-- [ ] [Add integration tests for critical user flows](https://github.com/lianeheidemann/cirioapp_v2/issues/4)
+- [ ] [Protect Gemini API calls with a backend service](https://github.com/lianeheidemann/cirioapp/issues/1)
+- [ ] [Document beta tests with Android users](https://github.com/lianeheidemann/cirioapp/issues/2)
+- [ ] [Improve accessibility and permission guidance](https://github.com/lianeheidemann/cirioapp/issues/3)
+- [ ] [Add integration tests for critical user flows](https://github.com/lianeheidemann/cirioapp/issues/4)
 - [ ] Prepare a production distribution strategy.
 
-See all open work on the [Issues page](https://github.com/lianeheidemann/cirioapp_v2/issues).
+See all open work on the [Issues page](https://github.com/lianeheidemann/cirioapp/issues).
 
 </details>
 
