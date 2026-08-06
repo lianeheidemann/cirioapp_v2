@@ -5,6 +5,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import '../../core/constants/app_constants.dart';
+import '../../core/constants/map_constants.dart';
 import '../../core/theme/app_theme.dart';
 import '../../data/models/place_model.dart';
 import '../../shared/widgets/cirio_app_bar.dart';
@@ -20,17 +21,6 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   final MapController _mapController = MapController();
-
-  static const List<LatLng> _cirioRoute = [
-    LatLng(-1.456108, -48.504719), // Catedral Metropolitana de Belém
-    LatLng(-1.453650, -48.501180), // Acesso à avenida Presidente Vargas
-    LatLng(-1.450300, -48.499150), // Avenida Presidente Vargas
-    LatLng(-1.447360, -48.494850), // Praça da República
-    LatLng(-1.448100, -48.491550), // Início da avenida Nazaré
-    LatLng(-1.450200, -48.485000), // Avenida Nazaré
-    LatLng(-1.452000, -48.479700), // Aproximação da Praça Santuário
-    LatLng(-1.452624, -48.476270), // Basílica de Nazaré
-  ];
 
   @override
   void initState() {
@@ -169,9 +159,12 @@ class _MapScreenState extends State<MapScreen> {
 
   void _centerCirioRoute() {
     _mapController.fitCamera(
-      const CameraFit.coordinates(
-        coordinates: _cirioRoute,
-        padding: EdgeInsets.fromLTRB(40, 72, 40, 112),
+      CameraFit.coordinates(
+        coordinates: [
+          ...MapConstants.rotaCirio,
+          ...MapConstants.rotaTranslacao,
+        ],
+        padding: const EdgeInsets.fromLTRB(40, 72, 40, 112),
         maxZoom: 15,
       ),
     );
@@ -225,37 +218,45 @@ class _MapScreenState extends State<MapScreen> {
                     userAgentPackageName: 'com.example.cirio_app',
                     maxZoom: 19,
                   ),
-                  // Traçado do percurso do Círio
+                  // Traçado das duas procissões do Círio
                   PolylineLayer(
                     polylines: [
                       Polyline(
-                        points: _cirioRoute,
+                        points: MapConstants.rotaCirio,
                         strokeWidth: 5,
                         color: AppColors.gold,
                         borderStrokeWidth: 2,
                         borderColor: AppColors.navy,
                       ),
+                      Polyline(
+                        points: MapConstants.rotaTranslacao,
+                        strokeWidth: 5,
+                        color: AppColors.success,
+                        borderStrokeWidth: 2,
+                        borderColor: AppColors.navy,
+                        pattern: StrokePattern.dashed(segments: const [12, 8]),
+                      ),
                     ],
                   ),
-                  // Marcadores de saída e chegada do percurso
+                  // Marcadores da Catedral e da Basílica, pontas das duas rotas
                   MarkerLayer(
                     markers: [
                       _routeEndpointMarker(
-                        point: _cirioRoute.first,
+                        point: MapConstants.catedral,
                         icon: Icons.flag_outlined,
                         tooltip: tr(
                           context,
-                          'Saída: Catedral Metropolitana de Belém',
-                          'Start: Metropolitan Cathedral of Belém',
+                          'Catedral Metropolitana de Belém',
+                          'Metropolitan Cathedral of Belém',
                         ),
                       ),
                       _routeEndpointMarker(
-                        point: _cirioRoute.last,
+                        point: MapConstants.basilica,
                         icon: Icons.church_outlined,
                         tooltip: tr(
                           context,
-                          'Chegada: Basílica de Nazaré',
-                          'Finish: Basilica of Nazaré',
+                          'Basílica de Nazaré',
+                          'Basilica of Nazaré',
                         ),
                       ),
                     ],
@@ -690,7 +691,7 @@ class _MapLegendState extends State<_MapLegend> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        tr(context, 'Categorias', 'Categories'),
+                        tr(context, 'Rotas', 'Routes'),
                         style: const TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
@@ -701,6 +702,26 @@ class _MapLegendState extends State<_MapLegend> {
                       const Icon(Icons.keyboard_arrow_up,
                           size: 16, color: AppTheme.textLight),
                     ],
+                  ),
+                  const SizedBox(height: 6),
+                  _RouteLegendRow(
+                    color: AppColors.gold,
+                    label: tr(context, 'Rota do Círio', 'Círio route'),
+                  ),
+                  const SizedBox(height: 4),
+                  _RouteLegendRow(
+                    color: AppColors.success,
+                    label:
+                        tr(context, 'Rota da Trasladação', 'Trasladação route'),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    tr(context, 'Categorias', 'Categories'),
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.textDark,
+                    ),
                   ),
                   const SizedBox(height: 6),
                   ..._items.map((item) => Padding(
@@ -747,6 +768,31 @@ class _MapLegendState extends State<_MapLegend> {
       ),
     );
   }
+}
+
+class _RouteLegendRow extends StatelessWidget {
+  final Color color;
+  final String label;
+
+  const _RouteLegendRow({required this.color, required this.label});
+
+  @override
+  Widget build(BuildContext context) => Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 20,
+            height: 4,
+            decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          const SizedBox(width: 6),
+          Text(label,
+              style: const TextStyle(fontSize: 11, color: AppTheme.textDark)),
+        ],
+      );
 }
 
 class _LegendItem {

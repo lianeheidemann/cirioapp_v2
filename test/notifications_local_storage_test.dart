@@ -65,4 +65,34 @@ void main() {
 
     expect(await storage.load(), isEmpty);
   });
+
+  test('fromJson trata ausencia de isRead como ja lida (dado legado)', () {
+    final legacyJson = {
+      'id': '1',
+      'title': 'Antiga',
+      'body': 'Mensagem',
+      'receivedAt': DateTime(2026, 10, 10).toIso8601String(),
+      'data': <String, String>{},
+    };
+
+    final notification = AppNotification.fromJson(legacyJson);
+
+    expect(notification.isRead, isTrue);
+  });
+
+  test('save persiste o estado de leitura atualizado', () async {
+    final storage = NotificationsLocalStorage();
+    final added = await storage.add(AppNotification(
+      id: '1',
+      title: 'Teste',
+      body: '',
+      receivedAt: DateTime(2026),
+    ));
+    expect(added.single.isRead, isFalse);
+
+    await storage.save(added.map((n) => n.copyWith(isRead: true)).toList());
+
+    final reloaded = await storage.load();
+    expect(reloaded.single.isRead, isTrue);
+  });
 }

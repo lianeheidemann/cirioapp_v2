@@ -9,8 +9,22 @@ import '../../shared/widgets/cirio_app_bar.dart';
 import '../../shared/widgets/empty_state_widget.dart';
 import 'notifications_provider.dart';
 
-class NotificationsScreen extends StatelessWidget {
+class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
+
+  @override
+  State<NotificationsScreen> createState() => _NotificationsScreenState();
+}
+
+class _NotificationsScreenState extends State<NotificationsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      context.read<NotificationsProvider>().markAllRead();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

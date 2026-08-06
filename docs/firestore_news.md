@@ -41,3 +41,20 @@ rascunhos e altere para `true` somente quando o documento estiver completo.
 
 As regras permitem leitura pública apenas de notícias publicadas e bloqueiam
 qualquer escrita pelo aplicativo. Não altere para escrita pública.
+
+## Notificações push e deep link para uma notícia
+
+Ao enviar uma campanha do FCM (Console do Firebase ou API) para o tópico
+`cirio_updates`, inclua estes campos em `data` para que o toque na
+notificação abra a notícia correspondente em vez de cair na tela genérica de
+Notificações:
+
+| Campo `data` | Valor |
+|---|---|
+| `type` | `news` |
+| `newsId` | ID do documento da coleção `news` |
+
+Sem esses campos (ou se a notícia ainda não estiver carregada no app no
+momento do toque), o app abre a tela de Notificações normalmente — não há
+erro, apenas nenhum deep link. Veja a lógica em
+[`lib/features/notifications/notification_navigation_gate.dart`](../lib/features/notifications/notification_navigation_gate.dart).

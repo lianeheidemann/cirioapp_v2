@@ -63,6 +63,11 @@ class FirebaseNotificationsService {
   Stream<AppNotification> get onNotificationOpened =>
       FirebaseMessaging.onMessageOpenedApp.map(notificationFromMessage);
 
+  /// Toque num banner local, repassado do [LocalNotificationsService] para
+  /// quem gerencia o histórico e a navegação.
+  Stream<AppNotification> get onLocalNotificationTapped =>
+      _localNotifications?.onTapped ?? const Stream<AppNotification>.empty();
+
   Future<AppNotification?> getInitialNotification() async {
     final message = await _messaging.getInitialMessage();
     return message == null ? null : notificationFromMessage(message);

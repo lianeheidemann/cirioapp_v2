@@ -6,7 +6,7 @@ import '../models/app_notification.dart';
 
 class NotificationsLocalStorage {
   static const _storageKey = 'received_notifications';
-  static const _maximumItems = 100;
+  static const _maximumItems = 30;
 
   Future<List<AppNotification>> load() async {
     final preferences = await SharedPreferences.getInstance();
@@ -37,6 +37,9 @@ class NotificationsLocalStorage {
     await _save(notifications);
     return notifications;
   }
+
+  Future<void> save(List<AppNotification> notifications) =>
+      _save(notifications);
 
   Future<void> clear() async {
     final preferences = await SharedPreferences.getInstance();

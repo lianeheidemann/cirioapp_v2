@@ -7,6 +7,7 @@ import '../events/events_screen.dart';
 import '../favorites/favorites_screen.dart';
 import '../map/map_screen.dart';
 import '../news/news_screen.dart';
+import '../notifications/notifications_provider.dart';
 import '../notifications/notifications_screen.dart';
 import '../places/places_screen.dart';
 
@@ -20,6 +21,8 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final language = context.watch<LanguageProvider>();
     final english = language.isEnglish;
+    final hasUnreadNotifications =
+        context.watch<NotificationsProvider>().hasUnread;
     final links = [
       (
         english ? 'Events' : 'Eventos',
@@ -148,6 +151,7 @@ class HomeScreen extends StatelessWidget {
                 subtitle: english
                     ? 'Important alerts and guidance'
                     : 'Avisos e orientações importantes',
+                showDot: hasUnreadNotifications,
                 onTap: () => _open(context, const NotificationsScreen()),
               ),
             ),
@@ -225,11 +229,13 @@ class _ActionCard extends StatelessWidget {
   final String title;
   final String subtitle;
   final VoidCallback onTap;
+  final bool showDot;
   const _ActionCard(
       {required this.icon,
       required this.title,
       required this.subtitle,
-      required this.onTap});
+      required this.onTap,
+      this.showDot = false});
 
   @override
   Widget build(BuildContext context) => Container(
@@ -246,12 +252,33 @@ class _ActionCard extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: Row(children: [
-                    Container(
-                        width: 48,
-                        height: 48,
-                        decoration: const BoxDecoration(
-                            color: AppColors.softGold, shape: BoxShape.circle),
-                        child: Icon(icon, color: AppColors.gold)),
+                    Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Container(
+                            width: 48,
+                            height: 48,
+                            decoration: const BoxDecoration(
+                                color: AppColors.softGold,
+                                shape: BoxShape.circle),
+                            child: Icon(icon, color: AppColors.gold)),
+                        if (showDot)
+                          Positioned(
+                            top: -1,
+                            right: -1,
+                            child: Container(
+                              width: 14,
+                              height: 14,
+                              decoration: BoxDecoration(
+                                color: AppColors.success,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                    color: AppColors.surface, width: 2),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
                     const SizedBox(width: 16),
                     Expanded(
                         child: Column(
