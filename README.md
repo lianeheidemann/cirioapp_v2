@@ -7,6 +7,7 @@
 **Information and assistance for the Círio of Nazaré in Belém, Pará.**
 
 [![Flutter CI](https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/flutter-ci.yml/badge.svg)](https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/flutter-ci.yml)
+[![Release APK](https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/release-apk.yml/badge.svg)](https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/release-apk.yml)
 ![Flutter](https://img.shields.io/badge/Flutter-02569B?style=flat-square&logo=flutter&logoColor=white)
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=flat-square&logo=android&logoColor=white)
 ![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=flat-square&logo=firebase&logoColor=black)
