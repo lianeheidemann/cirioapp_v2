@@ -1,0 +1,5 @@
+@Criar imagem social preview para GitHub:
+
+1. 1280×640px
+2. PNG
+3. Arquivo final com **menos de 1 MB
