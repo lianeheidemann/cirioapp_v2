@@ -249,8 +249,4 @@ The demonstration below showcases the application's main user flows, including n
 
 ---
 
-<div align="center">
-
-Developed by Liane Heidemann
-
-</div>
+<p align="center">Developed by <strong>Liane Heidemann</strong></p>
