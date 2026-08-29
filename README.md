@@ -3,6 +3,7 @@
 <img width="110" src="assets/icon/icon.png" alt="CírioApp icon" />
 
 # CírioApp
+<img width="210" src="https://img.shields.io/badge/project-work%20in%20progress-9333EA?style=for-the-badge" />
 
 **Information and assistance for the Círio of Nazaré in Belém, Pará.**
 
