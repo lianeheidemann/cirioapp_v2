@@ -4,17 +4,28 @@
 
 # CírioApp
 
-![Flutter](https://img.shields.io/badge/Flutter-02569B?style=flat-square&logo=flutter&logoColor=white)
-![Android](https://img.shields.io/badge/Android-3DDC84?style=flat-square&logo=android&logoColor=white)
-![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=flat-square&logo=firebase&logoColor=black)
-![License](https://img.shields.io/badge/license-Unlicensed-lightgrey?style=flat-square)<br>
-[![Flutter CI](https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/flutter-ci.yml/badge.svg)](https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/flutter-ci.yml)
-[![Release APK](https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/release-apk.yml/badge.svg)](https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/release-apk.yml)
+<p>
+  <img width="110" src="assets/badges/cirio-app-badge-flutter.png" >
+  &nbsp;
+  <img width="110" src="assets/badges/cirio-app-badge-android.png" >
+  &nbsp;
+  <img width="110" src="assets/badges/cirio-app-badge-firebase.png" >
+  &nbsp;
+  <img width="110" src="assets/badges/cirio-app-badge-unlicensed.png" >
+</p>
 
-<img width="200" src="https://img.shields.io/badge/project-work%20in%20progress-9333EA?style=for-the-badge" /><br>
+<p>
+  <a href="https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/flutter-ci.yml">
+    <img src="https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/flutter-ci.yml/badge.svg" alt="Flutter CI">
+  </a>
+  <a href="https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/release-apk.yml">
+    <img src="https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/release-apk.yml/badge.svg" alt="Release APK">
+  </a>
+</p>
+
+<img width="200" src="https://img.shields.io/badge/project-work%20in%20progress-9333EA?style=for-the-badge" alt="Work in progress">
 
 </div>
-
 ## About the project
 
 **CírioApp** brings together, in a single Android application, the information residents, visitors, and pilgrims need to follow the Círio of Nazaré: event schedules, points of interest on the map, real-time official news, push notifications, favorites, and an AI assistant trained on the context of the celebration.
