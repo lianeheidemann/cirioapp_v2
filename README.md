@@ -239,7 +239,7 @@ The demonstration below showcases the application's main user flows, including n
   <img
     src="assets/gif/AppCirio_Gif-v2.webp"
     alt="CírioApp Demonstration"
-    width="320"
+    width="260"
   />
 </p>
 
