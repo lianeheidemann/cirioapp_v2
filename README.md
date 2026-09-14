@@ -3,9 +3,6 @@
 <img width="110" src="assets/icon/icon.png" alt="CírioApp icon" />
 
 # CírioApp
-<img width="210" src="https://img.shields.io/badge/project-work%20in%20progress-9333EA?style=for-the-badge" />
-
-**Information and assistance for the Círio of Nazaré in Belém, Pará.**
 
 ![Flutter](https://img.shields.io/badge/Flutter-02569B?style=flat-square&logo=flutter&logoColor=white)
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=flat-square&logo=android&logoColor=white)
@@ -14,7 +11,12 @@
 [![Flutter CI](https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/flutter-ci.yml/badge.svg)](https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/flutter-ci.yml)
 [![Release APK](https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/release-apk.yml/badge.svg)](https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/release-apk.yml)
 
-[Download Android installer](https://github.com/lianeheidemann/cirioapp_v2/releases) · [Report an issue](https://github.com/lianeheidemann/cirioapp_v2/issues)
+<img width="180" src="https://img.shields.io/badge/project-work%20in%20progress-9333EA?style=for-the-badge" /><br>
+
+
+```
+**Information and assistance for the Círio of Nazaré in Belém, Pará.**
+```
 
 </div>
 
