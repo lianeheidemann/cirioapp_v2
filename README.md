@@ -4,22 +4,13 @@
 
 # CírioApp
 
-![Flutter](https://img.shields.io/badge/Flutter-0A1F44?style=for-the-badge&logo=flutter&logoColor=C9A227)
-![Android](https://img.shields.io/badge/Android-0A1F44?style=for-the-badge&logo=android&logoColor=C9A227)
-![Firebase](https://img.shields.io/badge/Firebase-0A1F44?style=for-the-badge&logo=firebase&logoColor=C9A227)
-![License](https://img.shields.io/badge/License-Restricted-0A1F44?style=for-the-badge&labelColor=0A1F44&color=C9A227)
+<img width="450" src="assets/badges/cirio-app-badges-v2.png" />
 
-<p>
-  <a href="https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/flutter-ci.yml">
-    <img src="https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/flutter-ci.yml/badge.svg" alt="Flutter CI">
-  </a><a href="https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/release-apk.yml">
-    <img src="https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/release-apk.yml/badge.svg" alt="Release APK">
-  </a>
-</p>
+<a href="https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/flutter-ci.yml"><img src="https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/flutter-ci.yml/badge.svg" alt="Flutter CI"></a>
+<a href="https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/release-apk.yml"><img src="https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/release-apk.yml/badge.svg" alt="Release APK"></a>
 
-<img width="200" src="https://img.shields.io/badge/project-work%20in%20progress-9333EA?style=for-the-badge" alt="Work in progress">
+</div><br>
 
-</div>
 ## About the project
 
 **CírioApp** brings together, in a single Android application, the information residents, visitors, and pilgrims need to follow the Círio of Nazaré: event schedules, points of interest on the map, real-time official news, push notifications, favorites, and an AI assistant trained on the context of the celebration.
