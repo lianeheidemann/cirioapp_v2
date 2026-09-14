@@ -11,7 +11,7 @@
 [![Flutter CI](https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/flutter-ci.yml/badge.svg)](https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/flutter-ci.yml)
 [![Release APK](https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/release-apk.yml/badge.svg)](https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/release-apk.yml)
 
-<img width="180" src="https://img.shields.io/badge/project-work%20in%20progress-9333EA?style=for-the-badge" /><br>
+<img width="200" src="https://img.shields.io/badge/project-work%20in%20progress-9333EA?style=for-the-badge" /><br>
 
 </div>
 
