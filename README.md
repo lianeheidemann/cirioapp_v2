@@ -12,8 +12,7 @@
 <p>
   <a href="https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/flutter-ci.yml">
     <img src="https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/flutter-ci.yml/badge.svg" alt="Flutter CI">
-  </a>
-  <a href="https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/release-apk.yml">
+  </a><a href="https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/release-apk.yml">
     <img src="https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/release-apk.yml/badge.svg" alt="Release APK">
   </a>
 </p>
