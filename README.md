@@ -11,7 +11,7 @@
   &nbsp;
   <img width="110" src="assets/badges/cirio-app-badge-firebase.png" >
   &nbsp;
-  <img width="110" src="assets/badges/cirio-app-badge-unlicensed.png" >
+  <img width="110" src="assets/badges/cirio-app-badge-unlicensede.png" >
 </p>
 
 <p>
