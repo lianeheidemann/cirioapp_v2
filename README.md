@@ -235,9 +235,9 @@ See all open work on the [Issues page](https://github.com/lianeheidemann/cirioap
 
 The demonstration below showcases the application's main user flows, including navigation, maps, favorites, news, and the AI assistant.
 
-<p align="center">
+<p align="left">
   <img
-    src="assets/gif/AppCirio_Gif.gif"
+    src="assets/gif/AppCirio_Gif-v2.gif"
     alt="CírioApp Demonstration"
     width="320"
   />
