@@ -13,20 +13,13 @@
 
 <img width="180" src="https://img.shields.io/badge/project-work%20in%20progress-9333EA?style=for-the-badge" /><br>
 
-
-```
-**Information and assistance for the Círio of Nazaré in Belém, Pará.**
-```
-
 </div>
-
-![CírioApp interface](assets/images/interface_v4.png)
 
 ## About the project
 
 **CírioApp** brings together, in a single Android application, the information residents, visitors, and pilgrims need to follow the Círio of Nazaré: event schedules, points of interest on the map, real-time official news, push notifications, favorites, and an AI assistant trained on the context of the celebration.
 
-> The downloadable APK is a test distribution and does not yet correspond to a production release on the Play Store.
+![CírioApp interface](assets/images/interface_v4.png)
 
 ## Table of contents
 
