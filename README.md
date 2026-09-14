@@ -18,7 +18,7 @@
 
 </div>
 
-![CírioApp interface](assets/images/interface_v3.png)
+![CírioApp interface](assets/images/interface_v4.png)
 
 ## About the project
 
