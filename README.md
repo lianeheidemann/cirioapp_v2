@@ -4,15 +4,10 @@
 
 # CírioApp
 
-<p>
-  <img width="110" src="assets/badges/cirio-app-badge-flutter.png" >
-  &nbsp;
-  <img width="110" src="assets/badges/cirio-app-badge-android.png" >
-  &nbsp;
-  <img width="110" src="assets/badges/cirio-app-badge-firebase.png" >
-  &nbsp;
-  <img width="110" src="assets/badges/cirio-app-badge-unlicensede.png" >
-</p>
+![Flutter](https://img.shields.io/badge/Flutter-0A1F44?style=for-the-badge&logo=flutter&logoColor=C9A227)
+![Android](https://img.shields.io/badge/Android-0A1F44?style=for-the-badge&logo=android&logoColor=C9A227)
+![Firebase](https://img.shields.io/badge/Firebase-0A1F44?style=for-the-badge&logo=firebase&logoColor=C9A227)
+![License](https://img.shields.io/badge/License-Restricted-0A1F44?style=for-the-badge&labelColor=0A1F44&color=C9A227)
 
 <p>
   <a href="https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/flutter-ci.yml">
