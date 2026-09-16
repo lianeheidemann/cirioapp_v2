@@ -15,8 +15,6 @@
 
 </div><br>
 
-
-
 ## About the project
 
 **CírioApp** brings together, in a single Android application, the information residents, visitors, and pilgrims need to follow the Círio of Nazaré: event schedules, points of interest on the map, real-time official news, push notifications, favorites, and an AI assistant trained on the context of the celebration.
@@ -143,7 +141,6 @@ flutter run
 
 ## Configuration Keys
 
-<details>
 <summary>Show details</summary>
 
 Anyone who wants to run or build their own copy of the project needs their own Gemini and Firebase credentials — create both on their respective sites, as described below. Never commit real keys to the repository.
@@ -177,11 +174,8 @@ The [release workflow](.github/workflows/release-apk.yml) builds the release APK
 | `GEMINI_API_KEY` | The Gemini API key created above. |
 | `GOOGLE_SERVICES_JSON_BASE64` | Your `android/app/google-services.json`, base64-encoded (`base64 -w 0 android/app/google-services.json`). |
 
-</details>
-
 ## Quality and continuous integration
 
-<details>
 <summary>Show details</summary>
 
 GitHub Actions automatically installs dependencies, runs static analysis, and executes the test suite for pushes and pull requests to `main`. It does not build the Android app, so it needs no Firebase credentials.
@@ -201,11 +195,8 @@ flutter build apk --debug
 
 The badge at the top of this README shows whether the most recent continuous-integration run passed.
 
-</details>
-
 ## Roadmap
 
-<details>
 <summary>Show details</summary>
 
 Completed foundations:
@@ -230,8 +221,6 @@ Planned improvements:
 - [ ] Prepare a production distribution strategy.
 
 See all open work on the [Issues page](https://github.com/lianeheidemann/cirioapp_v2/issues).
-
-</details>
 
 ## Demonstration
 
