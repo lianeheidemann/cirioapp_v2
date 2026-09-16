@@ -197,9 +197,7 @@ The badge at the top of this README shows whether the most recent continuous-int
 
 ## Roadmap
 
-<summary>Show details</summary>
-
-Completed foundations:
+**Completed foundations:**
 
 - [x] Flutter application with feature-based organization.
 - [x] Event schedule, maps, favorites, news, and notifications.
@@ -212,7 +210,7 @@ Completed foundations:
 - [x] AI assistant reliability fixes: cost-free FAQ shortcuts, truncated-response detection, a numeric response-length limit, and a full conversation history for the app session.
 - [x] Safe-area layout fix across the home, events, news, places, favorites, and notifications screens so the system navigation bar no longer covers list content.
 
-Planned improvements:
+**Planned improvements:**
 
 - [ ] [Protect Gemini API calls with a backend service](https://github.com/lianeheidemann/cirioapp_v2/issues/1)
 - [ ] [Document beta tests with Android users](https://github.com/lianeheidemann/cirioapp_v2/issues/2)
