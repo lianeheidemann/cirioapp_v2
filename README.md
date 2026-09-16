@@ -7,7 +7,7 @@
 <img width="450" src="assets/badges/cirio-app-badges-v2.png" />
 
 <p align="center">
-  <img width="320" src="assets/badges/project-under-construction-gear.svg" height="42" alt="Project under construction">
+  <img width="300" src="assets/badges/project-under-construction-gear.svg" height="42" alt="Project under construction">
 </p>
 
 <a href="https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/flutter-ci.yml"><img src="https://github.com/lianeheidemann/cirioapp_v2/actions/workflows/flutter-ci.yml/badge.svg" alt="Flutter CI"></a>
